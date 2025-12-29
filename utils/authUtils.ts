@@ -1,0 +1,14 @@
+import prisma from "../lib/prisma";
+//this auth is for db
+export const getUserByEmail = async (email: string) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+    return user;
+  } catch {
+    return null;
+  }
+};
