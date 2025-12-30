@@ -1,7 +1,8 @@
+"use server";
 import { getUserByEmail } from "@/utils/authUtils";
 import { loginSchema } from "@/types/authTypes";
 import bcrypt from "bcryptjs";
-import { signIn } from "next-auth/react";
+import { signIn } from "@/auth";
 import { z } from "zod";
 import { AuthError } from "next-auth";
 
@@ -23,6 +24,7 @@ export const loginAction = async (
       error: "Incorrect email or password. Please try again",
     };
   const matchedPassword = await bcrypt.compare(password, existingUser.password);
+  console.log(matchedPassword);
   if (!matchedPassword)
     return {
       success: false,
