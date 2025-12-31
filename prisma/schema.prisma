@@ -12,8 +12,8 @@ model User{
   name String
   email String @unique
   password String
-  number Int @unique
-  address String
+  number Int? @unique
+  address String?
   rooms Room[] 
 }
 model Room{

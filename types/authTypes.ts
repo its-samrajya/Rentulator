@@ -13,20 +13,20 @@ export const registerSchema = z
     password: z
       .string()
       .min(1, "Password can't be empty")
-      .max(20, "Password is too long")
-      .refine((password) => /[a-z]/.test(password), {
-        message: "Password must contain at least one lowercase letter",
-      })
-      .refine((password) => /[A-Z]/.test(password), {
-        message: "Password must contain at least one capital letter",
-      })
-      .refine((password) => /[0-9]/.test(password), {
-        message: "Password must contain at least one number",
-      }),
+      .max(20, "Password is too long"),
+    // .refine((password) => /[a-z]/.test(password), {
+    //   message: "Password must contain at least one lowercase letter",
+    // })
+    // .refine((password) => /[A-Z]/.test(password), {
+    //   message: "Password must contain at least one capital letter",
+    // })
+    // .refine((password) => /[0-9]/.test(password), {
+    //   message: "Password must contain at least one number",
+    // }),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Password don't match",
+    message: "Password didn't match",
     path: ["confirmPassword"],
   });
 
@@ -37,14 +37,14 @@ export const loginSchema = z.object({
   password: z
     .string()
     .min(1, "Password can't be empty")
-    .max(20, "Password is too long")
-    .refine((password) => /[a-z]/.test(password), {
-      message: "Password should contain at least one lowerCase letter",
-    })
-    .refine((password) => /[A-Z]/.test(password), {
-      message: "Password must contain at least one upperCase letter",
-    })
-    .refine((password) => /[0-9]/.test(password), {
-      message: "Password must contain at least one number",
-    }),
+    .max(20, "Password is too long"),
+  // .refine((password) => /[a-z]/.test(password), {
+  //   message: "Password should contain at least one lowerCase letter",
+  // })
+  // .refine((password) => /[A-Z]/.test(password), {
+  //   message: "Password must contain at least one upperCase letter",
+  // })
+  // .refine((password) => /[0-9]/.test(password), {
+  //   message: "Password must contain at least one number",
+  // }),
 });
