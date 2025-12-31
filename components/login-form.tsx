@@ -15,12 +15,14 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import z from "zod";
+import { z } from "zod";
 import { loginSchema } from "@/types/authTypes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { loginAction } from "@/actions/user";
+import { Eye } from "lucide-react";
+import { EyeOff } from "lucide-react";
 
 type LoginFormData = z.infer<typeof loginSchema>;
 export function LoginForm({
@@ -91,18 +93,38 @@ export function LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input
-                  id="password"
-                  type="password"
-                  required
-                  {...register("password")}
-                />
+                <div className="relative ">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    required
+                    className="pr-10"
+                    {...register("password")}
+                  />
+                  <button
+                    type="button"
+                    // className="absolute   right-1.5 top-1.5 cursor-pointer"
+                    className="absolute   right-2 top-1/2 -translate-y-1/2 cursor-pointer"
+                    onClick={() => setShowPassword(!showPassword)}
+                    disabled={isSubmitting}
+                  >
+                    {showPassword ? <EyeOff size={21} /> : <Eye size={21} />}
+                  </button>
+                </div>
                 {errors.password && (
                   <p className="text-sm text-red-500 mt-1">
                     {errors.password.message}
                   </p>
                 )}
               </Field>
+              {loginError && (
+                <p className="text-sm text-red-500 text-center">{loginError}</p>
+              )}
+              {loginSuccess && (
+                <p className="text-sm text-green-500 text-center">
+                  {loginSuccess}
+                </p>
+              )}
               <Field>
                 <Button type="submit" disabled={isSubmitting}>
                   {isSubmitting ? (
