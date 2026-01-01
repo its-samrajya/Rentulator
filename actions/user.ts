@@ -6,6 +6,7 @@ import { signIn } from "@/auth";
 import { z } from "zod";
 import { AuthError } from "next-auth";
 import prisma from "@/lib/prisma";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
 //registerAction
 type registerProps = z.infer<typeof registerSchema>;
@@ -76,7 +77,7 @@ export const loginAction = async (
     await signIn("credentials", {
       email,
       password,
-      redirectTo: "/",
+      redirectTo: DEFAULT_LOGIN_REDIRECT,
     });
   } catch (error) {
     if (error instanceof AuthError) {
@@ -93,7 +94,7 @@ export const loginAction = async (
           };
       }
     }
-    throw error; //for other errors except autherror you have to throw error
+    throw error; //so when succeeds the nextjs sends the redirect and redirect is treated as the error so it is catched by the catch but it doesn't match with ifconditions so throw error helps to redirect
   }
 
   return { success: true, message: "You have logged in successfully" };
