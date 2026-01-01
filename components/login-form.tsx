@@ -23,6 +23,7 @@ import { useState } from "react";
 import { loginAction } from "@/actions/user";
 import { Eye } from "lucide-react";
 import { EyeOff } from "lucide-react";
+import Link from "next/link";
 
 type LoginFormData = z.infer<typeof loginSchema>;
 export function LoginForm({
@@ -137,7 +138,8 @@ export function LoginForm({
                   Login with Google
                 </Button>
                 <FieldDescription className="text-center">
-                  Don&apos;t have an account? <a href="#">Sign up</a>
+                  Don&apos;t have an account?{" "}
+                  <Link href="/signup">Sign up</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>
