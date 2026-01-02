@@ -19,11 +19,14 @@ import { z } from "zod";
 import { loginSchema } from "@/types/authTypes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { loginAction } from "@/actions/user";
 import { Eye } from "lucide-react";
 import { EyeOff } from "lucide-react";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { useSearchParams } from "next/navigation";
 
 type LoginFormData = z.infer<typeof loginSchema>;
 export function LoginForm({
@@ -33,6 +36,15 @@ export function LoginForm({
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loginError, setLoginError] = useState<string>("");
   const [loginSuccess, setLoginSuccess] = useState<string>("");
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    const urlError = searchParams.get("error");
+    if (urlError === "OAuthAccountNotLinked") {
+      setLoginError(
+        "This email is already linked to a different login method."
+      );
+    }
+  }, [searchParams]);
   const {
     register,
     handleSubmit,
@@ -134,8 +146,37 @@ export function LoginForm({
                     "Login"
                   )}
                 </Button>
-                <Button variant="outline" type="button">
+                <Button
+                  className="cursor-pointer"
+                  variant="outline"
+                  type="button"
+                  onClick={async () => {
+                    try {
+                      await signIn("google", {
+                        redirectTo: DEFAULT_LOGIN_REDIRECT,
+                      });
+                    } catch (error) {
+                      console.log(error);
+                    }
+                  }}
+                >
                   Login with Google
+                </Button>
+                <Button
+                  className="cursor-pointer"
+                  variant="outline"
+                  type="button"
+                  onClick={async () => {
+                    try {
+                      await signIn("github", {
+                        redirectTo: DEFAULT_LOGIN_REDIRECT,
+                      });
+                    } catch (error) {
+                      console.log(error);
+                    }
+                  }}
+                >
+                  Login with Github
                 </Button>
                 <FieldDescription className="text-center">
                   Don&apos;t have an account?{" "}

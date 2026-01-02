@@ -1,14 +1,22 @@
 import { getUserByEmail } from "@/utils/authUtils";
 import { loginSchema } from "@/types/authTypes";
 import bcrypt from "bcryptjs";
-import CredentialsProvider from "next-auth/providers/credentials";
+import Credentials from "next-auth/providers/credentials";
 import { NextAuthConfig } from "next-auth";
-// this is auth.config.ts
+import Github from "next-auth/providers/github";
+import Google from "next-auth/providers/google";
 export default {
   // Configure one or more authentication providers
   providers: [
-    CredentialsProvider({
-      credentials: {},
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+    Github({
+      clientId: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    }),
+    Credentials({
       async authorize(credentials) {
         const validatedField = loginSchema.safeParse(credentials);
         if (validatedField.success) {
@@ -23,17 +31,4 @@ export default {
       },
     }),
   ],
-  //TODO: adapter
-  pages: {
-    signIn: "/login",
-  },
-  callbacks: {
-    async signIn({ user, account }) {
-      if (!user || !user.id) return false;
-      if (account?.provider !== "credentials") return true;
-      //TODO: exiting user code
-      return true;
-    },
-  },
-  //TODO: session
 } satisfies NextAuthConfig;
