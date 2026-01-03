@@ -7,6 +7,7 @@ import { z } from "zod";
 import { AuthError } from "next-auth";
 import prisma from "@/lib/prisma";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { generateVerificationToken } from "@/lib/token";
 
 //registerAction
 type registerProps = z.infer<typeof registerSchema>;
@@ -39,10 +40,11 @@ export const registerAction = async (
       password: hashedPassword,
     },
   });
+  const verificationToken = generateVerificationToken(safeEmail);
 
   return {
     success: true,
-    message: "Your account has been created successfully",
+    message: "Confirmation email sent successfully",
   };
 };
 
@@ -65,14 +67,19 @@ export const loginAction = async (
       error: "Incorrect email or password. Please try again",
     };
   const matchedPassword = await bcrypt.compare(password, existingUser.password);
-  console.log(matchedPassword);
   if (!matchedPassword)
     return {
       success: false,
       error: "Incorrect email or password. Please try again",
     };
 
-  //TODO: Verification of email
+  if (!existingUser.emailVerified) {
+    const verificationToken = await generateVerificationToken(
+      existingUser.email
+    );
+    return { success: true, message: "Confirmation email sent successfully" };
+  }
+
   try {
     await signIn("credentials", {
       email,

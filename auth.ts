@@ -31,12 +31,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
   },
   callbacks: {
-    // async signIn({ user, account }) {
-    //   if (!user || !user.id) return false;
-    //   if (account?.provider !== "credentials") return true;
-    //   //TODO: exiting user code
-    //   return true;
-    // }
+    async signIn({ user, account }) {
+      // so the question was why we have to write here when we already handled this in loginAction. Because we have to match it that was the code handled by us but when we write here it is handled by the AUTH.js which protects from the login through apis
+
+      if (!user || !user.id) return false;
+      //Allow Oauth without email verification
+      if (account?.provider !== "credentials") return true;
+
+      const existingUser = await getUserById(user.id);
+      // prevent signin without email verification
+      if (!existingUser?.emailVerified) return false;
+      //todo: add 2fa check
+
+      return true;
+    },
 
     async session({ token, session }) {
       if (token.sub && session.user) {
