@@ -8,6 +8,7 @@ import { AuthError } from "next-auth";
 import prisma from "@/lib/prisma";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { generateVerificationToken } from "@/lib/token";
+import { sendVerificationEmail } from "@/lib/mail";
 
 //registerAction
 type registerProps = z.infer<typeof registerSchema>;
@@ -40,7 +41,9 @@ export const registerAction = async (
       password: hashedPassword,
     },
   });
-  const verificationToken = generateVerificationToken(safeEmail);
+  const verificationToken = await generateVerificationToken(safeEmail);
+
+  await sendVerificationEmail(verificationToken.email, verificationToken.token);
 
   return {
     success: true,
@@ -76,6 +79,10 @@ export const loginAction = async (
   if (!existingUser.emailVerified) {
     const verificationToken = await generateVerificationToken(
       existingUser.email
+    );
+    await sendVerificationEmail(
+      verificationToken.email,
+      verificationToken.token
     );
     return { success: true, message: "Confirmation email sent successfully" };
   }
