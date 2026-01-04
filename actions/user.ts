@@ -1,9 +1,9 @@
 "use server";
-import { getUserByEmail } from "@/utils/authUtils";
+import { getUserByEmail, getVerificationTokenByToken } from "@/utils/authUtils";
 import { loginSchema, registerSchema } from "@/types/authTypes";
 import bcrypt from "bcryptjs";
 import { signIn } from "@/auth";
-import { z } from "zod";
+import { success, z } from "zod";
 import { AuthError } from "next-auth";
 import prisma from "@/lib/prisma";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
@@ -113,3 +113,37 @@ export const loginAction = async (
 
   return { success: true, message: "You have logged in successfully" };
 };
+
+//verification-action
+
+type verificationResponse =
+  | { success: true; message: string }
+  | { success: false; error: string };
+
+export async function verificationAction(
+  token: string
+): Promise<verificationResponse> {
+  const existingToken = await getVerificationTokenByToken(token);
+  if (!existingToken) return { success: false, error: "Token does not exist" };
+
+  const hasExpired = new Date(existingToken.expires) < new Date();
+  if (hasExpired) return { success: false, error: "Token has expired" };
+
+  const existingUser = await getUserByEmail(existingToken.email);
+  if (!existingUser) return { success: false, error: "Email does not exist" };
+
+  await prisma.user.update({
+    where: {
+      id: existingUser.id,
+    },
+    data: {
+      emailVerified: new Date(),
+      email: existingToken.email,
+    },
+  });
+
+  await prisma.verificationToken.delete({
+    where: { id: existingToken.id },
+  });
+  return { success: true, message: "Email verified" };
+}
