@@ -48,3 +48,9 @@ export const loginSchema = z.object({
   //   message: "Password must contain at least one number",
   // }),
 });
+
+export const resetSchema = z.object({
+  email: z
+    .email("Please enter a valid email address")
+    .min(1, "Email can not be empty"),
+});
