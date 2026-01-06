@@ -54,3 +54,16 @@ export const resetSchema = z.object({
     .email("Please enter a valid email address")
     .min(1, "Email can not be empty"),
 });
+
+export const newPasswordSchema = z
+  .object({
+    password: z
+      .string()
+      .min(1, "Password can not be empty")
+      .max(20, "Password is too long"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Password did not match",
+    path: ["confirmPassword"],
+  });

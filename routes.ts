@@ -4,7 +4,7 @@
  * @type {string[]}
  */
 
-export const publicRoutes = ["/", "/new-verification"];
+export const publicRoutes = ["/", "/new-verification"]; //this can be accessed by both loggedin and logout users
 
 /**
  * An array of routes that are used for authentication
@@ -12,7 +12,14 @@ export const publicRoutes = ["/", "/new-verification"];
  * @type {string[]}
  */
 
-export const authRoutes = ["/login", "/signup", "/error", "/reset"];
+export const authRoutes = [
+  //this only accessed by logout users
+  "/login",
+  "/signup",
+  "/error",
+  "/reset",
+  "/new-password",
+];
 /**
  * The prefix for api authentication routes
  * Routes that starts with this prefix are used for API authentication purposes
