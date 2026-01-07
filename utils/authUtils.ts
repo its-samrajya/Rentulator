@@ -76,3 +76,42 @@ export const getPasswordResetTokenByToken = async (token: string) => {
     return null;
   }
 };
+
+export const getTwoFactorTokenByToken = async (token: string) => {
+  try {
+    const twoFactorToken = await prisma.twoFactorToken.findUnique({
+      where: {
+        token,
+      },
+    });
+    return twoFactorToken;
+  } catch {
+    return null;
+  }
+};
+
+export const getTwoFactorTokenByEmail = async (email: string) => {
+  try {
+    const twoFactorToken = await prisma.twoFactorToken.findFirst({
+      where: {
+        email,
+      },
+    });
+    return twoFactorToken;
+  } catch {
+    return null;
+  }
+};
+
+export const getTwoFactorConfirmationByUserId = async (userId: string) => {
+  try {
+    const twoFactorConfirmation = await prisma.twoFactorConfirmation.findUnique(
+      {
+        where: { userId },
+      }
+    );
+    return twoFactorConfirmation;
+  } catch {
+    return null;
+  }
+};
