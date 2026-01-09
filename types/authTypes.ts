@@ -38,6 +38,7 @@ export const loginSchema = z.object({
     .string()
     .min(1, "Password can't be empty")
     .max(20, "Password is too long"),
+  code: z.optional(z.string()),
   // .refine((password) => /[a-z]/.test(password), {
   //   message: "Password should contain at least one lowerCase letter",
   // })

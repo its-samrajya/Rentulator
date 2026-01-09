@@ -2,7 +2,10 @@ import NextAuth, { DefaultSession } from "next-auth";
 import authConfig from "./auth.config";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import prisma from "./lib/prisma";
-import { getUserById } from "./utils/authUtils";
+import {
+  getTwoFactorConfirmationByUserId,
+  getUserById,
+} from "./utils/authUtils";
 import { UserRole } from "./app/generated/prisma/enums";
 
 export type ExtendedUser = DefaultSession["user"] & {
@@ -41,7 +44,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       const existingUser = await getUserById(user.id);
       // prevent signin without email verification
       if (!existingUser?.emailVerified) return false;
-      //todo: add 2fa check
+      // add 2fa check
+      if (existingUser.isTwoFactorEnabled) {
+        const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(
+          existingUser.id
+        );
+        if (!twoFactorConfirmation) return false;
+
+        //delete two factor confirmation for next sign in
+        await prisma.twoFactorConfirmation.delete({
+          where: { id: twoFactorConfirmation.id },
+        });
+      }
 
       return true;
     },

@@ -33,6 +33,7 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const [showTwoFactor, setShowTwoFactor] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loginError, setLoginError] = useState<string>("");
   const [loginSuccess, setLoginSuccess] = useState<string>("");
@@ -48,6 +49,7 @@ export function LoginForm({
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -58,10 +60,19 @@ export function LoginForm({
     setLoginSuccess("");
     try {
       const res = await loginAction(data);
-      console.log(res);
       if (!res) return;
-      if (!res.success) return setLoginError(res.error);
-      setLoginSuccess(res.message);
+      if (!res.success) {
+        // reset();
+        setLoginError(res.error);
+      }
+      if (res.success) {
+        // reset();
+        setLoginSuccess(res.message);
+      }
+      //@ts-ignore
+      if (res.twoFactor) {
+        setShowTwoFactor(true);
+      }
     } catch (error: any) {
       setLoginError(
         error.message || "An unknown error has occured during login"
@@ -81,55 +92,81 @@ export function LoginForm({
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <FieldGroup>
-              <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                  {...register("email")}
-                />
-                {errors.email && (
-                  <p className="text-sm text-red-500 mt-1">
-                    {errors.email.message}
-                  </p>
-                )}
-              </Field>
-              <Field>
-                <div className="flex items-center">
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <Link
-                    href="/reset"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </Link>
-                </div>
-                <div className="relative ">
+              {showTwoFactor && (
+                <Field>
+                  <FieldLabel htmlFor="code">Two Factor Code</FieldLabel>
                   <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    required
-                    className="pr-10"
-                    {...register("password")}
-                  />
-                  <button
-                    type="button"
-                    // className="absolute   right-1.5 top-1.5 cursor-pointer"
-                    className="absolute   right-2 top-1/2 -translate-y-1/2 cursor-pointer"
-                    onClick={() => setShowPassword(!showPassword)}
+                    id="code"
+                    type="text"
+                    placeholder="123456"
                     disabled={isSubmitting}
-                  >
-                    {showPassword ? <EyeOff size={21} /> : <Eye size={21} />}
-                  </button>
-                </div>
-                {errors.password && (
-                  <p className="text-sm text-red-500 mt-1">
-                    {errors.password.message}
-                  </p>
-                )}
-              </Field>
+                    {...register("code")}
+                  />
+                  {errors.code && (
+                    <p className="text-sm text-red-500 mt-1">
+                      {errors.code.message}
+                    </p>
+                  )}
+                </Field>
+              )}
+              {!showTwoFactor && (
+                <>
+                  <Field>
+                    <FieldLabel htmlFor="email">Email</FieldLabel>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="m@example.com"
+                      required
+                      disabled={isSubmitting}
+                      {...register("email")}
+                    />
+                    {errors.email && (
+                      <p className="text-sm text-red-500 mt-1">
+                        {errors.email.message}
+                      </p>
+                    )}
+                  </Field>
+                  <Field>
+                    <div className="flex items-center">
+                      <FieldLabel htmlFor="password">Password</FieldLabel>
+                      <Link
+                        href="/reset"
+                        className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+                      >
+                        Forgot your password?
+                      </Link>
+                    </div>
+                    <div className="relative ">
+                      <Input
+                        id="password"
+                        type={showPassword ? "text" : "password"}
+                        required
+                        className="pr-10"
+                        {...register("password")}
+                      />
+                      <button
+                        type="button"
+                        // className="absolute   right-1.5 top-1.5 cursor-pointer"
+                        className="absolute   right-2 top-1/2 -translate-y-1/2 cursor-pointer"
+                        onClick={() => setShowPassword(!showPassword)}
+                        disabled={isSubmitting}
+                      >
+                        {showPassword ? (
+                          <EyeOff size={21} />
+                        ) : (
+                          <Eye size={21} />
+                        )}
+                      </button>
+                    </div>
+                    {errors.password && (
+                      <p className="text-sm text-red-500 mt-1">
+                        {errors.password.message}
+                      </p>
+                    )}
+                  </Field>
+                </>
+              )}
               {loginError && (
                 <p className="text-sm text-red-500 text-center">{loginError}</p>
               )}
@@ -142,6 +179,8 @@ export function LoginForm({
                 <Button type="submit" disabled={isSubmitting}>
                   {isSubmitting ? (
                     <span className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                  ) : showTwoFactor ? (
+                    "Confirm"
                   ) : (
                     "Login"
                   )}
