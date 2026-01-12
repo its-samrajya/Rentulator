@@ -20,24 +20,24 @@ model User{
   image          String?
   password       String?
   role           UserRole  @default(USER)
-  number         Int?      @unique
-  address        String?
   accounts       Account[]
   isTwoFactorEnabled  Boolean @default(false)
   twoFactorConfirmation TwoFactorConfirmation?
   
   
 
-  rooms Room[] 
     @@map("users")
 }
 model Room{
  id              String   @id @default(uuid()) 
  price           Int 
+ roomNumber      Int
+ floor           String
  description     String
- userId          String
- user            User     @relation(fields: [userId], references: [id])
+createdAt        DateTime
+updatedAt        DateTime
 
+tenants          TenantRoom[]
  @@map("rooms")
 
 }
@@ -94,4 +94,25 @@ model TwoFactorConfirmation{
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId])
+}
+
+model Tenant{
+  id String @id @default(cuid())
+  name  String
+  moveInDate DateTime
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  rooms     TenantRoom[]
+}
+
+model TenantRoom{
+  id      String    @id   @default(cuid())
+  tenantId  String
+  roomId    String
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  room    Room @relation(fields: [roomId], references: [id], onDelete: Restrict)
+
+  createdAt DateTime
+  updatedAt DateTime
 }
