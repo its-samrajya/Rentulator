@@ -100,10 +100,13 @@ model Tenant{
   id String @id @default(cuid())
   name  String
   moveInDate DateTime
+
+  rooms     TenantRoom[]
+  electricMeter ElectricMeter? 
+
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
-  rooms     TenantRoom[]
 }
 
 model TenantRoom{
@@ -113,6 +116,47 @@ model TenantRoom{
   tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   room    Room @relation(fields: [roomId], references: [id], onDelete: Restrict)
 
-  createdAt DateTime
-  updatedAt DateTime
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model ElectricMeter{
+  id    String    @id   @default(cuid())
+  meterNumber String  @unique
+  tenantId   String  @unique
+  electricReadings ElectricReading[]
+  electricBill     ElectricBill[]
+
+ createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  tenant Tenant   @relation(fields: [tenantId], references: [id])
+  
+  
+}
+
+model ElectricReading{
+  id    String    @id   @default(cuid())
+  meterId String
+  readingDate DateTime  
+  currentReading  String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  electricMeter ElectricMeter? @relation(fields: [meterId], references: [id])
+}
+
+model ElectricBill{
+  id  String    @id   @default(cuid())
+  meterId String
+  fromDate DateTime
+  toDate  DateTime
+  unitsConsumed Int
+  ratePerUnit Int
+  totalAmount Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  electricMeter ElectricMeter? @relation(fields: [meterId], references: [id])
 }
