@@ -8,7 +8,7 @@ import {
 import { loginSchema, registerSchema } from "@/types/authTypes";
 import bcrypt from "bcryptjs";
 import { signIn } from "@/auth";
-import { success, z } from "zod";
+import { z } from "zod";
 import { AuthError } from "next-auth";
 import prisma from "@/lib/prisma";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
