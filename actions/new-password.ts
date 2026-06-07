@@ -15,7 +15,7 @@ type newPasswordResponse =
   | { success: true; message: string };
 export const newPasswordAction = async (
   values: newPasswordProps,
-  token: string
+  token: string,
 ): Promise<newPasswordResponse> => {
   if (!token) {
     return { success: false, error: "Missing token" };
