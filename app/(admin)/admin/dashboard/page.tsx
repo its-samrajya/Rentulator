@@ -2,12 +2,14 @@
 
 import { Button } from "@/components/ui/button";
 import Stats from "./_components/Stats";
+import Reminder from "./_components/Reminder";
+import RecentPayments from "./_components/RecentPayments";
 
 const Dashboard = () => {
   return (
-    <div className="flex-1 px-16 bg-yellow-100 ">
-      <div className="text-black max-w-7xl border-4 p-4 flex items-center justify-between border-green-600 ">
-        <div className="border-red-600 border-2 w-fit">
+    <div className="flex-1 pt-5 px-16 bg-yellow-100 ">
+      <div className="text-black max-w-7xl  p-4 flex items-center justify-between ">
+        <div className=" w-fit">
           <h1 className="text-4xl font-bold w-fit">Dashboard</h1>
           <p>Welcome back, here&apos;s what&apos;s happening today.</p>
         </div>
@@ -18,6 +20,10 @@ const Dashboard = () => {
         </div>
       </div>
       <Stats />
+      <div className="flex mt-4 px-4 justify-between">
+        <Reminder />
+        <RecentPayments />
+      </div>
     </div>
   );
 };
