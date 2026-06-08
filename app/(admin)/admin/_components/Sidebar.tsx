@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 export const AdminSidebar = () => {
-  const [isSideBarOpen, setIsSideBarOpen] = useState<boolean>(false);
+  const [isSideBarOpen, setIsSideBarOpen] = useState<boolean>(true);
   const pathname = usePathname();
   const reducedPath = pathname.split("/").pop();
   const isActive = (path: string) => reducedPath === path;
@@ -18,7 +18,7 @@ export const AdminSidebar = () => {
     <aside
       className={cn(
         isSideBarOpen
-          ? "w-fit h-screen p-5 bg-white text-black grid grid-rows-[1fr_auto]"
+          ? "w-fit h-screen p-5 bg-teal-100 text-black grid grid-rows-[1fr_auto]"
           : "hidden",
       )}
     >
