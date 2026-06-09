@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import Stats from "./_components/Stats";
 import Reminder from "./_components/Reminder";

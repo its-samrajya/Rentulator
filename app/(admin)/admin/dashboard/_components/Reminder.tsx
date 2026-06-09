@@ -8,7 +8,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-const Reminder = () => {
+import { getInvoices } from "@/lib/queries/invoice";
+const Reminder = async () => {
+  const invoices = await getInvoices();
+  console.log(invoices);
   const info = [
     {
       name: "Rahul Sharma",
@@ -31,18 +34,22 @@ const Reminder = () => {
             <TableHead className="w-25">Tenant</TableHead>
             <TableHead>Property</TableHead>
             <TableHead>Due</TableHead>
+            <TableHead>Due Date</TableHead>
             <TableHead className="text-right">Status</TableHead>
             <TableHead className="text-right">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {info.map((info) => (
-            <TableRow key={info.name}>
-              <TableCell className="font-medium">{info.name}</TableCell>
-              <TableCell>{info.property}</TableCell>
-              <TableCell>{info.due}</TableCell>
+          {invoices.map((info) => (
+            <TableRow key={info.tenant.name}>
+              <TableCell className="font-medium">{info.tenant.name}</TableCell>
+              <TableCell>{info.tenantId}</TableCell>
+              <TableCell>{info.totalAmount}</TableCell>
+              <TableCell>
+                {new Date(info.dueDate).toLocaleDateString()}
+              </TableCell>
               <TableCell className="text-right">{info.status}</TableCell>
-              <TableCell className="text-right">{info.action}</TableCell>
+              <TableCell className="text-right">Remind</TableCell>
             </TableRow>
           ))}
         </TableBody>

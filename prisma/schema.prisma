@@ -12,151 +12,187 @@ enum UserRole {
   USER
 }
 
-model User{
-   id            String    @id @default(cuid())
-  name           String?
-  email          String?   @unique
-  emailVerified  DateTime? @map("email_verified")
-  image          String?
-  password       String?
-  role           UserRole  @default(USER)
-  accounts       Account[]
-  isTwoFactorEnabled  Boolean @default(false)
+enum PaymentStatus {
+  PENDING
+  PAID
+  OVERDUE
+}
+
+model User {
+  id                    String                 @id @default(cuid())
+  name                  String?
+  email                 String?                @unique
+  emailVerified         DateTime?              @map("email_verified")
+  image                 String?
+  password              String?
+  role                  UserRole               @default(USER)
+  accounts              Account[]
+  isTwoFactorEnabled    Boolean                @default(false)
   twoFactorConfirmation TwoFactorConfirmation?
-  
-  
+  tenant                Tenant?
 
-    @@map("users")
+  @@map("users")
 }
-model Room{
- id              String   @id @default(uuid()) 
- price           Int 
- roomNumber      Int
- floor           String
- description     String
-createdAt        DateTime
-updatedAt        DateTime
 
-tenants          TenantRoom[]
- @@map("rooms")
+model Room {
+  id          String   @id @default(uuid())
+  price       Int
+  roomNumber  Int
+  floor       String
+  description String
+  createdAt   DateTime
+  updatedAt   DateTime
 
+  tenants TenantRoom[]
+
+  @@map("rooms")
 }
+
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String  @map("user_id")
-  type               String
-  provider           String
-  providerAccountId  String  @map("provider_account_id")
-  refresh_token      String? @db.Text
-  access_token       String? @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String? @db.Text
-  session_state      String?
- 
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   @@unique([provider, providerAccountId])
   @@map("accounts")
 }
 
-model VerificationToken{
-  id                String @id @default(cuid())
-  email             String 
-  token             String @unique
-  expires           DateTime
-
-  @@unique([email, token])
-}
-
-model PasswordResetToken{
-  id                String @id @default(cuid())
-  email             String
-  token             String @unique
-  expires           DateTime
-
-  @@unique([email, token])
-}
-
-model TwoFactorToken{
-  id  String @id  @default(cuid())
-  email String
-  token String @unique
+model VerificationToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
   expires DateTime
+
   @@unique([email, token])
-  
 }
 
-model TwoFactorConfirmation{
-  id  String  @id @default(cuid())
-  userId  String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+model PasswordResetToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model TwoFactorToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model TwoFactorConfirmation {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId])
 }
 
-model Tenant{
-  id String @id @default(cuid())
-  name  String
-  moveInDate DateTime
-
-  rooms     TenantRoom[]
-  electricMeter ElectricMeter? 
-
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-
+model Tenant {
+  id            String         @id @default(cuid())
+  name          String
+  moveInDate    DateTime
+  userId        String         @unique // link to User who sign via GOOGLE
+  rooms         TenantRoom[]
+  electricMeter ElectricMeter?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  electricBills ElectricBill[]
+  invoices      Invoice[]
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model TenantRoom{
-  id      String    @id   @default(cuid())
-  tenantId  String
-  roomId    String
-  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  room    Room @relation(fields: [roomId], references: [id], onDelete: Restrict)
+model TenantRoom {
+  id       String @id @default(cuid())
+  tenantId String
+  roomId   String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  room     Room   @relation(fields: [roomId], references: [id], onDelete: Restrict)
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model ElectricMeter{
-  id    String    @id   @default(cuid())
-  meterNumber String  @unique
-  tenantId   String  @unique
+model ElectricMeter {
+  id               String            @id @default(cuid())
+  meterNumber      String            @unique
+  tenantId         String            @unique
   electricReadings ElectricReading[]
   electricBill     ElectricBill[]
 
- createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  tenant Tenant   @relation(fields: [tenantId], references: [id])
-  
-  
+  tenant Tenant @relation(fields: [tenantId], references: [id])
 }
 
-model ElectricReading{
-  id    String    @id   @default(cuid())
-  meterId String
-  readingDate DateTime  
-  currentReading  String
+model ElectricReading {
+  id             String   @id @default(cuid())
+  meterId        String
+  readingDate    DateTime
+  currentReading String
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   electricMeter ElectricMeter? @relation(fields: [meterId], references: [id])
 }
 
-model ElectricBill{
-  id  String    @id   @default(cuid())
-  meterId String
-  fromDate DateTime
-  toDate  DateTime
+model ElectricBill {
+  id            String   @id @default(cuid())
+  meterId       String
+  tenantId      String
+  fromDate      DateTime
+  toDate        DateTime
   unitsConsumed Int
-  ratePerUnit Int
-  totalAmount Int
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  ratePerUnit   Int
+  totalAmount   Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   electricMeter ElectricMeter? @relation(fields: [meterId], references: [id])
+  tenant        Tenant         @relation(fields: [tenantId], references: [id])
+}
+
+model Invoice {
+  id          String        @id @default(cuid())
+  tenantId    String
+  totalAmount Int
+  paidAmount  Int
+  dueDate     DateTime
+  status      PaymentStatus @default(PENDING)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  tenant   Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  payments Payment[]
+
+  @@map("invoices")
+}
+
+model Payment {
+  id        String   @id @default(cuid())
+  invoiceId String
+  amount    Int
+  paidAt    DateTime @default(now())
+  note      String? // ex: cash or bank
+  createdAt DateTime @default(now())
+  invoice   Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@map("payments")
 }
