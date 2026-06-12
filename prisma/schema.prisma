@@ -36,6 +36,7 @@ model User {
 
 model Room {
   id          String   @id @default(uuid())
+  tenantId    String?
   price       Int
   roomNumber  Int
   floor       String
@@ -43,7 +44,7 @@ model Room {
   createdAt   DateTime
   updatedAt   DateTime
 
-  tenants TenantRoom[]
+  tenant Tenant? @relation(fields: [tenantId], references: [id])
 
   @@map("rooms")
 }
@@ -108,24 +109,13 @@ model Tenant {
   name          String
   moveInDate    DateTime
   userId        String         @unique // link to User who sign via GOOGLE
-  rooms         TenantRoom[]
+  rooms         Room[]
   electricMeter ElectricMeter?
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   electricBills ElectricBill[]
   invoices      Invoice[]
   user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model TenantRoom {
-  id       String @id @default(cuid())
-  tenantId String
-  roomId   String
-  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  room     Room   @relation(fields: [roomId], references: [id], onDelete: Restrict)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model ElectricMeter {
