@@ -33,7 +33,9 @@ export default async function RootLayout({
         >
           {/* <div className="grid grid-cols-[auto_1fr] w-screen min-h-screen"> */}
           <div className="flex min-h-screen w-screen">
-            <AdminSidebar />
+            <div className="no-print">
+              <AdminSidebar />
+            </div>
             {children}
           </div>
         </body>
