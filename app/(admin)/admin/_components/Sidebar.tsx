@@ -24,10 +24,7 @@ export const AdminSidebar = () => {
     >
       <div className="flex flex-col gap-2 ">
         {" "}
-        <Link
-          href="/admin/dashboard"
-          className={cn(isActive("dashboard") && "border")}
-        >
+        <Link href="/admin" className={cn(isActive("admin") && "border")}>
           Dashboard
         </Link>
         <Link

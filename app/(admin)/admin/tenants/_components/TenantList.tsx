@@ -9,7 +9,7 @@ const TenantList = async () => {
 
   return (
     <div className="grid grid-cols-3 gap-6">
-      {tenants.map((tenant, index) => (
+      {tenants.map((tenant) => (
         <div
           key={tenant.id}
           className="p-6 bg-white gap-6 rounded-md shadow-lg"
