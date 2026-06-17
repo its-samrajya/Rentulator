@@ -18,3 +18,10 @@ export const getPayments = async () => {
   });
   return payments;
 };
+
+export const getPaymentsByTenant = async (tenantId: string) => {
+  const payments = await prisma.payment.findMany({
+    where: { id: tenantId },
+  });
+  return payments;
+};
