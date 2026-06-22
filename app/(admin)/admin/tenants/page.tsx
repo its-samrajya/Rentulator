@@ -1,5 +1,4 @@
 "use server";
-import Filter from "./_components/Filter";
 import TenantList from "./_components/TenantList";
 import { TenantForm } from "./_components/TenantForm";
 import prisma from "@/lib/prisma";
@@ -22,9 +21,6 @@ const AdminTenants = async () => {
         <div>
           <TenantForm users={users} rooms={rooms} />
         </div>
-      </div>
-      <div className="mt-4 px-4 ">
-        <Filter />
       </div>
       <div className="mt-4">{<TenantList />}</div>
     </div>

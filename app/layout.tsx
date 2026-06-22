@@ -4,6 +4,7 @@ import { Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
+import { ToastContainer } from "react-toastify";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -34,7 +35,10 @@ export default async function RootLayout({
   return (
     <SessionProvider session={session}>
       <html lang="en">
-        <body className={robotoMono.className}>{children}</body>
+        <body className={robotoMono.className}>
+          {children}
+          <ToastContainer />
+        </body>
       </html>
     </SessionProvider>
   );

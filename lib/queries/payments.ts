@@ -21,7 +21,11 @@ export const getPayments = async () => {
 
 export const getPaymentsByTenant = async (tenantId: string) => {
   const payments = await prisma.payment.findMany({
-    where: { id: tenantId },
+    where: {
+      invoice: {
+        tenantId: tenantId,
+      },
+    },
   });
   return payments;
 };

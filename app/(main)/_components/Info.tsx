@@ -28,7 +28,8 @@ const Info = ({ session, tenant, invoices }: Props) => {
       </div>
       <div>
         <div className="bg-red-100 flex gap-2 items-center rounded-2xl p-2 text-sm text-red-800">
-          <Clock size={20} /> Status : {invoices?.[0].status}
+          <Clock size={20} /> Status :{" "}
+          {invoices?.[0]?.status ? invoices[0].status : "None"}
         </div>
       </div>
     </div>

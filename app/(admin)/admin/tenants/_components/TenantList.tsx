@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { getTenants } from "@/lib/queries/tenants";
-import { Ellipsis } from "lucide-react";
 import { DropdownMenuDestructive } from "./DropdownActions";
 
 const TenantList = async () => {
@@ -22,7 +21,7 @@ const TenantList = async () => {
               <div className="flex flex-col">
                 <span className="font-bold">{tenant.name}</span>
                 <span className="font-light text-sm text-gray-300">
-                  {tenant.rooms[0].floor}
+                  {tenant.rooms[0]?.floor}
                 </span>
               </div>
             </div>

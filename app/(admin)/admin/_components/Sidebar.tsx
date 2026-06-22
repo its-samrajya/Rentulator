@@ -18,7 +18,7 @@ export const AdminSidebar = () => {
     <aside
       className={cn(
         isSideBarOpen
-          ? "w-fit h-screen p-5 bg-teal-100 text-black grid grid-rows-[1fr_auto]"
+          ? "w-fit h-full p-5 bg-teal-100 text-black grid grid-rows-[1fr_auto]"
           : "hidden",
       )}
     >
@@ -32,6 +32,12 @@ export const AdminSidebar = () => {
           className={cn(isActive("tenants") && "border")}
         >
           Tenants
+        </Link>
+        <Link
+          href="/admin/invoice"
+          className={cn(isActive("invoice") && "border")}
+        >
+          Invoice
         </Link>
         <Link
           href="/admin/payment"
