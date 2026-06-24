@@ -38,46 +38,48 @@ export const createElectricBill = async ({
     const unitsConsumed = currentReading - previousReading.currentReading;
     const totalElectricAmount = unitsConsumed * setting.electricRate;
 
-    const electricBill = await prisma.electricBill.create({
+    await prisma.electricBill.create({
       data: {
         meterId,
         unitsConsumed,
         totalAmount: totalElectricAmount,
+        previousReading: previousReading.currentReading,
+        currentReading,
         ratePerUnit: setting.electricRate,
         fromDate: previousReading.readingDate,
         toDate: readingDate,
       },
     });
 
-    const dueDate = new Date(readingDate);
-    dueDate.setMonth(readingDate.getMonth() + 1);
-    dueDate.setDate(setting.dueDate);
-
-    const meter = await prisma.electricMeter.findUnique({
-      where: { id: meterId },
-      include: {
-        rooms: true,
-      },
-    });
-
-    if (!meter) throw new Error("Meter not found");
-
-    const rent =
-      meter?.rooms.reduce((total, room) => total + room.price, 0) ?? 0;
-
-    await prisma.invoice.create({
-      data: {
-        tenantId: meter?.tenantId,
-        totalAmount: rent + totalElectricAmount,
-        dueDate,
-        electricBill: {
-          connect: { id: electricBill.id },
-        },
-      },
-    });
-    return { success: true, message: "Bill and Invoice created successfully" };
+    // const dueDate = new Date(readingDate);
+    // dueDate.setMonth(readingDate.getMonth() + 1);
+    // dueDate.setDate(setting.dueDate);
+    //
+    // const meter = await prisma.electricMeter.findUnique({
+    //   where: { id: meterId },
+    //   include: {
+    //     rooms: true,
+    //   },
+    // });
+    //
+    // if (!meter) throw new Error("Meter not found");
+    //
+    // const rent =
+    //   meter?.rooms.reduce((total, room) => total + room.price, 0) ?? 0;
+    //
+    // await prisma.invoice.create({
+    //   data: {
+    //     tenantId: meter?.tenantId,
+    //     totalAmount: rent + totalElectricAmount,
+    //     dueDate,
+    //     electricBill: {
+    //       connect: { id: electricBill.id },
+    //     },
+    //   },
+    // });
+    return { success: true, message: "Bill created successfully" };
   } catch (error) {
     console.log(error);
-    return { success: false, message: "Something went wrong" };
+    return { success: false, message: "There was a error while creating Bill" };
   }
 };

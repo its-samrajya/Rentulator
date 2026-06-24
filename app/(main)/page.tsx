@@ -15,11 +15,21 @@ const Home = async () => {
   });
   if (!tenant) return <p>You haven&apos;t been added as a tenant</p>;
   const invoices = await getInvoicesByTenantId(tenant.id);
+
+  const totalPendingAmount = invoices
+    .filter((invoice) => invoice.status === "PENDING")
+    .reduce((sum, invoice) => sum + invoice.totalAmount, 0);
+
   return (
     <div className="flex-1 pt-5 px-16 bg-yellow-100 ">
       <div className="max-w-7xl">
-        <Info session={session} tenant={tenant} invoices={invoices} />
-        <RentDetails />
+        <Info
+          session={session}
+          tenant={tenant}
+          invoices={invoices}
+          totalPendingAmount={totalPendingAmount}
+        />
+        <RentDetails invoices={invoices} />
       </div>
     </div>
   );

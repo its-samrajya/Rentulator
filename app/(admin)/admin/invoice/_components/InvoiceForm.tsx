@@ -50,13 +50,16 @@ const AddInvoiceButton = ({ meters }: Prop) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-blue-500  cursor-pointer text-base" size="lg">
-          + Add Invoice
+        <Button
+          className="bg-blue-500 hover:bg-blue-400 cursor-pointer text-base"
+          size="lg"
+        >
+          + Add Bills
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add New Invoice</DialogTitle>
+          <DialogTitle>Add new bills</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="flex  flex-col gap-4 mt-2">
           <div className="flex flex-col gap-1">
@@ -99,7 +102,7 @@ const AddInvoiceButton = ({ meters }: Prop) => {
             />
           </div>
           <Button type="submit" disabled={isPending} className="mt-2">
-            {isPending ? "Creating...." : "Create Invoice"}
+            {isPending ? "Creating...." : "Create bill"}
           </Button>
         </form>
       </DialogContent>

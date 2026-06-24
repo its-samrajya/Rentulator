@@ -1,7 +1,13 @@
 import { Button } from "@/components/ui/button";
+import { invoicesType } from "@/lib/types";
 import Link from "next/link";
 
-const RentDetails = () => {
+interface Props {
+  invoices: invoicesType;
+}
+
+const RentDetails = ({ invoices }: Props) => {
+  const latestInvoice = invoices[0];
   return (
     <div className="flex mt-4 gap-4 justify-between">
       <div className="bg-white flex-1 rounded-md p-4">
@@ -11,19 +17,21 @@ const RentDetails = () => {
         <div className="flex flex-col gap-3">
           <div className="flex justify-between">
             <p>Rent Amount</p>
-            <p className="text-3xl font-bold">150000</p>
+            <p className="text-3xl font-bold">{latestInvoice.totalAmount}</p>
           </div>
           <div className="flex justify-between">
             <div>Due Date</div>
-            <div>5th of every month</div>
+            <div>{latestInvoice.dueDate.toLocaleDateString()}</div>
           </div>
           <div className="bg-red-100 rounded-md p-4">
             <div>
               <p className="text-red-700 font-medium">
-                You have a pending balance
+                Recent balance to be paid
               </p>
               <div className="flex justify-between">
-                <p className="text-red-700 font-medium text-3xl">15000</p>
+                <p className="text-red-700 font-medium text-3xl">
+                  {latestInvoice.totalAmount}
+                </p>
                 <Button asChild variant="destructive">
                   <Link href="/">Pay now</Link>
                 </Button>

@@ -45,8 +45,8 @@ model Room {
   createdAt   DateTime
   updatedAt   DateTime
 
-  tenant Tenant? @relation(fields: [tenantId], references: [id])
-  electricMeter  ElectricMeter @relation(fields:[meterId], references:[id])
+  tenant        Tenant?       @relation(fields: [tenantId], references: [id])
+  electricMeter ElectricMeter @relation(fields: [meterId], references: [id])
 
   @@map("rooms")
 }
@@ -122,8 +122,8 @@ model Tenant {
 model ElectricMeter {
   id               String            @id @default(cuid())
   meterNumber      String            @unique
-  tenantId         String           
-  rooms              Room[]
+  tenantId         String
+  rooms            Room[]
   electricReadings ElectricReading[]
   electricBill     ElectricBill[]
 
@@ -148,9 +148,11 @@ model ElectricReading {
 model ElectricBill {
   id            String   @id @default(cuid())
   meterId       String
-  invoiceId     String?  @unique
+  invoiceId     String?
   fromDate      DateTime
   toDate        DateTime
+  previousReading Int
+  currentReading  Int
   unitsConsumed Int
   ratePerUnit   Int
   totalAmount   Int
@@ -158,20 +160,19 @@ model ElectricBill {
   updatedAt     DateTime @updatedAt
 
   electricMeter ElectricMeter? @relation(fields: [meterId], references: [id])
-  invoice       Invoice?        @relation(fields:[invoiceId], references:[id])
-
+  invoice       Invoice?       @relation(fields: [invoiceId], references: [id])
 }
 
 model Invoice {
-  id          String        @id @default(cuid())
-  tenantId    String
-  totalAmount Int
-  dueDate     DateTime
-  electricBill  ElectricBill?
-  status      PaymentStatus @default(PENDING)
+  id           String         @id @default(cuid())
+  tenantId     String
+  totalAmount  Int
+  dueDate      DateTime
+  electricBill ElectricBill[]
+  status       PaymentStatus  @default(PENDING)
 
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   tenant   Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   payments Payment[]
@@ -191,12 +192,10 @@ model Payment {
   @@map("payments")
 }
 
-
-model Setting{
-    id    String @id @default(cuid())
-    electricRate Int
-    dueDate Int 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-  }
+model Setting {
+  id           String   @id @default(cuid())
+  electricRate Int
+  dueDate      Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}

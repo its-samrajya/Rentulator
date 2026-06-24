@@ -1,3 +1,13 @@
 1. In main page, for the status - any invoice which has payment remaining should show the status pending or overdue for that i think a global checker needs to be coded which gets the invoice based on the tenantId and map all over the array and finds out the status 
 2. To apply max-w-7xl on all items/page
 3. To use TRY CATCH in all 'await' we have used
+
+
+4. in client home, create a section to show the invoice remaining to be paid and the main card change it to recent invoice only also add fields like electric readings, unitcharge, rent charge and total amount
+5. for the client also add a extra section in sidebar to see the invoice list they had
+
+
+6. fix this getPayments tanai thau ma xa also in invoice.ts
+
+7. one tenant can have more than one meters and invoice depends on meters so there will be more than one invoice for that so how to fix 
+      - instead of generating the invoice right at the moment we will create when the owner clicks the generate invoice button

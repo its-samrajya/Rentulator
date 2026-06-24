@@ -9,9 +9,10 @@ type Props = {
   session: Session | null;
   tenant: TenantWithRooms;
   invoices: Awaited<ReturnType<typeof getInvoicesByTenantId>>;
+  totalPendingAmount: number;
 };
 
-const Info = ({ session, tenant, invoices }: Props) => {
+const Info = ({ session, tenant, invoices, totalPendingAmount }: Props) => {
   return (
     <div className="text-black  bg-white  shadow-lg rounded-md  p-6 flex items-center justify-between ">
       <div className=" w-fit">
@@ -25,6 +26,9 @@ const Info = ({ session, tenant, invoices }: Props) => {
             .map((room) => `${room.floor}-${room.roomNumber}`)
             .join(", ")}
         </p>
+      </div>
+      <div className="bg-red-100 rounded-2xl p-2 text-sm text-red-800">
+        <p>Remaining Amount to be paid {totalPendingAmount}</p>
       </div>
       <div>
         <div className="bg-red-100 flex gap-2 items-center rounded-2xl p-2 text-sm text-red-800">

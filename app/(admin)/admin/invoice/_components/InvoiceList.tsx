@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { DropdownMenuDestructive } from "../../tenants/_components/DropdownActions";
 import { getInvoices } from "@/lib/queries/invoice";
 
-const TenantList = async () => {
+const InvoiceList = async () => {
   const invoices = await getInvoices();
 
   return (
@@ -51,4 +51,4 @@ const TenantList = async () => {
     </div>
   );
 };
-export default TenantList;
+export default InvoiceList;

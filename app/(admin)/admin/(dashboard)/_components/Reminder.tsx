@@ -41,7 +41,7 @@ const Reminder = async () => {
         </TableHeader>
         <TableBody>
           {invoices.map((info) => (
-            <TableRow key={info.tenant.name}>
+            <TableRow key={info.id}>
               <TableCell className="font-medium">{info.tenant.name}</TableCell>
               <TableCell>{info.tenantId}</TableCell>
               <TableCell>{info.totalAmount}</TableCell>
