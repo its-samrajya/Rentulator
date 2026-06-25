@@ -18,7 +18,7 @@ export const MainSidebar = () => {
     <aside
       className={cn(
         isSideBarOpen
-          ? "w-fit h-screen p-5 bg-teal-100 text-black grid grid-rows-[1fr_auto]"
+          ? "w-fit h-full p-5 bg-teal-100 text-black grid grid-rows-[1fr_auto]"
           : "hidden",
       )}
     >

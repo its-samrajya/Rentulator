@@ -1,18 +1,23 @@
-import { Prisma } from "@/app/generated/prisma/client";
-import { getInvoicesByTenantId } from "@/lib/queries/invoice";
+import { TenantWithRooms, unpaidInvoicesType } from "@/lib/types";
 import { Clock } from "lucide-react";
 import { Session } from "next-auth";
-
-type TenantWithRooms = Prisma.TenantGetPayload<{ include: { rooms: true } }>;
 
 type Props = {
   session: Session | null;
   tenant: TenantWithRooms;
-  invoices: Awaited<ReturnType<typeof getInvoicesByTenantId>>;
+  unpaidInvoices: unpaidInvoicesType;
   totalPendingAmount: number;
 };
 
-const Info = ({ session, tenant, invoices, totalPendingAmount }: Props) => {
+const Info = ({
+  session,
+  tenant,
+  unpaidInvoices,
+  totalPendingAmount,
+}: Props) => {
+  const hasPending = unpaidInvoices.some(
+    (invoice) => invoice.status === "PENDING",
+  );
   return (
     <div className="text-black  bg-white  shadow-lg rounded-md  p-6 flex items-center justify-between ">
       <div className=" w-fit">
@@ -28,12 +33,11 @@ const Info = ({ session, tenant, invoices, totalPendingAmount }: Props) => {
         </p>
       </div>
       <div className="bg-red-100 rounded-2xl p-2 text-sm text-red-800">
-        <p>Remaining Amount to be paid {totalPendingAmount}</p>
+        <p>Remaining Amount to be paid Rs.{totalPendingAmount}</p>
       </div>
       <div>
         <div className="bg-red-100 flex gap-2 items-center rounded-2xl p-2 text-sm text-red-800">
-          <Clock size={20} /> Status :{" "}
-          {invoices?.[0]?.status ? invoices[0].status : "None"}
+          <Clock size={20} /> Status : {hasPending ? "Unpaid" : "Paid"}
         </div>
       </div>
     </div>

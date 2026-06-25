@@ -27,21 +27,38 @@ export const getPayments = async () => {
   return payment;
 };
 
-export const getInvoicesByTenantId = async (tenantId: string) => {
-  const invoices = await prisma.invoice.findMany({
-    where: { tenantId },
+export const getUnpaidInvoicesByTenantId = async (tenantId: string) => {
+  const unpaidInvoices = await prisma.invoice.findMany({
+    where: {
+      tenantId,
+      status: "PENDING",
+    },
     include: {
-      tenant: {
+      electricBill: {
         include: {
-          rooms: true,
-          user: true,
+          electricMeter: true,
         },
-      },
-      payments: {
-        orderBy: { paidAt: "desc" },
       },
     },
     orderBy: { createdAt: "desc" },
   });
-  return invoices;
+  return unpaidInvoices;
+};
+export const getSkippedUnpaidInvoicesByTenantId = async (tenantId: string) => {
+  const unpaidInvoices = await prisma.invoice.findMany({
+    where: {
+      tenantId,
+      status: "PENDING",
+    },
+    include: {
+      electricBill: {
+        include: {
+          electricMeter: true,
+        },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+    skip: 1,
+  });
+  return unpaidInvoices;
 };

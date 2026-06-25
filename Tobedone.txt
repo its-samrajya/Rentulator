@@ -1,13 +1,28 @@
 1. In main page, for the status - any invoice which has payment remaining should show the status pending or overdue for that i think a global checker needs to be coded which gets the invoice based on the tenantId and map all over the array and finds out the status 
+
 2. To apply max-w-7xl on all items/page
+
 3. To use TRY CATCH in all 'await' we have used
 
 
 4. in client home, create a section to show the invoice remaining to be paid and the main card change it to recent invoice only also add fields like electric readings, unitcharge, rent charge and total amount
+
 5. for the client also add a extra section in sidebar to see the invoice list they had
 
 
 6. fix this getPayments tanai thau ma xa also in invoice.ts
 
 7. one tenant can have more than one meters and invoice depends on meters so there will be more than one invoice for that so how to fix 
-      - instead of generating the invoice right at the moment we will create when the owner clicks the generate invoice button
+      - instead of generating the invoice right at the moment we will create when the owner clicks the generate invoice button ✅
+
+8. in client side , paybutton in every invoice stating pay so that the invoiceid, amount, note can be passed
+
+9. client side ko main page wala table lets show the unpaid invoices while in invoicelist section of sidebar lets make it for the invoices that the tenant has already paid
+
+10. to change the paymentstatus to PAID and UNPAID only no extra
+
+11. in rentDetails card need to add other fields like meter readings , unitconsumed, amount etc ✅
+
+12. in rentdetails it is creating layout issue it happening because of rentdetails card
+
+

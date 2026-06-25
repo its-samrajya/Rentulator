@@ -21,6 +21,7 @@ export const generateAllInvoice = async () => {
       await generateInvoice({ tenantId: tenant.id });
     }
     revalidatePath("/admin/invoice");
+    revalidatePath("/");
     return { success: true, message: "All invoice generated successfully" };
   } catch (error) {
     console.log(error);

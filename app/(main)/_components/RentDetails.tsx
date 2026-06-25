@@ -1,28 +1,71 @@
 import { Button } from "@/components/ui/button";
-import { invoicesType } from "@/lib/types";
+import { TenantWithRooms, unpaidInvoicesType } from "@/lib/types";
 import Link from "next/link";
 
 interface Props {
-  invoices: invoicesType;
+  unpaidInvoices: unpaidInvoicesType;
+  tenant: TenantWithRooms;
 }
 
-const RentDetails = ({ invoices }: Props) => {
-  const latestInvoice = invoices[0];
+const RentDetails = ({ unpaidInvoices, tenant }: Props) => {
+  const latestInvoice = unpaidInvoices[0];
+  const totalRent = tenant.rooms.reduce((sum, room) => sum + room.price, 0);
   return (
     <div className="flex mt-4 gap-4 justify-between">
       <div className="bg-white flex-1 rounded-md p-4">
         <div className="border-b border-black p-2 mb-3">
           <h1>Rent Details</h1>
         </div>
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-1">
           <div className="flex justify-between">
-            <p>Rent Amount</p>
-            <p className="text-3xl font-bold">{latestInvoice.totalAmount}</p>
+            <p>Month</p>
+            <p className="text-xl font-bold">
+              {latestInvoice.electricBill[0].toDate.toLocaleDateString(
+                "default",
+                {
+                  month: "long",
+                },
+              )}
+            </p>
           </div>
+
+          <div className="flex justify-between">
+            <p>Room Amount</p>
+            <p className="">Rs.{totalRent}</p>
+          </div>
+
+          {latestInvoice.electricBill.map((bill) => (
+            <div
+              key={bill.id}
+              className="flex justify-between border-b border-black"
+            >
+              <div className="flex flex-col gap-1">
+                <p>Current Reading</p>
+                <p>Previous Reading</p>
+                <p>Unit Consumed</p>
+                <p>Rate Per Unit</p>
+                <p>Electric Amount</p>
+              </div>
+              <div className="flex flex-col gap-1 text-right">
+                <p>{bill.currentReading}</p>
+                <p>{bill.previousReading}</p>
+                <p>{bill.unitsConsumed}</p>
+                <p>Rs.{bill.ratePerUnit}</p>
+                <p>Rs.{bill.totalAmount}</p>
+              </div>
+            </div>
+          ))}
+
+          <div className="flex justify-between mt-3  ">
+            <p>Total Amount</p>
+            <p className="text-xl font-bold">Rs.{latestInvoice.totalAmount}</p>
+          </div>
+
           <div className="flex justify-between">
             <div>Due Date</div>
             <div>{latestInvoice.dueDate.toLocaleDateString()}</div>
           </div>
+
           <div className="bg-red-100 rounded-md p-4">
             <div>
               <p className="text-red-700 font-medium">
@@ -30,7 +73,7 @@ const RentDetails = ({ invoices }: Props) => {
               </p>
               <div className="flex justify-between">
                 <p className="text-red-700 font-medium text-3xl">
-                  {latestInvoice.totalAmount}
+                  Rs.{latestInvoice.totalAmount}
                 </p>
                 <Button asChild variant="destructive">
                   <Link href="/">Pay now</Link>
@@ -40,6 +83,7 @@ const RentDetails = ({ invoices }: Props) => {
           </div>
         </div>
       </div>
+
       <div className="bg-white flex-1 rounded-md p-4 ">
         <div className="border-b border-black p-2 mb-3">
           <h1>Landlord Contact</h1>
