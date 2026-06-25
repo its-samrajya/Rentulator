@@ -27,8 +27,11 @@ export const MainSidebar = () => {
         <Link href="/" className={cn(isActive("") && "border")}>
           Home
         </Link>
-        <Link href="/history" className={cn(isActive("history") && "border")}>
-          History
+        <Link href="/payments" className={cn(isActive("payments") && "border")}>
+          Payments
+        </Link>
+        <Link href="/invoices" className={cn(isActive("invoices") && "border")}>
+          Invoices
         </Link>
       </div>
 

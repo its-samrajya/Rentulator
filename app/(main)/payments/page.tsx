@@ -1,4 +1,3 @@
-import { auth } from "@/auth";
 import {
   Table,
   TableBody,
@@ -7,16 +6,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import prisma from "@/lib/prisma";
+import getCurrentTenant from "@/lib/currentTenant";
 import { getPaymentsByTenant } from "@/lib/queries/payments";
 
 export default async function HistoryPage() {
-  const session = await auth();
-  const userId = session?.user?.id;
-  const tenantId = await prisma.tenant.findUnique({
-    where: { userId },
-    select: { id: true },
-  });
+  const tenantId = await getCurrentTenant();
   if (!tenantId) return <p>You are not authorized</p>;
   const payments = await getPaymentsByTenant(tenantId.id);
   if (!payments) {

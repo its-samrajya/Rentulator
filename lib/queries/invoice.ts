@@ -62,3 +62,18 @@ export const getSkippedUnpaidInvoicesByTenantId = async (tenantId: string) => {
   });
   return unpaidInvoices;
 };
+
+export const getPaidInvoicesByTenantId = async (tenantId: string) => {
+  const paidInvoices = await prisma.invoice.findMany({
+    where: { tenantId, status: "PAID" },
+    include: {
+      electricBill: {
+        include: {
+          electricMeter: true,
+        },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+  return paidInvoices;
+};
