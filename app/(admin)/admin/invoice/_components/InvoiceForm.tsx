@@ -50,10 +50,7 @@ const AddInvoiceButton = ({ meters }: Prop) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          className="bg-blue-500 hover:bg-blue-400 cursor-pointer text-base"
-          size="lg"
-        >
+        <Button className="bg-primary cursor-pointer text-base" size="lg">
           + Add Bills
         </Button>
       </DialogTrigger>

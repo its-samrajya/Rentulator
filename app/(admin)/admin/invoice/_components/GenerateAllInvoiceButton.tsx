@@ -9,7 +9,7 @@ const GenerateButton = () => {
   return (
     <Button
       className={cn(
-        "cursor-pointer text-base bg-teal-700 hover:bg-teal-500",
+        "cursor-pointer text-base bg-primary",
         isPending && "bg-gray-400 hover:bg-gray-500",
       )}
       size="lg"

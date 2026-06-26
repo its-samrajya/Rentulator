@@ -9,6 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getSkippedUnpaidInvoicesByTenantId } from "@/lib/queries/invoice";
+import { LayoutList } from "lucide-react";
 import Link from "next/link";
 
 interface Props {
@@ -18,7 +19,12 @@ interface Props {
 const UnpaidInvoices = async ({ tenantId }: Props) => {
   const unpaidInvoices = await getSkippedUnpaidInvoicesByTenantId(tenantId);
   if (unpaidInvoices.length === 0) {
-    return <div>There is no any unpaid invoices</div>;
+    return (
+      <div className="flex justify-center border-t border-gray-100 items-center gap-4 w-full mt-6 p-3 text-gray-400  bg-white rounded-md shadow-sm">
+        <LayoutList />
+        <p>There is no any unpaid invoices</p>
+      </div>
+    );
   }
   return (
     <div className="bg-white mt-6 p-3  shadow-lg rounded-md">
@@ -30,7 +36,7 @@ const UnpaidInvoices = async ({ tenantId }: Props) => {
         <TableHeader>
           <TableRow>
             <TableHead className="w-25">Month</TableHead>
-            <TableHead className="text-right">Total Amount</TableHead>
+            <TableHead className="text-right">Total</TableHead>
             <TableHead className="text-right">Status</TableHead>
             <TableHead className="text-right">Action</TableHead>
           </TableRow>
@@ -48,7 +54,7 @@ const UnpaidInvoices = async ({ tenantId }: Props) => {
                   )}
                 </TableCell>
                 <TableCell className="text-right">
-                  {invoice.totalAmount}
+                  Rs. {invoice.totalAmount}
                 </TableCell>
                 <TableCell className="text-right">{invoice.status}</TableCell>
                 <TableCell className="text-right">

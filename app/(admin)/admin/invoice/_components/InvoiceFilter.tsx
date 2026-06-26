@@ -30,7 +30,7 @@ const Filter = () => {
           key={index}
           className={cn(
             "cursor-pointer outline-none bg-transparent",
-            current === filter.value && "text-blue-600 ",
+            current === filter.value && "text-red-700 ",
           )}
         >
           <Link href={`/admin/tenants?status=${filter.value}`}>

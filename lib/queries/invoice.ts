@@ -77,3 +77,39 @@ export const getPaidInvoicesByTenantId = async (tenantId: string) => {
   });
   return paidInvoices;
 };
+
+// to calculate total amount (expected) that will be receiving in the month for admin dashboard
+export const getTotalExpectedCurrentMonth = async () => {
+  const now = new Date();
+  const startOfCurrentMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const endOfCurrentMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+  const invoices = await prisma.invoice.findMany({
+    where: {
+      dueDate: {
+        gte: startOfCurrentMonth,
+        lte: endOfCurrentMonth,
+      },
+    },
+    select: { totalAmount: true, status: true },
+  });
+  return invoices;
+};
+// to calulate total collected amount for admin dashboard
+export const getAllPaidInvoices = async () => {
+  const now = new Date();
+  const startOfCurrentMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const endOfCurrentMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+  const paidInvoices = await prisma.invoice.findMany({
+    where: {
+      status: "PAID",
+      dueDate: {
+        gte: startOfCurrentMonth,
+        lte: endOfCurrentMonth,
+      },
+    },
+    select: { totalAmount: true },
+  });
+  return paidInvoices;
+};

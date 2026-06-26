@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/table";
 import getCurrentTenant from "@/lib/currentTenant";
 import { getPaidInvoicesByTenantId } from "@/lib/queries/invoice";
+import { LayoutList } from "lucide-react";
 
 const InvoicesPage = async () => {
   const tenantId = await getCurrentTenant();
@@ -16,24 +17,28 @@ const InvoicesPage = async () => {
   const paidInvoices = await getPaidInvoicesByTenantId(tenantId.id);
   if (paidInvoices.length === 0) {
     return (
-      <div className="flex items-center justify-center w-full text-2xl font-bold bg-gray-200">
-        There is no any paid invoices
+      <div className="flex text-2xl justify-center border-t border-gray-100 items-center gap-4 w-full mt-6 p-3 text-gray-400  bg-white rounded-md shadow-sm">
+        <LayoutList />
+        <p>There is no any unpaid invoices</p>
       </div>
     );
   }
   return (
-    <div className="bg-white mt-6 p-3  shadow-lg rounded-md">
-      <h2 className="text-base font-semibold text-gray-900 mb-4 mt-2 px-2">
-        Unpaid Invoices
+    <div className="bg-white w-full mt-6 px-8  shadow-lg rounded-md">
+      <h2 className="font-semibold text-primary text-3xl mb-8 mt-2 px-2">
+        Paid Invoices
       </h2>
       <Table>
         <TableCaption>A list of your paid invoices.</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead className="w-25">Month</TableHead>
-            <TableHead className="text-right">Total Amount</TableHead>
-            <TableHead className="text-right">Status</TableHead>
-            <TableHead className="text-right">Action</TableHead>
+            <TableHead colSpan={2} className="text-right">
+              Total
+            </TableHead>
+            <TableHead colSpan={2} className="text-center">
+              Status
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -48,12 +53,11 @@ const InvoicesPage = async () => {
                     },
                   )}
                 </TableCell>
-                <TableCell className="text-right">
-                  {invoice.totalAmount}
+                <TableCell colSpan={2} className="text-right">
+                  Rs. {invoice.totalAmount}
                 </TableCell>
-                <TableCell className="text-right">{invoice.status}</TableCell>
-                <TableCell className="text-right">
-                  <span className="p-2 rounded-md bg-green-300 text-white text-sm">
+                <TableCell colSpan={2} className="text-center">
+                  <span className="p-2 rounded-md bg-green-500 text-white text-sm">
                     {invoice.status}
                   </span>
                 </TableCell>

@@ -37,7 +37,7 @@ export const TenantForm = ({ users, rooms }: Props) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-blue-500  cursor-pointer text-base" size="lg">
+        <Button className="bg-primary cursor-pointer text-base" size="lg">
           + Add Tenant
         </Button>
       </DialogTrigger>

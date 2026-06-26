@@ -28,7 +28,7 @@ const Home = async () => {
   );
 
   return (
-    <div className="flex-1 pt-5 px-16 bg-yellow-100 ">
+    <div className="flex-1 pt-5 px-16 bg-admin-ui">
       <div className="max-w-7xl">
         <Info
           session={session}

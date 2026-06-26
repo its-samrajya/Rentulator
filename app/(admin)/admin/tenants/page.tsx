@@ -13,16 +13,18 @@ const AdminTenants = async () => {
     select: { id: true, roomNumber: true, floor: true },
   });
   return (
-    <div className="flex-1 pt-5 px-16 bg-yellow-100 ">
-      <div className="text-black max-w-7xl  p-4 flex items-center justify-between ">
-        <div className=" w-fit">
-          <h1 className="text-4xl font-bold w-fit">Tenants</h1>
+    <div className="flex-1 bg-primary p-2">
+      <div className="bg-admin-ui rounded-md h-full w-full px-16 pt-5">
+        <div className="text-black max-w-7xl  p-4 flex items-center justify-between ">
+          <div className=" w-fit">
+            <h1 className="text-4xl font-bold w-fit text-primary">Tenants</h1>
+          </div>
+          <div>
+            <TenantForm users={users} rooms={rooms} />
+          </div>
         </div>
-        <div>
-          <TenantForm users={users} rooms={rooms} />
-        </div>
+        <div className="mt-4">{<TenantList />}</div>
       </div>
-      <div className="mt-4">{<TenantList />}</div>
     </div>
   );
 };
