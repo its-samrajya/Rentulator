@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { TenantWithRooms, unpaidInvoicesType } from "@/lib/types";
+import { Zap } from "lucide-react";
 import Link from "next/link";
 
 interface Props {
@@ -39,33 +40,65 @@ const RentDetails = ({ unpaidInvoices, tenant }: Props) => {
           {latestInvoice.electricBill.map((bill) => (
             <div
               key={bill.id}
-              className="flex justify-between border-b border-black"
+              className="mt-4 bg-linear-to-r from-slate-50 to-blue-50/30 rounded-xl p-4 border border-slate-100"
             >
-              <div className="flex flex-col gap-1">
-                <p>Current Reading</p>
-                <p>Previous Reading</p>
-                <p>Unit Consumed</p>
-                <p>Rate Per Unit</p>
-                <p>Electric Amount</p>
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-6 h-6 rounded-md bg-yellow-100 flex items-center justify-center">
+                  <Zap size={12} className="text-yellow-600" />
+                </div>
+                <span className="text-sm font-medium text-slate-700">
+                  Meter_No: {bill.electricMeter?.id}
+                </span>
               </div>
-              <div className="flex flex-col gap-1 text-right">
-                <p>{bill.currentReading}</p>
-                <p>{bill.previousReading}</p>
-                <p>{bill.unitsConsumed}</p>
-                <p>Rs.{bill.ratePerUnit}</p>
-                <p>Rs.{bill.totalAmount}</p>
+
+              <div className="grid grid-cols-2 gap-x-6 gap-y-2">
+                <div className="flex justify-between">
+                  <span className="text-xs text-slate-500">
+                    Current Reading
+                  </span>
+                  <span className="text-xs font-medium text-slate-700">
+                    {bill.currentReading}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-xs text-slate-500">
+                    Previous Reading
+                  </span>
+                  <span className="text-xs font-medium text-slate-700">
+                    {bill.previousReading}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-xs text-slate-500">Unit Consumed</span>
+                  <span className="text-xs font-medium text-slate-700">
+                    {bill.unitsConsumed}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-xs text-slate-500">Rate Per Unit</span>
+                  <span className="text-xs font-medium text-slate-700">
+                    Rs.{bill.ratePerUnit}
+                  </span>
+                </div>
+              </div>
+
+              <div className="mt-3 pt-2 border-t border-slate-200/70 flex justify-between items-center">
+                <span className="text-xs text-slate-500">Electric Amount</span>
+                <span className="text-sm font-bold text-slate-800">
+                  Rs.{bill.totalAmount}
+                </span>
               </div>
             </div>
           ))}
 
           <div className="flex justify-between mt-3  ">
             <p className="text-primary font-medium">Total Amount</p>
-            <p className="text-xl font-bold">Rs.{latestInvoice.totalAmount}</p>
+            <p className="text-xl font-bold ">Rs.{latestInvoice.totalAmount}</p>
           </div>
 
           <div className="flex justify-between">
             <div className="text-primary font-medium">Due Date</div>
-            <div className="text-purple-800 font-medium">
+            <div className="text-purple-700 bg-purple-50 rounded-full px-2 font-medium">
               {latestInvoice.dueDate.toLocaleDateString()}
             </div>
           </div>

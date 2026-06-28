@@ -38,7 +38,10 @@ const UnpaidInvoices = async ({ tenantId }: Props) => {
             <TableHead className="w-25">Month</TableHead>
             <TableHead className="text-right">Total</TableHead>
             <TableHead className="text-right">Status</TableHead>
-            <TableHead className="text-right">Action</TableHead>
+            <TableHead className="text-right">Due Date</TableHead>
+            <TableHead className="text-right pr-8">
+              <div>Action</div>{" "}
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -57,6 +60,12 @@ const UnpaidInvoices = async ({ tenantId }: Props) => {
                   Rs. {invoice.totalAmount}
                 </TableCell>
                 <TableCell className="text-right">{invoice.status}</TableCell>
+                <TableCell className="text-right">
+                  {new Date(invoice.dueDate).toLocaleDateString("default", {
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </TableCell>
                 <TableCell className="text-right">
                   <Button asChild variant="destructive">
                     <Link href="/">Pay now</Link>

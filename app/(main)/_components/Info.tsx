@@ -27,10 +27,10 @@ const Info = ({
             {session?.user?.name?.split(" ")[0]}
           </span>
         </h1>
-        <p className="textbase text-gray-500">
-          {tenant.rooms
-            .map((room) => `Floor: ${room.floor}, Room: ${room.roomNumber}`)
-            .join(", ")}
+        <p className="text-base text-gray-500">
+          Floor:{" "}
+          {[...new Set(tenant.rooms.map((room) => room.floor))].join(", ")},{" "}
+          Room: {tenant.rooms.map((room) => room.roomNumber).join(", ")}
         </p>
       </div>
       <div className="flex flex-col gap-3">
