@@ -3,6 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
 import { MainSidebar } from "./_components/Sidebar";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { ClientSidebar } from "./_components/ClientSidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,12 +34,20 @@ export default async function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <div className="flex min-h-screen w-screen">
-            <div className="no-print">
-              <MainSidebar />
-            </div>
-            {children}
-          </div>
+          {/* <div className="flex min-h-screen w-screen"> */}
+          {/* <div className="no-print"> */}
+          {/* <MainSidebar /> */}
+          {/* </div> */}
+          <TooltipProvider>
+            <SidebarProvider className="flex-row">
+              <ClientSidebar />
+              <main className="flex-1 bg-admin-ui ">
+                <SidebarTrigger />
+                {children}
+              </main>
+            </SidebarProvider>
+          </TooltipProvider>
+          {/* </div> */}
         </body>
       </html>
     </SessionProvider>

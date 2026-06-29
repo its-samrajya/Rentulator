@@ -23,7 +23,7 @@ const RentDetails = ({ unpaidInvoices, tenant }: Props) => {
           <div className="flex justify-between">
             <p className="text-pink-700 font-medium">Month</p>
             <p className="text-xl font-bold">
-              {latestInvoice.electricBill[0].toDate.toLocaleDateString(
+              {latestInvoice?.electricBill[0].toDate.toLocaleDateString(
                 "default",
                 {
                   month: "long",
@@ -37,7 +37,7 @@ const RentDetails = ({ unpaidInvoices, tenant }: Props) => {
             <p className="">Rs.{totalRent}</p>
           </div>
 
-          {latestInvoice.electricBill.map((bill) => (
+          {latestInvoice?.electricBill.map((bill) => (
             <div
               key={bill.id}
               className="mt-4 bg-linear-to-r from-slate-50 to-blue-50/30 rounded-xl p-4 border border-slate-100"
@@ -93,13 +93,15 @@ const RentDetails = ({ unpaidInvoices, tenant }: Props) => {
 
           <div className="flex justify-between mt-3  ">
             <p className="text-primary font-medium">Total Amount</p>
-            <p className="text-xl font-bold ">Rs.{latestInvoice.totalAmount}</p>
+            <p className="text-xl font-bold ">
+              Rs.{latestInvoice?.totalAmount || 0}
+            </p>
           </div>
 
           <div className="flex justify-between">
             <div className="text-primary font-medium">Due Date</div>
             <div className="text-purple-700 bg-purple-50 rounded-full px-2 font-medium">
-              {latestInvoice.dueDate.toLocaleDateString()}
+              {latestInvoice?.dueDate.toLocaleDateString()}
             </div>
           </div>
 
@@ -110,7 +112,7 @@ const RentDetails = ({ unpaidInvoices, tenant }: Props) => {
               </p>
               <div className="flex justify-between">
                 <p className="text-red-700 font-medium text-3xl">
-                  Rs.{latestInvoice.totalAmount}
+                  Rs.{latestInvoice?.totalAmount || 0}
                 </p>
                 <Button asChild variant="destructive">
                   <Link href="/">Pay now</Link>
