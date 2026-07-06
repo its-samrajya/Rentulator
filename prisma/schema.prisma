@@ -36,7 +36,6 @@ model User {
 
 model Room {
   id          String   @id @default(uuid())
-  tenantId    String?
   meterId     String
   price       Int
   roomNumber  Int
@@ -45,8 +44,8 @@ model Room {
   createdAt   DateTime
   updatedAt   DateTime
 
-  tenant        Tenant?       @relation(fields: [tenantId], references: [id])
   electricMeter ElectricMeter @relation(fields: [meterId], references: [id])
+  occupancies   Occupancy[]
 
   @@map("rooms")
 }
@@ -107,30 +106,40 @@ model TwoFactorConfirmation {
 }
 
 model Tenant {
-  id            String          @id @default(cuid())
-  name          String
-  moveInDate    DateTime
-  userId        String          @unique // link to User who sign via GOOGLE
-  rooms         Room[]
-  electricMeter ElectricMeter[]
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  invoices      Invoice[]
-  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id          String      @id @default(cuid())
+  name        String
+  userId      String      @unique // link to User who sign via GOOGLE
+  occupancies Occupancy[]
+  invoices    Invoice[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Occupancy {
+  id          String   @id @default(cuid())
+  tenantId    String
+  roomId      String
+  moveInDate  DateTime
+  moveOutDate DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  room        Room     @relation(fields: [roomId], references: [id])
+
+  @@map("occupancies")
 }
 
 model ElectricMeter {
   id               String            @id @default(cuid())
   meterNumber      String            @unique
-  tenantId         String
   rooms            Room[]
   electricReadings ElectricReading[]
   electricBill     ElectricBill[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  tenant Tenant @relation(fields: [tenantId], references: [id])
 }
 
 model ElectricReading {
@@ -146,18 +155,18 @@ model ElectricReading {
 }
 
 model ElectricBill {
-  id            String   @id @default(cuid())
-  meterId       String
-  invoiceId     String?
-  fromDate      DateTime
-  toDate        DateTime
+  id              String   @id @default(cuid())
+  meterId         String
+  invoiceId       String?
+  fromDate        DateTime
+  toDate          DateTime
   previousReading Int
   currentReading  Int
-  unitsConsumed Int
-  ratePerUnit   Int
-  totalAmount   Int
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  unitsConsumed   Int
+  ratePerUnit     Int
+  totalAmount     Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   electricMeter ElectricMeter? @relation(fields: [meterId], references: [id])
   invoice       Invoice?       @relation(fields: [invoiceId], references: [id])
