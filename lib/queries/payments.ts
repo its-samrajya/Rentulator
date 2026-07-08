@@ -9,7 +9,10 @@ export const getPayments = async () => {
         include: {
           tenant: {
             include: {
-              rooms: true,
+              occupancies: {
+                where: { moveOutDate: null },
+                include: { room: true },
+              },
             },
           },
         },

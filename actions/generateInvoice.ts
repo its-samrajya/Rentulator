@@ -15,7 +15,16 @@ export const generateInvoice = async ({ tenantId }: Props) => {
       where: {
         invoiceId: null,
         electricMeter: {
-          tenantId,
+          rooms: {
+            some: {
+              occupancies: {
+                some: {
+                  tenantId,
+                  moveOutDate: null,
+                },
+              },
+            },
+          },
         },
       },
     });
@@ -27,13 +36,19 @@ export const generateInvoice = async ({ tenantId }: Props) => {
     const tenant = await prisma.tenant.findUnique({
       where: { id: tenantId },
       include: {
-        rooms: true,
+        occupancies: {
+          where: { moveOutDate: null },
+          include: { room: true },
+        },
       },
     });
 
     if (!tenant) throw new Error("Tenant not found");
 
-    const totalRent = tenant.rooms.reduce((sum, room) => sum + room.price, 0);
+    const totalRent = tenant.occupancies.reduce(
+      (sum, occupancy) => sum + occupancy.room.price,
+      0,
+    );
     const totalElectric = pendingInvoice.reduce(
       (sum, bill) => sum + bill.totalAmount,
       0,

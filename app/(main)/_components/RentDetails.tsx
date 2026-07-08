@@ -10,7 +10,10 @@ interface Props {
 
 const RentDetails = ({ unpaidInvoices, tenant }: Props) => {
   const latestInvoice = unpaidInvoices[0];
-  const totalRent = tenant.rooms.reduce((sum, room) => sum + room.price, 0);
+  const totalRent = tenant.occupancies.reduce(
+    (sum, occupancy) => sum + occupancy.room.price,
+    0,
+  );
   return (
     <div className="flex mt-4 gap-4 justify-between">
       <div className="bg-white flex-1 rounded-md p-4 shadow-sm">

@@ -12,7 +12,12 @@ const Home = async () => {
   if (!userId) redirect("/login");
   const tenant = await prisma.tenant.findUnique({
     where: { userId },
-    include: { rooms: true },
+    include: {
+      occupancies: {
+        where: { moveOutDate: null },
+        include: { room: true },
+      },
+    },
   });
   if (!tenant) return <p>You haven&apos;t been added as a tenant</p>;
   // const invoices = await getInvoicesByTenantId(tenant.id);

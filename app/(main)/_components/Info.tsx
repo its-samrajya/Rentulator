@@ -29,8 +29,15 @@ const Info = ({
         </h1>
         <p className="text-base text-gray-500">
           Floor:{" "}
-          {[...new Set(tenant.rooms.map((room) => room.floor))].join(", ")},{" "}
-          Room: {tenant.rooms.map((room) => room.roomNumber).join(", ")}
+          {[
+            ...new Set(
+              tenant.occupancies.map((occupancy) => occupancy.room.floor),
+            ),
+          ].join(", ")}
+          , Room:{" "}
+          {tenant.occupancies
+            .map((occupancy) => occupancy.room.roomNumber)
+            .join(", ")}
         </p>
       </div>
       <div className="flex flex-col gap-3">

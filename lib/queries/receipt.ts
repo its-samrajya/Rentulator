@@ -14,7 +14,10 @@ export const getReceipt = async ({ paymentId }: Props) => {
         include: {
           tenant: {
             include: {
-              rooms: true,
+              occupancies: {
+                where: { moveOutDate: null },
+                include: { room: true },
+              },
             },
           },
         },

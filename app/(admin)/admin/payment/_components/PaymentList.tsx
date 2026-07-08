@@ -35,13 +35,13 @@ const PaymentList = async () => {
               </TableCell>
               <TableCell>{payment.invoice.tenant.name}</TableCell>
               <TableCell>
-                {payment.invoice.tenant.rooms
-                  .map((room) => room.floor)
+                {payment.invoice.tenant.occupancies
+                  .map((occupancy) => occupancy.room.floor)
                   .join(",")}
               </TableCell>
               <TableCell>
-                {payment.invoice.tenant.rooms
-                  .map((room) => room.roomNumber)
+                {payment.invoice.tenant.occupancies
+                  .map((occupancy) => occupancy.room.roomNumber)
                   .join(",")}
               </TableCell>
               <TableCell>{payment.note}</TableCell>

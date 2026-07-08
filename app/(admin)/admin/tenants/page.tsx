@@ -9,7 +9,11 @@ const AdminTenants = async () => {
     select: { id: true, name: true, email: true },
   });
   const rooms = await prisma.room.findMany({
-    where: { tenantId: null },
+    where: {
+      occupancies: {
+        none: { moveOutDate: null },
+      },
+    },
     select: { id: true, roomNumber: true, floor: true },
   });
   return (

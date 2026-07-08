@@ -20,14 +20,14 @@ const InvoiceList = async () => {
               <div className="flex flex-col">
                 <span className="font-bold">{invoice.tenant.name}</span>
                 <span className="font-light text-sm text-gray-300">
-                  {invoice.tenant.rooms[0]?.floor}
+                  {invoice.tenant.occupancies.map((o) => o.room.floor)}
                 </span>
               </div>
             </div>
             {/* <button className="cursor-pointer"> */}
             {/*   <Ellipsis /> */}
             {/* </button> */}
-            <DropdownMenuDestructive />
+            {/* <DropdownMenuDestructive /> */}
           </div>
           <div className="flex flex-col mt-4">
             <div className="flex justify-between">

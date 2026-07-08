@@ -5,7 +5,12 @@ export const getInvoices = async () => {
     include: {
       tenant: {
         include: {
-          rooms: true,
+          occupancies: {
+            where: { moveOutDate: null },
+            include: {
+              room: true,
+            },
+          },
         },
       },
       payments: true,

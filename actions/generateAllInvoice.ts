@@ -8,10 +8,17 @@ export const generateAllInvoice = async () => {
   try {
     const tenants = await prisma.tenant.findMany({
       where: {
-        electricMeter: {
+        occupancies: {
           some: {
-            electricBill: {
-              some: { invoiceId: null },
+            moveOutDate: null,
+            room: {
+              electricMeter: {
+                electricBill: {
+                  some: {
+                    invoiceId: null,
+                  },
+                },
+              },
             },
           },
         },

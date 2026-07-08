@@ -10,7 +10,12 @@ export const getTenants = async () => {
           createdAt: "desc",
         },
       },
-      rooms: true,
+      occupancies: {
+        where: { moveOutDate: null },
+        include: {
+          room: true,
+        },
+      },
     },
   });
   return tenant;
@@ -28,11 +33,34 @@ export const createTenant = async (data: {
   const tenant = await prisma.tenant.create({
     data: {
       name: user?.name ?? "unknown",
-      moveInDate: new Date(data.moveInDate),
       userId: data.userId,
-      rooms: data.roomId ? { connect: { id: data.roomId } } : undefined,
+      occupancies: data.roomId
+        ? {
+            create: {
+              roomId: data.roomId,
+              moveInDate: new Date(data.moveInDate),
+            },
+          }
+        : undefined,
     },
   });
   revalidatePath("/admin/tenants");
   return tenant;
+};
+
+export const getAllTenantForAdmin = async () => {
+  return await prisma.tenant.findMany({
+    include: {
+      occupancies: {
+        where: { moveOutDate: null },
+        include: {
+          room: {
+            include: {
+              electricMeter: true,
+            },
+          },
+        },
+      },
+    },
+  });
 };

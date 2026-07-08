@@ -1,8 +1,17 @@
 import { Prisma } from "@/app/generated/prisma/client";
 import { getUnpaidInvoicesByTenantId } from "./queries/invoice";
+import { getAllTenantForAdmin } from "./queries/tenants";
 
 export type meterWithTenant = Prisma.ElectricMeterGetPayload<{
-  include: { tenant: true };
+  include: {
+    rooms: {
+      include: {
+        occupancies: {
+          include: { tenant: true };
+        };
+      };
+    };
+  };
 }>;
 
 export type unpaidInvoicesType = Awaited<
@@ -10,5 +19,13 @@ export type unpaidInvoicesType = Awaited<
 >;
 
 export type TenantWithRooms = Prisma.TenantGetPayload<{
-  include: { rooms: true };
+  include: {
+    occupancies: {
+      include: { room: true };
+    };
+  };
 }>;
+
+export type TenantForAdminType = Awaited<
+  ReturnType<typeof getAllTenantForAdmin>
+>[number];
