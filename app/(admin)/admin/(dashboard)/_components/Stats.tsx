@@ -67,7 +67,7 @@ const Stats = async () => {
       {data.map((items, index) => (
         <div
           key={index}
-          className="flex w-fit p-6 bg-white gap-6 rounded-md shadow-lg"
+          className="flex w-fit p-6 bg-linear-to-r from-slate-50 to-sky-50 gap-6 rounded-md shadow-lg"
         >
           <div className="flex flex-col gap-2">
             <p className="font-light text-sm text-purple-800">

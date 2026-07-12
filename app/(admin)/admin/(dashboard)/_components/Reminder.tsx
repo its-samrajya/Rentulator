@@ -3,7 +3,6 @@ import {
   TableBody,
   TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -11,19 +10,9 @@ import {
 import { getInvoices } from "@/lib/queries/invoice";
 const Reminder = async () => {
   const invoices = await getInvoices();
-  console.log(invoices);
-  const info = [
-    {
-      name: "Rahul Sharma",
-      property: "Flat 302, Green Park",
-      due: "Rs. 250.00",
-      status: "Overdue",
-      action: "Remind",
-    },
-  ];
 
   return (
-    <div className="bg-white mt-6 p-3  min-w-3xl max-w-3xl shadow-lg rounded-md">
+    <div className="bg-linear-to-r from-pink-100 to-teal-100 mt-6 p-3  min-w-3xl max-w-3xl shadow-lg rounded-md">
       <h2 className="text-base font-semibold text-gray-900 mb-4 mt-2 px-2">
         Needs Attention
       </h2>
@@ -43,7 +32,7 @@ const Reminder = async () => {
           {invoices.map((info) => (
             <TableRow key={info.id}>
               <TableCell className="font-medium">{info.tenant.name}</TableCell>
-              <TableCell>{info.tenantId}</TableCell>
+              <TableCell className="text-center">{info.tenantId}</TableCell>
               <TableCell>{info.totalAmount}</TableCell>
               <TableCell>
                 {new Date(info.dueDate).toLocaleDateString()}
@@ -53,12 +42,6 @@ const Reminder = async () => {
             </TableRow>
           ))}
         </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell colSpan={3}>Total</TableCell>
-            <TableCell className="text-right">$2,500.00</TableCell>
-          </TableRow>
-        </TableFooter>
       </Table>
     </div>
   );

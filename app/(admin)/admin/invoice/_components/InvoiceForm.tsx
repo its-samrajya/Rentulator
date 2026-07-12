@@ -73,9 +73,13 @@ const AddInvoiceButton = ({ meters }: Prop) => {
                 {meters.map((meter) => (
                   <option key={meter.id} value={meter.id}>
                     {meter.meterNumber} -{" "}
-                    {meter.rooms.flatMap(
-                      (room) => room.occupancies[0].tenant.name,
-                    )}
+                    {[
+                      ...new Set(
+                        meter.rooms
+                          .flatMap((room) => room.occupancies)
+                          .map((occupancy) => occupancy.tenant.name),
+                      ),
+                    ].join(", ") || "Vacant"}
                   </option>
                 ))}
               </select>

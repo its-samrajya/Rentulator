@@ -25,4 +25,34 @@
 
 12. in rentdetails it is creating layout issue it happening because of rentdetails card
 
+13. create a add room section and in that we need to add meter also to the room, and when adding the tenant we only need to add the room, and the meter associated with the room will be automatically applicable to the tenant
 
+
+
+14. tenant dekhauna xa for the admin ✅
+- name
+  room number
+  meter 
+  edit , delete option
+
+
+15. Add section like for adding rooms, electic meter
+
+16. How would you know if the room is available or not
+
+
+17. For the receipt.ts
+    Here's the actual scenario I'm worried about:
+
+   1. Today, John pays rent for Room 5. A Payment record gets created.
+   2. Someone opens the receipt page for that payment. It shows "Room 5" — correct.
+   3. Three months later, John moves out of Room 5 into Room 8.
+   4. Someone reopens that same old receipt link (maybe John kept it, or an admin is looking back at payment history).
+   5. The receipt page runs getReceipt again — it doesn't re-show "Room 5" anymore. It shows Room 8, because occupancies: { where: { moveOutDate: null } } always fetches whatever room the tenant is currently in, not whatever room they were in when that payment happened.
+   6. So the receipt for a 3-month-old payment now silently shows the wrong room — one the tenant wasn't even living in when they made that payment. That's misleading for something that's supposed to be a fixed record of what happened.
+   
+
+
+
+---- Edge case ----
+1. What if the meter is changed and new meter is added, right now I am not thinking about it because I could add it directly from the database. But needs to be done ASAP
