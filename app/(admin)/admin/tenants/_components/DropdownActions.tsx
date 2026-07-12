@@ -1,4 +1,4 @@
-import { Ellipsis, PencilIcon, ShareIcon, TrashIcon } from "lucide-react";
+import { Ellipsis, PencilIcon, TrashIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -9,7 +9,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export function DropdownMenuDestructive() {
+interface Props {
+  onEditClick: () => void;
+}
+
+export function DropdownMenuDestructive({ onEditClick }: Props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -19,7 +23,7 @@ export function DropdownMenuDestructive() {
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuGroup>
-          <DropdownMenuItem className="cursor-pointer">
+          <DropdownMenuItem className="cursor-pointer" onClick={onEditClick}>
             <PencilIcon />
             Edit
           </DropdownMenuItem>
