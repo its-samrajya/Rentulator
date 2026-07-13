@@ -4,7 +4,7 @@ import PaymentList from "./_components/PaymentList";
 
 const AdminPayment = () => {
   return (
-    <div className="flex-1 p-2 bg-primary">
+    <div className="flex-1 p-2 bg-primary h-full">
       <div className="bg-admin-ui rounded-md h-full w-full px-16 pt-5">
         <div className="text-black max-w-7xl  p-4 flex items-center justify-between ">
           <div className=" w-fit">

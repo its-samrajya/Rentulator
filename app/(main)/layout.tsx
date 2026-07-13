@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
-import { MainSidebar } from "./_components/Sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ClientSidebar } from "./_components/ClientSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
@@ -34,20 +33,15 @@ export default async function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          {/* <div className="flex min-h-screen w-screen"> */}
-          {/* <div className="no-print"> */}
-          {/* <MainSidebar /> */}
-          {/* </div> */}
           <TooltipProvider>
             <SidebarProvider className="flex-row">
               <ClientSidebar />
-              <main className="flex-1 bg-admin-ui ">
-                <SidebarTrigger />
+              <main className="relative flex-1 bg-admin-ui ">
+                <SidebarTrigger className="absolute " />
                 {children}
               </main>
             </SidebarProvider>
           </TooltipProvider>
-          {/* </div> */}
         </body>
       </html>
     </SessionProvider>

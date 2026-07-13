@@ -17,7 +17,7 @@ const AdminTenants = async () => {
     select: { id: true, roomNumber: true, floor: true },
   });
   return (
-    <div className="flex-1 bg-primary p-2">
+    <div className="flex-1 bg-primary p-2 h-full">
       <div className="bg-admin-ui rounded-md h-full w-full px-16 pt-5">
         <div className="text-black max-w-7xl  p-4 flex items-center justify-between ">
           <div className=" w-fit">

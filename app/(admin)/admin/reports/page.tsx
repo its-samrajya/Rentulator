@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 
 const AdminReports = () => {
   return (
-    <div className="flex-1 pt-5 px-16 bg-yellow-100 ">
+    <div className="flex-1 pt-5 px-16 bg-yellow-100 h-full">
       <div className="text-black max-w-7xl  p-4 flex items-center justify-between ">
         <div className=" w-fit">
           <h1 className="text-4xl font-bold w-fit">Tenants</h1>

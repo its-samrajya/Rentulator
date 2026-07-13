@@ -1,14 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Home,
-  CreditCard,
-  FileText,
-  LogOut,
-  Calculator,
-  IndianRupee,
-} from "lucide-react";
+import { Home, FileText, LogOut, Calculator, IndianRupee } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,

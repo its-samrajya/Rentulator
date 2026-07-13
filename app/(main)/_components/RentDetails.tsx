@@ -141,9 +141,15 @@ const RentDetails = ({ unpaidInvoices, tenant }: Props) => {
             <span className="text-gray-400 text-sm">+977 989389283928</span>
           </div>
         </div>
-        <button className="border mt-4 w-full cursor-pointer border-blue-500 rounded-md p-2 text-blue-500">
-          Message on Whatsapp
-        </button>
+        <Button
+          variant="ghost"
+          asChild
+          className="border mt-4 w-full cursor-pointer border-blue-500 rounded-md p-2 text-blue-500"
+        >
+          <Link target="_blank" href="https://wa.me/9817511743">
+            Message on Whatsapp
+          </Link>
+        </Button>
       </div>
     </div>
   );
