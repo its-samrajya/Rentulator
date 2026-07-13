@@ -1,7 +1,35 @@
+import { PaymentStatus } from "@/app/generated/prisma/enums";
 import prisma from "../prisma";
+import { InvoiceFilterStatus } from "../types";
 
 export const getInvoices = async () => {
   const invoices = await prisma.invoice.findMany({
+    include: {
+      tenant: {
+        include: {
+          occupancies: {
+            where: { moveOutDate: null },
+            include: {
+              room: true,
+            },
+          },
+        },
+      },
+      payments: true,
+    },
+  });
+  return invoices;
+};
+
+export const getInvoicesByFilter = async (status: InvoiceFilterStatus) => {
+  const invoices = await prisma.invoice.findMany({
+    where:
+      status !== "all"
+        ? {
+            status:
+              PaymentStatus[status.toUpperCase() as keyof typeof PaymentStatus],
+          }
+        : undefined,
     include: {
       tenant: {
         include: {

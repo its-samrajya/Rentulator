@@ -11,6 +11,10 @@ const Filter = () => {
       value: "all",
     },
     {
+      label: "Pending",
+      value: "pending",
+    },
+    {
       label: "Overdue",
       value: "overdue",
     },
@@ -33,7 +37,7 @@ const Filter = () => {
             current === filter.value && "text-red-700 ",
           )}
         >
-          <Link href={`/admin/tenants?status=${filter.value}`}>
+          <Link href={`/admin/invoice?status=${filter.value}`}>
             {filter.label}
           </Link>
         </Button>

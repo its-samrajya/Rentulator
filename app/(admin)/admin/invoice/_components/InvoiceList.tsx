@@ -1,9 +1,13 @@
 import { Button } from "@/components/ui/button";
-import { DropdownMenuDestructive } from "../../tenants/_components/DropdownActions";
-import { getInvoices } from "@/lib/queries/invoice";
+import { getInvoicesByFilter } from "@/lib/queries/invoice";
+import { InvoiceFilterStatus } from "@/lib/types";
 
-const InvoiceList = async () => {
-  const invoices = await getInvoices();
+interface Props {
+  status: InvoiceFilterStatus;
+}
+
+const InvoiceList = async ({ status }: Props) => {
+  const invoices = await getInvoicesByFilter(status);
 
   return (
     <div className="grid grid-cols-3 gap-6">
@@ -24,10 +28,6 @@ const InvoiceList = async () => {
                 </span>
               </div>
             </div>
-            {/* <button className="cursor-pointer"> */}
-            {/*   <Ellipsis /> */}
-            {/* </button> */}
-            {/* <DropdownMenuDestructive /> */}
           </div>
           <div className="flex flex-col mt-4">
             <div className="flex justify-between">
