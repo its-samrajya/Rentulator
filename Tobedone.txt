@@ -56,3 +56,40 @@
 
 ---- Edge case ----
 1. What if the meter is changed and new meter is added, right now I am not thinking about it because I could add it directly from the database. But needs to be done ASAP
+
+
+# Mental tracking 
+
+1. find the unique invoice first  
+2. handle it if invoice is not there
+3. calculate the payment if it is paid or not for the invoice
+4. calculate remaining if there is 
+5. check if the amount send by the user is more than 0 if not need to send error and a message
+6. also check if the amount given by the user is more than the remaining amount of the invoice then you have to send error and message
+7. now use transaction to update the payment , and to update the invoice status by checking if the data.amount and amount paid is greater than the total amount of the invoice
+
+# Mental Tracking for paymentForm.tsx
+
+1. form xa we need to submit data, aba to validate data is correct or not we use zod schema. So build a paymentSchema first
+2. z.infer and store it in PaymentFormValues
+3. define the type of props what you will be receiving
+4. define the component PaymentForm
+5. define usestate and useTransition()
+6. find the selectedInvoice by using watch and find in invoice received in props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

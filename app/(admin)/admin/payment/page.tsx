@@ -1,8 +1,10 @@
+import { getPendingInvoicesForPayment } from "@/lib/queries/invoice";
 import FilterForm from "./_components/FilterForm";
 import PaymentForm from "./_components/PaymentForm";
 import PaymentList from "./_components/PaymentList";
 
-const AdminPayment = () => {
+const AdminPayment = async () => {
+  const invoices = await getPendingInvoicesForPayment();
   return (
     <div className="flex-1 p-2 bg-primary h-full">
       <div className="bg-admin-ui rounded-md h-full w-full px-16 pt-5">
@@ -14,7 +16,7 @@ const AdminPayment = () => {
           </div>
           <div className="flex gap-4 ">
             <FilterForm />
-            <PaymentForm />
+            <PaymentForm invoices={invoices} />
           </div>
         </div>
         <div className="mt-4">{<PaymentList />}</div>

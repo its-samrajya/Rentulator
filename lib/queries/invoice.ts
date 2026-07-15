@@ -146,3 +146,20 @@ export const getAllPaidInvoices = async () => {
   });
   return paidInvoices;
 };
+
+export const getPendingInvoicesForPayment = async () => {
+  const invoice = await prisma.invoice.findMany({
+    where: { status: "PENDING" },
+    include: { tenant: true, payments: true },
+    orderBy: { dueDate: "asc" },
+  });
+
+  return invoice.map((invoice) => {
+    const paid = invoice.payments.reduce((sum, p) => sum + p.amount, 0);
+    return {
+      id: invoice.id,
+      tenantName: invoice.tenant.name,
+      remaining: invoice.totalAmount - paid,
+    };
+  });
+};
