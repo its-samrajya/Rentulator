@@ -10,8 +10,14 @@ import {
 import { getPayments } from "@/lib/queries/payments";
 import { Printer } from "lucide-react";
 import Link from "next/link";
-const PaymentList = async () => {
-  const payments = await getPayments();
+const PaymentList = async ({
+  month,
+  year,
+}: {
+  month?: string;
+  year?: string;
+}) => {
+  const payments = await getPayments({ month, year });
   console.log("this is the payments", payments);
   return (
     <div className="bg-white mt-6 p-3  shadow-lg rounded-md">

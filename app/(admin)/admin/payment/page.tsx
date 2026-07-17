@@ -3,7 +3,12 @@ import FilterForm from "./_components/FilterForm";
 import PaymentForm from "./_components/PaymentForm";
 import PaymentList from "./_components/PaymentList";
 
-const AdminPayment = async () => {
+interface Props {
+  searchParams: Promise<{ month?: string; year?: string }>;
+}
+
+const AdminPayment = async ({ searchParams }: Props) => {
+  const { month, year } = await searchParams;
   const invoices = await getPendingInvoicesForPayment();
   return (
     <div className="flex-1 p-2 bg-primary h-full">
@@ -19,7 +24,7 @@ const AdminPayment = async () => {
             <PaymentForm invoices={invoices} />
           </div>
         </div>
-        <div className="mt-4">{<PaymentList />}</div>
+        <div className="mt-4">{<PaymentList month={month} year={year} />}</div>
       </div>
     </div>
   );
