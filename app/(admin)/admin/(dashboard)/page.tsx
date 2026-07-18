@@ -9,7 +9,7 @@ const Dashboard = async () => {
   const occupiedRooms = await prisma.room.count({
     where: {
       occupancies: {
-        some: { moveOutDate: null }, // adjust to however you mark an "active" occupancy
+        some: { moveOutDate: null },
       },
     },
   });
@@ -18,7 +18,6 @@ const Dashboard = async () => {
   return (
     <div className="min-h-full w-full bg-slate-100/60">
       <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
-        {/* Header */}
         <div className="mb-6 flex flex-col gap-1 sm:mb-8">
           <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl lg:text-4xl">
             Dashboard
@@ -28,10 +27,8 @@ const Dashboard = async () => {
           </p>
         </div>
 
-        {/* Stats */}
         <Stats />
 
-        {/* Reminder + Recent Payments */}
         <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2">
             <Reminder />
@@ -41,7 +38,6 @@ const Dashboard = async () => {
           </div>
         </div>
 
-        {/* Occupancy chart */}
         <div className="mt-6">
           <ChartPieLabel occupied={occupiedRooms} vacant={vacantRooms} />
         </div>
