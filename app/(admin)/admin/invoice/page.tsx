@@ -1,4 +1,3 @@
-"use server";
 import Filter from "./_components/InvoiceFilter";
 import AddInvoiceButton from "./_components/InvoiceForm";
 import { getAllMeters } from "@/lib/queries/meter";
@@ -19,23 +18,31 @@ const AdminInvoice = async ({ searchParams }: Props) => {
       : "all";
 
   return (
-    <div className="flex-1 p-2 bg-primary h-full">
-      <div className="bg-admin-ui rounded-md h-full w-full px-16 pt-5">
-        <div className="text-black max-w-7xl  p-4 flex items-center justify-between ">
-          <div className=" w-fit">
-            <h1 className="text-4xl font-bold w-fit text-primary">Invoice</h1>
+    <div className="min-h-full w-full bg-slate-100/60">
+      <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:mb-8">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl lg:text-4xl">
+              Invoice
+            </h1>
+            <p className="mt-1 text-sm text-slate-500">
+              Generate and manage tenant invoices
+            </p>
           </div>
-          <div className="flex gap-4">
+          <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4">
             <GenerateButton />
             <AddInvoiceButton meters={meters} />
           </div>
         </div>
-        <div className="mt-4 px-4 ">
+        <div className="mt-4">
           <Filter />
         </div>
-        <div className="mt-4">{<InvoiceList status={status} />}</div>
+        <div className="mt-6">
+          <InvoiceList status={status} />
+        </div>
       </div>
     </div>
   );
 };
+
 export default AdminInvoice;
