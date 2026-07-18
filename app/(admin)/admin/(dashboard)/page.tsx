@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import Stats from "./_components/Stats";
 import Reminder from "./_components/Reminder";
 import RecentPayments from "./_components/RecentPayments";
@@ -15,25 +14,40 @@ const Dashboard = async () => {
     },
   });
   const vacantRooms = totalRooms - occupiedRooms;
+
   return (
-    <div className="flex-1 p-2 bg-primary h-full">
-      <div className="bg-admin-ui rounded-md h-full w-full px-16 py-5">
-        <div className="text-black max-w-7xl  p-4 flex items-center  justify-between ">
-          <div className=" w-fit">
-            <h1 className="text-4xl font-bold w-fit text-primary">Dashboard</h1>
-            <p>Welcome back, here&apos;s what&apos;s happening today.</p>
+    <div className="min-h-full w-full bg-slate-100/60">
+      <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+        {/* Header */}
+        <div className="mb-6 flex flex-col gap-1 sm:mb-8">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl lg:text-4xl">
+            Dashboard
+          </h1>
+          <p className="text-sm text-slate-500 sm:text-base">
+            Welcome back, here&apos;s what&apos;s happening today.
+          </p>
+        </div>
+
+        {/* Stats */}
+        <Stats />
+
+        {/* Reminder + Recent Payments */}
+        <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
+          <div className="lg:col-span-2">
+            <Reminder />
+          </div>
+          <div className="lg:col-span-1">
+            <RecentPayments />
           </div>
         </div>
-        <Stats />
-        <div className="flex mt-4 px-4 justify-between ">
-          <Reminder />
-          <RecentPayments />
-        </div>
-        <div className="mt-4 px-4">
-          <ChartPieLabel occupied={occupiedRooms} vacant={vacantRooms} />{" "}
+
+        {/* Occupancy chart */}
+        <div className="mt-6">
+          <ChartPieLabel occupied={occupiedRooms} vacant={vacantRooms} />
         </div>
       </div>
     </div>
   );
 };
+
 export default Dashboard;

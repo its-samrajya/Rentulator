@@ -3,14 +3,23 @@ import {
   getTotalExpectedCurrentMonth,
 } from "@/lib/queries/invoice";
 import { getAllRooms } from "@/lib/queries/rooms";
-import { CircleAlert, CircleCheck, TrendingUp, Users } from "lucide-react";
+import {
+  CircleAlert,
+  CircleCheck,
+  TrendingUp,
+  Users,
+  type LucideIcon,
+} from "lucide-react";
+import { Card } from "@/components/ui/card";
 
-interface dataType {
-  topLable: string;
+interface DataType {
+  topLabel: string;
   amount: string;
-  endLable: string;
-  icon: React.ReactNode;
-  color: string;
+  endLabel: string;
+  icon: LucideIcon;
+  iconWrap: string;
+  iconColor: string;
+  accent: string;
 }
 
 const Stats = async () => {
@@ -19,6 +28,7 @@ const Stats = async () => {
     invoices.length === 0
       ? 0
       : invoices.reduce((sum, invoice) => sum + invoice.totalAmount, 0);
+
   const paidInvoices = await getAllPaidInvoices();
   const totalPaidInvoicesAmount =
     paidInvoices.length === 0
@@ -31,57 +41,83 @@ const Stats = async () => {
 
   const totalRooms = await getAllRooms();
 
-  const data: dataType[] = [
+  const monthLabel = new Date().toLocaleDateString("default", {
+    month: "long",
+    year: "numeric",
+  });
+
+  const data: DataType[] = [
     {
-      topLable: "Total Expected",
+      topLabel: "Total Expected",
       amount: total.toString(),
-      endLable: `For ${new Date().toLocaleDateString("default", { month: "long", year: "numeric" })}`,
-      icon: <TrendingUp />,
-      color: "bg-blue-100",
+      endLabel: `For ${monthLabel}`,
+      icon: TrendingUp,
+      iconWrap: "bg-blue-50",
+      iconColor: "text-blue-600",
+      accent: "from-blue-500/10",
     },
     {
-      topLable: "Collected",
+      topLabel: "Collected",
       amount: totalPaidInvoicesAmount.toString(),
-      endLable: `For ${new Date().toLocaleDateString("default", { month: "long", year: "numeric" })}`,
-      icon: <CircleCheck />,
-      color: "bg-green-100",
+      endLabel: `For ${monthLabel}`,
+      icon: CircleCheck,
+      iconWrap: "bg-emerald-50",
+      iconColor: "text-emerald-600",
+      accent: "from-emerald-500/10",
     },
     {
-      topLable: "Pending/Overdue",
+      topLabel: "Pending / Overdue",
       amount: numberOfUnpaidInvoices.toString(),
-      endLable: `For ${new Date().toLocaleDateString("default", { month: "long", year: "numeric" })}`,
-      icon: <CircleAlert />,
-      color: "bg-red-100",
+      endLabel: `For ${monthLabel}`,
+      icon: CircleAlert,
+      iconWrap: "bg-rose-50",
+      iconColor: "text-rose-600",
+      accent: "from-rose-500/10",
     },
     {
-      topLable: "Total Properties",
+      topLabel: "Total Properties",
       amount: totalRooms.toString(),
-      endLable: "100% of Occupancy",
-      icon: <Users />,
-      color: "bg-yellow-100",
+      endLabel: "100% of Occupancy",
+      icon: Users,
+      iconWrap: "bg-amber-50",
+      iconColor: "text-amber-600",
+      accent: "from-amber-500/10",
     },
   ];
 
   return (
-    <div className="mt-4 flex justify-between px-4">
-      {data.map((items, index) => (
-        <div
-          key={index}
-          className="flex w-fit p-6 bg-linear-to-r from-slate-50 to-sky-50 gap-6 rounded-md shadow-lg"
-        >
-          <div className="flex flex-col gap-2">
-            <p className="font-light text-sm text-purple-800">
-              {items.topLable}
-            </p>
-            <p className="font-bold text-2xl">{items.amount}</p>
-            <p className="font-light text-sm text-blue-900">{items.endLable}</p>
-          </div>
-          <div className={`h-fit p-2 rounded-sm ${items.color}`}>
-            {items.icon}
-          </div>
-        </div>
-      ))}
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      {data.map((item, index) => {
+        const Icon = item.icon;
+        return (
+          <Card
+            key={index}
+            className="group relative overflow-hidden border-slate-200/80 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+          >
+            <div
+              className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${item.accent} to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100`}
+            />
+            <div className="relative flex items-start justify-between gap-4">
+              <div className="flex flex-col gap-1.5">
+                <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+                  {item.topLabel}
+                </p>
+                <p className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+                  {item.amount}
+                </p>
+                <p className="text-xs text-slate-400">{item.endLabel}</p>
+              </div>
+              <div
+                className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${item.iconWrap} ${item.iconColor} transition-transform duration-300 group-hover:scale-110`}
+              >
+                <Icon className="h-5 w-5" />
+              </div>
+            </div>
+          </Card>
+        );
+      })}
     </div>
   );
 };
+
 export default Stats;
