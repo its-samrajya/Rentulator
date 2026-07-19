@@ -20,21 +20,14 @@ const Home = async () => {
     },
   });
   if (!tenant) return <p>You haven&apos;t been added as a tenant</p>;
-  // const invoices = await getInvoicesByTenantId(tenant.id);
   const unpaidInvoices = await getUnpaidInvoicesByTenantId(tenant.id);
-
-  // const totalPendingAmount = invoices
-  //   .filter((invoice) => invoice.status === "PENDING")
-  //   .reduce((sum, invoice) => sum + invoice.totalAmount, 0);
-
   const totalPendingAmount = unpaidInvoices.reduce(
     (sum, invoice) => sum + invoice.totalAmount,
     0,
   );
-
   return (
-    <div className="flex-1 pt-5 px-16 bg-admin-ui">
-      <div className="max-w-7xl">
+    <div className="min-h-full w-full bg-slate-100/60">
+      <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
         <Info
           session={session}
           tenant={tenant}
@@ -42,9 +35,10 @@ const Home = async () => {
           totalPendingAmount={totalPendingAmount}
         />
         <RentDetails unpaidInvoices={unpaidInvoices} tenant={tenant} />
+        <UnpaidInvoices tenantId={tenant.id} />
       </div>
-      <UnpaidInvoices tenantId={tenant.id} />
     </div>
   );
 };
+
 export default Home;

@@ -78,6 +78,8 @@
 6. find the selectedInvoice by using watch and find in invoice received in props
 
 
+# THE MAIN CLIENT PAGE.TSX IS SHOWING HORIZONTAL SCROLL BAR IN MOBILE SCREEN FIX IT
+
 
 
 

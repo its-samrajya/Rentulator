@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { TenantWithRooms, unpaidInvoicesType } from "@/lib/types";
 import { Zap } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 interface Props {
@@ -15,14 +16,14 @@ const RentDetails = ({ unpaidInvoices, tenant }: Props) => {
     0,
   );
   return (
-    <div className="flex mt-4 gap-4 justify-between">
-      <div className="bg-white flex-1 rounded-md p-4 shadow-sm">
-        <div className="border-b border-black p-2 mb-3">
+    <div className="mt-4 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+      <div className="bg-white flex-1 rounded-lg p-4 shadow-sm sm:p-5">
+        <div className="border-b border-slate-200 pb-3 mb-4">
           <h1 className="text-blue-900 font-medium">
             Current Month Rent Details
           </h1>
         </div>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-3">
           <div className="flex justify-between">
             <p className="text-pink-700 font-medium">Month</p>
             <p className="text-xl font-bold">
@@ -43,7 +44,7 @@ const RentDetails = ({ unpaidInvoices, tenant }: Props) => {
           {latestInvoice?.electricBill.map((bill) => (
             <div
               key={bill.id}
-              className="mt-4 bg-linear-to-r from-slate-50 to-blue-50/30 rounded-xl p-4 border border-slate-100"
+              className="mt-2 bg-linear-to-r from-slate-50 to-blue-50/30 rounded-xl p-4 border border-slate-100"
             >
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-6 h-6 rounded-md bg-yellow-100 flex items-center justify-center">
@@ -94,62 +95,74 @@ const RentDetails = ({ unpaidInvoices, tenant }: Props) => {
             </div>
           ))}
 
-          <div className="flex justify-between mt-3  ">
+          <div className="flex justify-between mt-3">
             <p className="text-primary font-medium">Total Amount</p>
-            <p className="text-xl font-bold ">
+            <p className="text-xl font-bold">
               Rs.{latestInvoice?.totalAmount || 0}
             </p>
           </div>
 
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center">
             <div className="text-primary font-medium">Due Date</div>
-            <div className="text-purple-700 bg-purple-50 rounded-full px-2 font-medium">
+            <div className="text-purple-700 bg-purple-50 rounded-full px-3 py-1 font-medium text-sm">
               {latestInvoice?.dueDate.toLocaleDateString()}
             </div>
           </div>
 
-          <div className="bg-red-100 rounded-md p-4">
-            <div>
-              <p className="text-red-700 font-medium">
-                Recent balance to be paid
+          <div className="bg-rose-50 rounded-lg p-4 border border-rose-100">
+            <p className="text-rose-700 font-medium">
+              Recent balance to be paid
+            </p>
+            <div className="flex flex-col gap-3 mt-2 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-rose-700 font-bold text-2xl sm:text-3xl">
+                Rs.{latestInvoice?.totalAmount || 0}
               </p>
-              <div className="flex justify-between">
-                <p className="text-red-700 font-medium text-3xl">
-                  Rs.{latestInvoice?.totalAmount || 0}
-                </p>
-                <Button asChild variant="destructive">
-                  <Link href="/">Pay now</Link>
-                </Button>
-              </div>
+              <Button
+                asChild
+                variant="destructive"
+                className="w-full sm:w-auto"
+              >
+                <Link href="/">Pay now</Link>
+              </Button>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="bg-white flex-1 rounded-md p-4 shadow-sm">
-        <div className="border-b border-black p-2 mb-3">
+      <div className="bg-white flex-1 rounded-lg p-4 shadow-sm sm:p-5">
+        <div className="border-b border-slate-200 pb-3 mb-4">
           <h1 className="text-blue-900 font-medium">Landlord Contact</h1>
         </div>
         <div className="flex gap-3 items-center">
-          <div className="rounded-full p-2 size-10 flex items-center justify-center bg-gray-200 border">
+          <div className="rounded-full p-2 size-10 flex items-center justify-center bg-slate-100 border">
             <span>SM</span>
           </div>
-          <div className="flex flex-col ">
+          <div className="flex flex-col">
             <span className="font-bold text-xl text-primary">
               Samrajya Bhari
             </span>
-            <span className="text-gray-400 text-sm">+977 989389283928</span>
+            <span className="text-slate-400 text-sm">+977 989389283928</span>
           </div>
         </div>
         <Button
           variant="ghost"
           asChild
-          className="border mt-4 w-full cursor-pointer border-blue-500 rounded-md p-2 text-blue-500"
+          className="border mt-4 w-full cursor-pointer border-blue-500 rounded-md p-2 text-blue-500 hover:text-blue-600"
         >
           <Link target="_blank" href="https://wa.me/9817511743">
             Message on Whatsapp
           </Link>
         </Button>
+        <div className="mt-4 flex justify-center">
+          <Image
+            src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWkxdXQ1ZzcyZnAzNXNkaTlyMTZtMXNoYmpvNzZpdDV3cTEzNXpwOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/CK0Eg2ymtfzTO2yVJD/giphy.gif"
+            alt="Giphy illustration"
+            width={480}
+            height={320}
+            unoptimized
+            className="w-60 object-contain opacity-90"
+          />
+        </div>
       </div>
     </div>
   );
