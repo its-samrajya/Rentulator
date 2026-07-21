@@ -11,30 +11,54 @@ import { getPaymentsByTenant } from "@/lib/queries/payments";
 
 export default async function HistoryPage() {
   const tenantId = await getCurrentTenant();
-  if (!tenantId) return <p>You are not authorized</p>;
+  if (!tenantId)
+    return (
+      <p className="mt-6 text-center text-base sm:text-lg text-gray-500">
+        You are not authorized
+      </p>
+    );
+
   const payments = await getPaymentsByTenant(tenantId.id);
   if (!payments) {
-    return <div>No History</div>;
+    return (
+      <div className="mx-4 sm:mx-6 lg:mx-auto max-w-7xl mt-6 border-t border-gray-100 py-6 text-center text-base sm:text-lg text-gray-400">
+        No History
+      </div>
+    );
   }
+
   return (
-    <div className="flex-1 p-5">
-      <div className="flex justify-center border-black rounded-md border-2 ">
-        <Table className="">
+    <div className="w-auto max-w-7xl mx-4 sm:mx-6 lg:mx-auto mt-6">
+      <div className="border border-gray-200 rounded-xl">
+        <Table className="w-full table-fixed text-xs sm:text-sm">
           <TableHeader>
-            <TableRow>
-              <TableHead className="text-center">DATE</TableHead>
-              <TableHead className="text-center">AMOUNT</TableHead>
-              <TableHead className="text-center">METHOD</TableHead>
+            <TableRow className="border-b border-gray-200 bg-gray-50">
+              <TableHead className="w-[34%] py-3 text-center text-[11px] sm:text-sm tracking-wide">
+                DATE
+              </TableHead>
+              <TableHead className="w-[26%] py-3 text-center text-[11px] sm:text-sm tracking-wide">
+                AMOUNT
+              </TableHead>
+              <TableHead className="w-[40%] py-3 text-center text-[11px] sm:text-sm tracking-wide">
+                METHOD
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {payments.map((payment) => (
-              <TableRow className="border-none" key={payment.id}>
-                <TableCell className="font-medium text-center">
+              <TableRow
+                className="border-b border-gray-100 last:border-b-0"
+                key={payment.id}
+              >
+                <TableCell className="font-medium text-center py-3 whitespace-nowrap">
                   {new Date(payment.paidAt).toLocaleDateString()}
                 </TableCell>
-                <TableCell className="text-center">{payment.amount}</TableCell>
-                <TableCell className="text-center">{payment.note}</TableCell>
+                <TableCell className="text-center py-3 whitespace-nowrap">
+                  {payment.amount}
+                </TableCell>
+                <TableCell className="text-center py-3 whitespace-normal wrap-break-word">
+                  {payment.note}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

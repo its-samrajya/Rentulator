@@ -10,42 +10,64 @@ import {
 import getCurrentTenant from "@/lib/currentTenant";
 import { getPaidInvoicesByTenantId } from "@/lib/queries/invoice";
 import { LayoutList } from "lucide-react";
+import { Fragment } from "react";
 
 const InvoicesPage = async () => {
   const tenantId = await getCurrentTenant();
-  if (!tenantId) return <p>You are not authorized</p>;
+  if (!tenantId)
+    return (
+      <p className="mt-6 text-center text-base sm:text-lg text-gray-500">
+        You are not authorized
+      </p>
+    );
+
   const paidInvoices = await getPaidInvoicesByTenantId(tenantId.id);
+
   if (paidInvoices.length === 0) {
     return (
-      <div className="flex text-2xl justify-center border-t border-gray-100 items-center gap-4 w-full mt-6 p-3 text-gray-400  bg-white rounded-md shadow-sm">
-        <LayoutList />
+      <div className="mx-4 sm:mx-6 lg:mx-auto max-w-7xl flex text-lg sm:text-2xl justify-center border-t border-gray-100 items-center gap-4 w-auto mt-6 py-6 text-gray-400">
+        <LayoutList className="h-6 w-6 sm:h-7 sm:w-7" />
         <p>There is no any unpaid invoices</p>
       </div>
     );
   }
+
   return (
-    <div className="bg-white w-full mt-6 px-8  shadow-lg rounded-md">
-      <h2 className="font-semibold text-primary text-3xl mb-8 mt-2 px-2">
+    <div className="w-auto max-w-7xl mx-4 sm:mx-6 lg:mx-auto mt-6">
+      <h2 className="font-semibold text-primary text-2xl sm:text-3xl mb-4 sm:mb-8 mt-2 px-1">
         Paid Invoices
       </h2>
-      <Table>
-        <TableCaption>A list of your paid invoices.</TableCaption>
+
+      <Table className="w-full table-fixed border-collapse text-[10px] sm:text-sm">
+        <colgroup>
+          <col className="w-[26%]" />
+          <col className="w-[16%]" />
+          <col className="w-[16%]" />
+          <col className="w-[16%]" />
+          <col className="w-[26%]" />
+        </colgroup>
+
+        <TableCaption className="text-gray-500">
+          A list of your paid invoices.
+        </TableCaption>
+
         <TableHeader>
-          <TableRow>
-            <TableHead className="w-25">Month</TableHead>
-            <TableHead colSpan={2} className="text-right">
+          <TableRow className="border-b border-gray-200">
+            <TableHead className="py-3">Month</TableHead>
+            <TableHead colSpan={2} className="py-3 text-right">
               Total
             </TableHead>
-            <TableHead colSpan={2} className="text-center">
+            <TableHead colSpan={2} className="py-3 text-right">
               Status
             </TableHead>
           </TableRow>
         </TableHeader>
+
         <TableBody>
           {paidInvoices.map((invoice) => (
-            <>
-              <TableRow key={invoice.id}>
-                <TableCell className="font-medium">
+            <Fragment key={invoice.id}>
+              <TableRow className="border-b border-gray-100 align-top">
+                <TableCell className="font-medium py-4 whitespace-normal break-words">
                   {invoice.electricBill[0].toDate.toLocaleDateString(
                     "default",
                     {
@@ -53,34 +75,52 @@ const InvoicesPage = async () => {
                     },
                   )}
                 </TableCell>
-                <TableCell colSpan={2} className="text-right">
+
+                <TableCell
+                  colSpan={2}
+                  className="text-right py-4 font-semibold whitespace-normal break-words"
+                >
                   Rs. {invoice.totalAmount}
                 </TableCell>
-                <TableCell colSpan={2} className="text-center">
-                  <span className="p-2 rounded-md bg-green-500 text-white text-sm">
+
+                <TableCell colSpan={2} className="text-right py-4">
+                  <span className="inline-flex items-center rounded-full border border-green-200 bg-green-50 px-3 py-1 text-[11px] sm:text-sm font-medium text-green-700">
                     {invoice.status}
                   </span>
                 </TableCell>
               </TableRow>
+
               {invoice.electricBill.map((bill) => (
                 <TableRow
                   key={bill.id}
-                  className="bg-gray-50 text-sm text-gray-500"
+                  className="border-b border-gray-100 text-[10px] sm:text-sm text-gray-500"
                 >
-                  <TableCell colSpan={1} className="pl-8">
-                    Meter: {bill.electricMeter?.meterNumber}
+                  <TableCell className="pl-2 sm:pl-6 py-2 whitespace-normal break-all leading-snug">
+                    Meter:{" "}
+                    <span className="break-all">
+                      {bill.electricMeter?.meterNumber}
+                    </span>
                   </TableCell>
-                  <TableCell>Prev: {bill.previousReading}</TableCell>
-                  <TableCell>Curr: {bill.currentReading}</TableCell>
-                  <TableCell>Units: {bill.unitsConsumed}</TableCell>
-                  <TableCell>Electric: {bill.totalAmount}</TableCell>
+                  <TableCell className="py-2 whitespace-nowrap leading-snug">
+                    Prev: {bill.previousReading}
+                  </TableCell>
+                  <TableCell className="py-2 whitespace-nowrap leading-snug">
+                    Curr: {bill.currentReading}
+                  </TableCell>
+                  <TableCell className="py-2 whitespace-nowrap leading-snug">
+                    Units: {bill.unitsConsumed}
+                  </TableCell>
+                  <TableCell className="py-2 whitespace-nowrap leading-snug">
+                    Electric: {bill.totalAmount}
+                  </TableCell>
                 </TableRow>
               ))}
-            </>
+            </Fragment>
           ))}
         </TableBody>
       </Table>
     </div>
   );
 };
+
 export default InvoicesPage;
