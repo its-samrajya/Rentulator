@@ -44,6 +44,7 @@ const InvoicesPage = async () => {
           <col className="w-[16%]" />
           <col className="w-[16%]" />
           <col className="w-[16%]" />
+          <col className="w-[16%]" />
           <col className="w-[26%]" />
         </colgroup>
 
@@ -56,6 +57,9 @@ const InvoicesPage = async () => {
             <TableHead className="py-3">Month</TableHead>
             <TableHead colSpan={2} className="py-3 text-right">
               Total
+            </TableHead>
+            <TableHead colSpan={2} className="py-3 text-right">
+              PaidAt
             </TableHead>
             <TableHead colSpan={2} className="py-3 text-right">
               Status
@@ -81,6 +85,12 @@ const InvoicesPage = async () => {
                   className="text-right py-4 font-semibold whitespace-normal break-words"
                 >
                   Rs. {invoice.totalAmount}
+                </TableCell>
+                <TableCell
+                  colSpan={2}
+                  className="text-right py-4 font-semibold whitespace-normal break-words"
+                >
+                  {invoice.payments[0]?.paidAt.toLocaleDateString()}
                 </TableCell>
 
                 <TableCell colSpan={2} className="text-right py-4">

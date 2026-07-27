@@ -15,7 +15,6 @@ import {
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 
-// Menu configuration - easy to extend
 const MENU_ITEMS = [
   { href: "/", label: "Home", icon: Home },
   { href: "/payments", label: "Payments", icon: IndianRupee },

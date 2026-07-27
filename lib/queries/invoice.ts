@@ -105,6 +105,7 @@ export const getPaidInvoicesByTenantId = async (tenantId: string) => {
           electricMeter: true,
         },
       },
+      payments: true,
     },
     orderBy: { createdAt: "desc" },
   });
