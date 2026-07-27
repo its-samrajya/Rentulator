@@ -1,4 +1,5 @@
 import { TenantWithRooms, unpaidInvoicesType } from "@/lib/types";
+import { cn } from "@/lib/utils";
 import { Clock } from "lucide-react";
 import { Session } from "next-auth";
 
@@ -41,10 +42,15 @@ const Info = ({
         </p>
       </div>
       <div className="flex w-full flex-row gap-3 sm:w-auto sm:flex-col">
-        <div className="flex-1 bg-rose-50 rounded-2xl px-4 py-2 text-sm text-rose-700 sm:flex-none">
+        <div className="flex-1 bg-rose-400 rounded-lg px-4 py-2 text-sm text-white font-bold sm:flex-none">
           <p>Pending : Rs.{totalPendingAmount}</p>
         </div>
-        <div className="flex-1 bg-rose-50 flex gap-2 items-center rounded-2xl px-4 py-2 text-sm text-rose-700 sm:flex-none">
+        <div
+          className={cn(
+            "flex-1 bg-emerald-400 flex gap-2 items-center rounded-lg px-4 py-2 text-sm text-white font-bold sm:flex-none",
+            hasPending && "text-rose-700 bg-rose-50",
+          )}
+        >
           <Clock size={18} /> Status : {hasPending ? "Unpaid" : "Paid"}
         </div>
       </div>
