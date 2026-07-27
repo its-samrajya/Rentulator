@@ -40,7 +40,7 @@ const Filter = () => {
               : "text-slate-500 hover:text-slate-900",
           )}
         >
-          <Link href={`/invoice?status=${filter.value}`}>{filter.label}</Link>
+          <Link href={`invoice?status=${filter.value}`}>{filter.label}</Link>
         </Button>
       ))}
     </div>
