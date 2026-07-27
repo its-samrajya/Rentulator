@@ -25,110 +25,124 @@ const InvoicesPage = async () => {
 
   if (paidInvoices.length === 0) {
     return (
-      <div className="mx-4 sm:mx-6 lg:mx-auto max-w-7xl flex text-lg sm:text-2xl justify-center border-t border-gray-100 items-center gap-4 w-auto mt-6 py-6 text-gray-400">
-        <LayoutList className="h-6 w-6 sm:h-7 sm:w-7" />
+      <div className="px-4 sm:px-6 lg:px-0 max-w-7xl lg:mx-auto flex text-lg sm:text-2xl justify-center border-t border-gray-100 items-center gap-4 mt-6 py-6 text-gray-400">
+        <LayoutList className="h-6 w-6 sm:h-7 sm:w-7 flex-shrink-0" />
         <p>There is no any unpaid invoices</p>
       </div>
     );
   }
 
   return (
-    <div className="w-auto max-w-7xl mx-4 sm:mx-6 lg:mx-auto mt-6">
-      <h2 className="font-semibold text-primary text-2xl sm:text-3xl mb-4 sm:mb-8 mt-2 px-1">
+    <div className="px-4 sm:px-6 lg:px-8 max-w-7xl lg:mx-auto mt-6">
+      <h2 className="font-semibold text-primary text-2xl sm:text-3xl mb-4 sm:mb-8 mt-2">
         Paid Invoices
       </h2>
 
-      <Table className="w-full table-fixed border-collapse text-[10px] sm:text-sm">
-        <colgroup>
-          <col className="w-[26%]" />
-          <col className="w-[16%]" />
-          <col className="w-[16%]" />
-          <col className="w-[16%]" />
-          <col className="w-[16%]" />
-          <col className="w-[26%]" />
-        </colgroup>
+      <div className="overflow-x-auto -mx-4 sm:-mx-6 lg:mx-0">
+        <div className="px-4 sm:px-6 lg:px-0">
+          <Table className="w-full border-collapse text-xs sm:text-sm min-w-full">
+            <TableCaption className="text-gray-500">
+              A list of your paid invoices.
+            </TableCaption>
 
-        <TableCaption className="text-gray-500">
-          A list of your paid invoices.
-        </TableCaption>
-
-        <TableHeader>
-          <TableRow className="border-b border-gray-200">
-            <TableHead className="py-3">Month</TableHead>
-            <TableHead colSpan={2} className="py-3 text-right">
-              Total
-            </TableHead>
-            <TableHead colSpan={2} className="py-3 text-right">
-              PaidAt
-            </TableHead>
-            <TableHead colSpan={2} className="py-3 text-right">
-              Status
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-
-        <TableBody>
-          {paidInvoices.map((invoice) => (
-            <Fragment key={invoice.id}>
-              <TableRow className="border-b border-gray-100 align-top">
-                <TableCell className="font-medium py-4 whitespace-normal break-words">
-                  {invoice.electricBill[0].toDate.toLocaleDateString(
-                    "default",
-                    {
-                      month: "long",
-                    },
-                  )}
-                </TableCell>
-
-                <TableCell
+            <TableHeader>
+              <TableRow className="border-b border-gray-200">
+                <TableHead className="py-3 px-2 sm:px-4 text-left min-w-24">
+                  Month
+                </TableHead>
+                <TableHead
                   colSpan={2}
-                  className="text-right py-4 font-semibold whitespace-normal break-words"
+                  className="py-3 px-2 sm:px-4 text-right min-w-28"
                 >
-                  Rs. {invoice.totalAmount}
-                </TableCell>
-                <TableCell
+                  Total
+                </TableHead>
+                <TableHead
                   colSpan={2}
-                  className="text-right py-4 font-semibold whitespace-normal break-words"
+                  className="py-3 px-2 sm:px-4 text-right min-w-32"
                 >
-                  {invoice.payments[0]?.paidAt.toLocaleDateString()}
-                </TableCell>
-
-                <TableCell colSpan={2} className="text-right py-4">
-                  <span className="inline-flex items-center rounded-full border border-green-200 bg-green-50 px-3 py-1 text-[11px] sm:text-sm font-medium text-green-700">
-                    {invoice.status}
-                  </span>
-                </TableCell>
+                  PaidAt
+                </TableHead>
+                <TableHead
+                  colSpan={2}
+                  className="py-3 px-2 sm:px-4 text-right min-w-24"
+                >
+                  Status
+                </TableHead>
               </TableRow>
+            </TableHeader>
 
-              {invoice.electricBill.map((bill) => (
-                <TableRow
-                  key={bill.id}
-                  className="border-b border-gray-100 text-[10px] sm:text-sm text-gray-500"
-                >
-                  <TableCell className="pl-2 sm:pl-6 py-2 whitespace-normal break-all leading-snug">
-                    Meter:{" "}
-                    <span className="break-all">
-                      {bill.electricMeter?.meterNumber}
-                    </span>
-                  </TableCell>
-                  <TableCell className="py-2 whitespace-nowrap leading-snug">
-                    Prev: {bill.previousReading}
-                  </TableCell>
-                  <TableCell className="py-2 whitespace-nowrap leading-snug">
-                    Curr: {bill.currentReading}
-                  </TableCell>
-                  <TableCell className="py-2 whitespace-nowrap leading-snug">
-                    Units: {bill.unitsConsumed}
-                  </TableCell>
-                  <TableCell className="py-2 whitespace-nowrap leading-snug">
-                    Electric: {bill.totalAmount}
-                  </TableCell>
-                </TableRow>
+            <TableBody>
+              {paidInvoices.map((invoice) => (
+                <Fragment key={invoice.id}>
+                  <TableRow className="border-b border-gray-100 align-top">
+                    <TableCell className="font-medium py-4 px-2 sm:px-4 text-left">
+                      {invoice.electricBill[0].toDate.toLocaleDateString(
+                        "default",
+                        {
+                          month: "long",
+                        },
+                      )}
+                    </TableCell>
+
+                    <TableCell
+                      colSpan={2}
+                      className="text-right py-4 px-2 sm:px-4 font-semibold"
+                    >
+                      Rs. {invoice.totalAmount}
+                    </TableCell>
+                    <TableCell
+                      colSpan={2}
+                      className="text-right py-4 px-2 sm:px-4 font-semibold"
+                    >
+                      {invoice.payments[0]?.paidAt.toLocaleDateString()}
+                    </TableCell>
+
+                    <TableCell
+                      colSpan={2}
+                      className="text-right py-4 px-2 sm:px-4"
+                    >
+                      <span className="inline-flex items-center rounded-full border border-green-200 bg-green-50 px-2 sm:px-3 py-1 text-[10px] sm:text-sm font-medium text-green-700 whitespace-nowrap">
+                        {invoice.status}
+                      </span>
+                    </TableCell>
+                  </TableRow>
+
+                  {invoice.electricBill.map((bill) => (
+                    <TableRow
+                      key={bill.id}
+                      className="border-b border-gray-100 text-xs sm:text-sm text-gray-500"
+                    >
+                      <TableCell className="px-2 sm:px-4 py-2 leading-tight">
+                        <div className="break-words">
+                          Meter:{" "}
+                          <span className="font-medium text-gray-700 inline break-words">
+                            {bill.electricMeter?.meterNumber}
+                          </span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="px-2 sm:px-4 py-2 text-right leading-tight">
+                        <div className="whitespace-nowrap">
+                          Prev: {bill.previousReading}
+                        </div>
+                      </TableCell>
+                      <TableCell className="px-2 sm:px-4 py-2 text-right leading-tight">
+                        <div className="whitespace-nowrap">
+                          Curr: {bill.currentReading}
+                        </div>
+                      </TableCell>
+                      <TableCell className="px-2 sm:px-4 py-2 text-right leading-tight">
+                        <div className="whitespace-nowrap">
+                          Units: {bill.unitsConsumed}
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </Fragment>
               ))}
-            </Fragment>
-          ))}
-        </TableBody>
-      </Table>
+            </TableBody>
+          </Table>
+        </div>
+      </div>
     </div>
   );
 };

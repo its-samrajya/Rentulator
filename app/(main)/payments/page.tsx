@@ -28,7 +28,7 @@ export default async function HistoryPage() {
   }
 
   return (
-    <div className="w-auto max-w-7xl mx-4 sm:mx-6 lg:mx-auto mt-6">
+    <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
       <div className="border border-gray-200 rounded-xl">
         <Table className="w-full table-fixed text-xs sm:text-sm">
           <TableHeader>
