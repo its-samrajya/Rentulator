@@ -19,7 +19,13 @@ const Home = async () => {
       },
     },
   });
-  if (!tenant) return <p>You haven&apos;t been added as a tenant</p>;
+  if (!tenant)
+    return (
+      <p className="mt-6 text-center text-base sm:text-lg text-gray-500">
+        You are not authorized
+      </p>
+    );
+
   const unpaidInvoices = await getUnpaidInvoicesByTenantId(tenant.id);
   const totalPendingAmount = unpaidInvoices.reduce(
     (sum, invoice) => sum + invoice.totalAmount,
