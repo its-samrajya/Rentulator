@@ -42,7 +42,7 @@ export function LoginForm({
     const urlError = searchParams.get("error");
     if (urlError === "OAuthAccountNotLinked") {
       setLoginError(
-        "This email is already linked to a different login method."
+        "This email is already linked to a different login method.",
       );
     }
   }, [searchParams]);
@@ -74,9 +74,11 @@ export function LoginForm({
         setShowTwoFactor(true);
       }
     } catch (error: any) {
-      setLoginError(
-        error.message || "An unknown error has occured during login"
-      );
+      if (error.message?.includes("NEXT_REDIRECT")) {
+        return;
+      }
+
+      setLoginError("An unexpected error occurred.");
     }
   };
 
@@ -200,22 +202,6 @@ export function LoginForm({
                   }}
                 >
                   Login with Google
-                </Button>
-                <Button
-                  className="cursor-pointer"
-                  variant="outline"
-                  type="button"
-                  onClick={async () => {
-                    try {
-                      await signIn("github", {
-                        redirectTo: DEFAULT_LOGIN_REDIRECT,
-                      });
-                    } catch (error) {
-                      console.log(error);
-                    }
-                  }}
-                >
-                  Login with Github
                 </Button>
                 <FieldDescription className="text-center">
                   Don&apos;t have an account?{" "}
