@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -10,7 +9,7 @@ import {
 } from "@/components/ui/table";
 import { getSkippedUnpaidInvoicesByTenantId } from "@/lib/queries/invoice";
 import { LayoutList } from "lucide-react";
-import Link from "next/link";
+import { PayButton } from "./PayButton";
 
 interface Props {
   tenantId: string;
@@ -76,9 +75,10 @@ const UnpaidInvoices = async ({ tenantId }: Props) => {
                     })}
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button asChild variant="destructive" size="sm">
-                      <Link href="/">Pay now</Link>
-                    </Button>
+                    <PayButton
+                      invoiceId={invoice.id}
+                      amount={invoice.totalAmount}
+                    />
                   </TableCell>
                 </TableRow>
                 {invoice.electricBill.map((bill) => (

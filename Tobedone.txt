@@ -53,6 +53,15 @@
    
 18. IN PAYMENTS of CLIENT side we can add filter to filter the data based on date
 
+19. to fix the width of table in main payment and invoice when sidebar is open like there is no space in side of the table
+
+
+
+# Security Threat  ********************
+Just bring it up naturally — something like "let's fix that eSewa ownership problem" or "remember the payment security issue we talked about" is enough. I'll have the context on the exact gap (createEsewaCheckoutSession trusting client-sent amount/invoiceId without verifying ownership) and can pick up right where we left off, including the plan to look up the invoice server-side and check it against the logged-in session.
+1. No ownership check on createEsewaCheckoutSession
+2. No try/catch around the final $transaction
+3. No signature check on the data payload itself.
 
 ---- Edge case ----
 1. What if the meter is changed and new meter is added, right now I am not thinking about it because I could add it directly from the database. But needs to be done ASAP

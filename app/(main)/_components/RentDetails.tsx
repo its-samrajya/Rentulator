@@ -1,8 +1,13 @@
+"use client";
+import { createEsewaCheckoutSession } from "@/actions/checkoutAction";
 import { Button } from "@/components/ui/button";
+import { submitToEsewa } from "@/lib/submitToEsewa";
 import { TenantWithRooms, unpaidInvoicesType } from "@/lib/types";
 import { Zap } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 interface Props {
   unpaidInvoices: unpaidInvoicesType;
@@ -10,11 +15,36 @@ interface Props {
 }
 
 const RentDetails = ({ unpaidInvoices, tenant }: Props) => {
+  const [isPaying, setIsPaying] = useState(false);
   const latestInvoice = unpaidInvoices[0];
   const totalRent = tenant.occupancies.reduce(
     (sum, occupancy) => sum + occupancy.room.price,
     0,
   );
+
+  const handlePay = async () => {
+    if (!latestInvoice) return;
+    setIsPaying(true);
+
+    try {
+      const PaymentData = await createEsewaCheckoutSession({
+        method: "esewa",
+        amount: latestInvoice.totalAmount.toString(),
+        productName: `Invoice payment - ${latestInvoice.id}`,
+        transactionId: latestInvoice.id,
+      });
+      toast.success(
+        "Payment Initiated. Redirecting to eSewa payment gateway...",
+      );
+      submitToEsewa(PaymentData.amount, PaymentData.esewaConfig);
+    } catch (error) {
+      console.log("Payment error", error);
+      toast.error("Payment Error");
+    } finally {
+      setIsPaying(false);
+    }
+  };
+
   return (
     <div className="mt-4 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
       <div className="bg-white flex-1 rounded-lg p-4 shadow-sm sm:p-5">
@@ -118,11 +148,12 @@ const RentDetails = ({ unpaidInvoices, tenant }: Props) => {
                 Rs.{latestInvoice?.totalAmount || 0}
               </p>
               <Button
-                asChild
+                onClick={handlePay}
                 variant="destructive"
                 className="w-full sm:w-auto"
+                disabled={isPaying}
               >
-                <Link href="/">Pay now</Link>
+                {isPaying ? "Redirecting..." : "Pay now"}
               </Button>
             </div>
           </div>
