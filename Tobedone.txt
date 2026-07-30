@@ -55,6 +55,8 @@
 
 19. to fix the width of table in main payment and invoice when sidebar is open like there is no space in side of the table
 
+20. TO MAKE UNAUTHORIZED PAGE
+
 
 
 # Security Threat  ********************
