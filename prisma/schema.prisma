@@ -112,7 +112,7 @@ model Tenant {
   phone             String?
   email             String?
   inviteToken       String?     @unique
-  inviteTokenExpiry DateTime
+  inviteTokenExpiry DateTime?
   occupancies       Occupancy[]
   invoices          Invoice[]
   createdAt         DateTime    @default(now())

@@ -3,10 +3,6 @@ import { TenantForm } from "./_components/TenantForm";
 import prisma from "@/lib/prisma";
 
 const AdminTenants = async () => {
-  const users = await prisma.user.findMany({
-    where: { tenant: null, email: { not: null } },
-    select: { id: true, name: true, email: true },
-  });
   const rooms = await prisma.room.findMany({
     where: {
       occupancies: {
@@ -29,7 +25,7 @@ const AdminTenants = async () => {
             </p>
           </div>
           <div className="w-full sm:w-auto">
-            <TenantForm users={users} rooms={rooms} />
+            <TenantForm rooms={rooms} />
           </div>
         </div>
         <div className="mt-4">

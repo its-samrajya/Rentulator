@@ -22,18 +22,17 @@ export const getTenants = async () => {
 };
 
 export const createTenant = async (data: {
+  name: string;
+  phone: string;
+  email?: string;
   moveInDate: string;
-  userId: string;
   roomId?: string;
 }) => {
-  const user = await prisma.user.findUnique({
-    where: { id: data.userId },
-    select: { name: true },
-  });
   const tenant = await prisma.tenant.create({
     data: {
-      name: user?.name ?? "unknown",
-      userId: data.userId,
+      name: data.name,
+      phone: data.phone,
+      email: data.email || undefined,
       occupancies: data.roomId
         ? {
             create: {

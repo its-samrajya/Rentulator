@@ -11,11 +11,10 @@ import { createTenant } from "@/lib/queries/tenants";
 import { useState } from "react";
 
 interface Props {
-  users: { id: string; name: string | null; email: string | null }[];
   rooms: { id: string; roomNumber: number; floor: string }[];
 }
 
-export const TenantForm = ({ users, rooms }: Props) => {
+export const TenantForm = ({ rooms }: Props) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -23,9 +22,13 @@ export const TenantForm = ({ users, rooms }: Props) => {
     setLoading(true);
     const form = e.currentTarget;
     const data = {
+      name: (form.elements.namedItem("name") as HTMLInputElement).value,
+      phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
+      email:
+        (form.elements.namedItem("email") as HTMLInputElement).value ||
+        undefined,
       moveInDate: (form.elements.namedItem("moveInDate") as HTMLInputElement)
         .value,
-      userId: (form.elements.namedItem("userId") as HTMLSelectElement).value,
       roomId:
         (form.elements.namedItem("roomId") as HTMLSelectElement).value ||
         undefined,
@@ -47,25 +50,30 @@ export const TenantForm = ({ users, rooms }: Props) => {
         </DialogHeader>
         <form onSubmit={handleSubmit} className="flex  flex-col gap-4 mt-2">
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium">Select User(Gmail)</label>
-            {users.length === 0 ? (
-              <p className="text-red-500 text-xs">
-                No users available - they need to sign in with Google first
-              </p>
-            ) : (
-              <select
-                name="userId"
-                required
-                className="border rounded px-3 py-2"
-              >
-                <option value="">Choose a user....</option>
-                {users.map((user) => (
-                  <option key={user.id} value={user.id}>
-                    {user.name} - {user.email}
-                  </option>
-                ))}
-              </select>
-            )}
+            <label className="text-sm font-medium">Name</label>
+            <input
+              name="name"
+              type="text"
+              required
+              className="border rounded px-3 py-2"
+            />
+          </div>
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium">Phone</label>
+            <input
+              name="phone"
+              type="tel"
+              required
+              className="border rounded px-3 py-2"
+            />
+          </div>
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium">Email (optional)</label>
+            <input
+              name="email"
+              type="email"
+              className="border rounded px-3 py-2"
+            />
           </div>
           <div className="flex flex-col gap-1">
             <label className="text-sm font-medium">Move In Date</label>
