@@ -111,7 +111,7 @@ model Tenant {
   userId            String?     @unique // link to User who sign via GOOGLE
   phone             String?
   email             String?
-  inviteToken       String?
+  inviteToken       String?     @unique
   inviteTokenExpiry DateTime
   occupancies       Occupancy[]
   invoices          Invoice[]
