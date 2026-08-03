@@ -13,10 +13,13 @@ export async function proxy(req: NextRequest) {
 
   const isApiAuthRoute = pathname.startsWith(apiAuthPrefix);
   const isAdminRoute = req.nextUrl.pathname.startsWith("/admin");
+  const isClaimRoute = pathname.startsWith("/claim/");
   const isAuthRoute = authRoutes.includes(pathname);
   const isPublicRoute = publicRoutes.includes(pathname);
 
   if (isApiAuthRoute) return NextResponse.next();
+
+  if (isClaimRoute) return NextResponse.next();
 
   if (isAuthRoute) {
     if (session)
