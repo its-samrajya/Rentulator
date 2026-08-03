@@ -11,9 +11,10 @@ import {
 
 interface Props {
   onEditClick: () => void;
+  onDeleteClick: () => void;
 }
 
-export function DropdownMenuDestructive({ onEditClick }: Props) {
+export function DropdownMenuDestructive({ onEditClick, onDeleteClick }: Props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -29,9 +30,13 @@ export function DropdownMenuDestructive({ onEditClick }: Props) {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuGroup>
-          <DropdownMenuItem variant="destructive" className="cursor-pointer">
+          <DropdownMenuItem
+            variant="destructive"
+            className="cursor-pointer"
+            onClick={onDeleteClick}
+          >
             <TrashIcon />
-            Delete
+            Remove
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>

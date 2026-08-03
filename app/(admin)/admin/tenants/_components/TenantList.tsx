@@ -38,6 +38,12 @@ const TenantList = async () => {
                 Name
               </TableHead>
               <TableHead className="h-10 px-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">
+                Status
+              </TableHead>
+              <TableHead className="h-10 px-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">
+                Phone
+              </TableHead>
+              <TableHead className="h-10 px-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">
                 Floor
               </TableHead>
               <TableHead className="h-10 px-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">
