@@ -36,7 +36,11 @@ export function TenantTableRow({ tenant, allRooms }: Props) {
         {tenant.phone ? tenant.phone : "-"}
       </TableCell>
       <TableCell className="text-right">
-        {tenant.occupancies.map((occupancy) => occupancy.room.floor).join(", ")}
+        {[
+          ...new Set(
+            tenant.occupancies.map((occupancy) => occupancy.room.floor),
+          ),
+        ].join(", ")}
       </TableCell>
       <TableCell className="text-right">
         {tenant.occupancies
@@ -44,9 +48,13 @@ export function TenantTableRow({ tenant, allRooms }: Props) {
           .join(", ")}
       </TableCell>
       <TableCell className="text-right">
-        {tenant.occupancies
-          .map((occupancy) => occupancy.room.electricMeter.meterNumber)
-          .join(", ")}
+        {[
+          ...new Set(
+            tenant.occupancies.map(
+              (occupancy) => occupancy.room.electricMeter.meterNumber,
+            ),
+          ),
+        ].join(", ")}
       </TableCell>
       <TableCell className="text-right">
         {!tenant.userId && <InviteLinkButton tenantId={tenant.id} />}

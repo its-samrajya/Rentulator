@@ -63,7 +63,6 @@ export const TenantForm = ({ rooms }: Props) => {
             <input
               name="phone"
               type="tel"
-              required
               className="border rounded px-3 py-2"
             />
           </div>

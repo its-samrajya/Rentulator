@@ -63,6 +63,8 @@
 
 23. ROOM price, name, number edit section/feat is not yet created
 
+24. ADD/EDIT ROOM/PRICE page and feature
+
 
 # Security Threat  ********************
 Just bring it up naturally — something like "let's fix that eSewa ownership problem" or "remember the payment security issue we talked about" is enough. I'll have the context on the exact gap (createEsewaCheckoutSession trusting client-sent amount/invoiceId without verifying ownership) and can pick up right where we left off, including the plan to look up the invoice server-side and check it against the logged-in session.
