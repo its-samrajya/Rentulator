@@ -186,7 +186,7 @@ const RentDetails = ({ unpaidInvoices, tenant }: Props) => {
         </Button>
         <div className="mt-4 flex justify-center">
           <Image
-            src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWkxdXQ1ZzcyZnAzNXNkaTlyMTZtMXNoYmpvNzZpdDV3cTEzNXpwOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/CK0Eg2ymtfzTO2yVJD/giphy.gif"
+            src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExdW1pc2o4aTVyNDFwNWpxb2ZydG9peGZzdXp5d29vcGh3bnBqMmV0aSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l1J9urAfGd3grKV6E/giphy.gif"
             alt="Giphy illustration"
             width={480}
             height={320}

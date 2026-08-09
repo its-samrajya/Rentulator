@@ -14,7 +14,7 @@ export const ClaimButton = ({ token, session }: Props) => {
     null,
   );
   return (
-    <form action={formAction}>
+    <form className="flex flex-col" action={formAction}>
       <Button type="submit" disabled={isPending}>
         {isPending
           ? "Please wait..."

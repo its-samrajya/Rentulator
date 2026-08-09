@@ -49,7 +49,11 @@ const InvoiceList = async ({ status }: Props) => {
                   {invoice.tenant.name}
                 </span>
                 <span className="text-xs text-slate-400">
-                  {invoice.tenant.occupancies.map((o) => o.room.floor)}
+                  {[
+                    ...new Set(
+                      invoice.tenant.occupancies.map((o) => o.room.floor),
+                    ),
+                  ].join(",")}
                 </span>
               </div>
             </div>
