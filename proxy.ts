@@ -22,8 +22,11 @@ export async function proxy(req: NextRequest) {
   if (isClaimRoute) return NextResponse.next();
 
   if (isAuthRoute) {
-    if (session)
-      return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, req.url));
+    if (session) {
+      const redirectTo =
+        session.user.role === "ADMIN" ? "/admin" : DEFAULT_LOGIN_REDIRECT;
+      return NextResponse.redirect(new URL(redirectTo, req.url));
+    }
     return NextResponse.next();
   }
 
@@ -33,6 +36,10 @@ export async function proxy(req: NextRequest) {
       return NextResponse.redirect(new URL("/unauthorized", req.url));
     }
     return NextResponse.next();
+  }
+
+  if (session && session.user.role === "ADMIN" && pathname === "/") {
+    return NextResponse.redirect(new URL("/admin", req.url));
   }
 
   if (!isPublicRoute && !session) {
