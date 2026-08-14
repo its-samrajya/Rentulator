@@ -5,6 +5,7 @@ import "./globals.css";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
 import { ToastContainer } from "react-toastify";
+import { BodyPointerEventsFix } from "./_components/BodyPointerEventsFix";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -36,6 +37,7 @@ export default async function RootLayout({
     <SessionProvider session={session}>
       <html lang="en">
         <body className={robotoMono.className}>
+          <BodyPointerEventsFix />
           {children}
           <ToastContainer />
         </body>

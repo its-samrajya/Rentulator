@@ -85,6 +85,9 @@ Just bring it up naturally — something like "let's fix that eSewa ownership pr
 
 
 
+# Working right now in 
+- Room section : which will include list of rooms with fields like room(roomNumber), floor, rent, status(occupied, vacant), meter, action(edit)
+- Meter section : will include adding the meters, deleting meters, we can set a default reading that appears in meter at initial stage
 
 
 
@@ -93,5 +96,9 @@ Just bring it up naturally — something like "let's fix that eSewa ownership pr
 
 
 
-
-
+to show in meters table are follows
+ this section is only for adding the meters, and additionally we will some table relating to the meters, it will have contents like
+ - first of all it will show meters with the meters number
+ - It would be nice if it  also shows the floor 
+ - 
+   update: lets not add floor, in begining  lets make it simple
