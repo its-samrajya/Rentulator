@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { createTenant } from "@/lib/queries/tenants";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 interface Props {
   rooms: { id: string; roomNumber: number; floor: string }[];
@@ -20,22 +21,29 @@ export const TenantForm = ({ rooms }: Props) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    const form = e.currentTarget;
-    const data = {
-      name: (form.elements.namedItem("name") as HTMLInputElement).value,
-      phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
-      email:
-        (form.elements.namedItem("email") as HTMLInputElement).value ||
-        undefined,
-      moveInDate: (form.elements.namedItem("moveInDate") as HTMLInputElement)
-        .value,
-      roomId:
-        (form.elements.namedItem("roomId") as HTMLSelectElement).value ||
-        undefined,
-    };
-    await createTenant(data);
-    setLoading(false);
-    setOpen(false);
+    try {
+      const form = e.currentTarget;
+      const data = {
+        name: (form.elements.namedItem("name") as HTMLInputElement).value,
+        phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
+        email:
+          (form.elements.namedItem("email") as HTMLInputElement).value ||
+          undefined,
+        moveInDate: (form.elements.namedItem("moveInDate") as HTMLInputElement)
+          .value,
+        roomId:
+          (form.elements.namedItem("roomId") as HTMLSelectElement).value ||
+          undefined,
+      };
+      await createTenant(data);
+      toast.success("Tenant created successfully");
+      setOpen(false);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to create tenant");
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
