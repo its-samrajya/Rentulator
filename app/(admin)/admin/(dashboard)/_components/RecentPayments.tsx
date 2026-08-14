@@ -15,7 +15,7 @@ export default async function RecentPayments() {
         </span>
       </div>
       <p className="mb-4 text-xs text-slate-400">
-        Latest transactions from your tenants
+        Latest transactions from tenants
       </p>
 
       {payment.length === 0 ? (

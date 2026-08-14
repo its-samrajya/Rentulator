@@ -86,14 +86,22 @@ const PaymentList = async ({
                     {payment.invoice.tenant.name}
                   </TableCell>
                   <TableCell className="px-3 py-3 text-slate-600">
-                    {payment.invoice.tenant.occupancies
-                      .map((occupancy) => occupancy.room.floor)
-                      .join(",")}
+                    {[
+                      ...new Set(
+                        payment.invoice.tenant.occupancies.map(
+                          (occupancy) => occupancy.room.floor,
+                        ),
+                      ),
+                    ].join(",")}
                   </TableCell>
                   <TableCell className="px-3 py-3 text-slate-600">
-                    {payment.invoice.tenant.occupancies
-                      .map((occupancy) => occupancy.room.roomNumber)
-                      .join(",")}
+                    {[
+                      ...new Set(
+                        payment.invoice.tenant.occupancies.map(
+                          (occupancy) => occupancy.room.roomNumber,
+                        ),
+                      ),
+                    ].join(",")}
                   </TableCell>
                   <TableCell className="px-3 py-3 text-slate-600">
                     {payment.note}

@@ -26,7 +26,7 @@ const AdminInvoice = async ({ searchParams }: Props) => {
               Invoice
             </h1>
             <p className="mt-1 text-sm text-slate-500">
-              Generate and manage tenant invoices
+              Create tenant invoices
             </p>
           </div>
           <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4">

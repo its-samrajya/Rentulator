@@ -2,7 +2,7 @@ import {
   getAllPaidInvoices,
   getTotalExpectedCurrentMonth,
 } from "@/lib/queries/invoice";
-import { getAllRooms } from "@/lib/queries/rooms";
+import { getAllRoomsCount } from "@/lib/queries/rooms";
 import {
   CircleAlert,
   CircleCheck,
@@ -39,7 +39,7 @@ const Stats = async () => {
     (invoice) => invoice.status === "PENDING",
   ).length;
 
-  const totalRooms = await getAllRooms();
+  const totalRooms = await getAllRoomsCount();
 
   const monthLabel = new Date().toLocaleDateString("default", {
     month: "long",

@@ -21,7 +21,7 @@ const AdminTenants = async () => {
               Tenants
             </h1>
             <p className="mt-1 text-sm text-slate-500">
-              Manage your tenants and their room assignments
+              Manage tenants and their room assignments
             </p>
           </div>
           <div className="w-full sm:w-auto">

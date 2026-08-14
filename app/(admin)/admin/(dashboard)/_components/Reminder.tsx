@@ -56,9 +56,6 @@ const Reminder = async () => {
               <TableHead className="h-10 px-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">
                 Status
               </TableHead>
-              <TableHead className="h-10 px-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">
-                Action
-              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -96,15 +93,6 @@ const Reminder = async () => {
                     >
                       {info.status}
                     </Badge>
-                  </TableCell>
-                  <TableCell className="px-3 py-3 text-right">
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      className="h-8 px-3 text-xs font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                    >
-                      Remind
-                    </Button>
                   </TableCell>
                 </TableRow>
               ))
