@@ -2,6 +2,8 @@ import { PaymentStatus, Prisma } from "@/app/generated/prisma/client";
 import { getUnpaidInvoicesByTenantId } from "./queries/invoice";
 import { getAllTenantForAdmin } from "./queries/tenants";
 import { getAllRoomsWithOccupancy } from "./queries/occupancy";
+import { getAllRooms } from "./queries/rooms";
+import { onlyGetAllMeters } from "./queries/meter";
 
 export type meterWithTenant = Prisma.ElectricMeterGetPayload<{
   include: {
@@ -36,3 +38,7 @@ export type getAllRoomsWithOccupancyType = Awaited<
 >;
 
 export type InvoiceFilterStatus = "all" | Lowercase<keyof typeof PaymentStatus>;
+
+export type getAllRoomsType = Awaited<ReturnType<typeof getAllRooms>>[number];
+
+export type onlyGetAllMetersType = Awaited<ReturnType<typeof onlyGetAllMeters>>;

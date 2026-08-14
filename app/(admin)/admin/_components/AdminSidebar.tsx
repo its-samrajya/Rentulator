@@ -8,7 +8,8 @@ import {
   Calculator,
   IndianRupee,
   PersonStanding,
-  Percent,
+  BedSingle,
+  Gauge,
 } from "lucide-react";
 import {
   Sidebar,
@@ -29,7 +30,8 @@ const MENU_ITEMS = [
   { href: "/admin/tenants", label: "Tenants", icon: PersonStanding },
   { href: "/admin/invoice", label: "Invoice", icon: FileText },
   { href: "/admin/payment", label: "Payment", icon: IndianRupee },
-  { href: "/admin/reports", label: "Reports", icon: Percent },
+  { href: "/admin/rooms", label: "Rooms", icon: BedSingle },
+  { href: "/admin/meters", label: "Meters", icon: Gauge },
 ] as const;
 
 export function AdminSidebar() {

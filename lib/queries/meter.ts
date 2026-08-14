@@ -1,3 +1,5 @@
+"use server";
+import { revalidatePath } from "next/cache";
 import prisma from "../prisma";
 
 export const getAllMeters = async () => {
@@ -14,4 +16,27 @@ export const getAllMeters = async () => {
     },
   });
   return meters;
+};
+
+export const onlyGetAllMeters = async () => {
+  return await prisma.electricMeter.findMany({
+    select: {
+      id: true,
+      meterNumber: true,
+      createdAt: true,
+    },
+    orderBy: {
+      meterNumber: "asc",
+    },
+  });
+};
+
+export const createMeter = async (meterNumber: string) => {
+  const meter = await prisma.electricMeter.create({
+    data: {
+      meterNumber,
+    },
+  });
+  revalidatePath("/admin/meters");
+  return meter;
 };
