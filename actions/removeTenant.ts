@@ -4,7 +4,12 @@ import { revalidatePath } from "next/cache";
 
 export const removeTenant = async (tenantId: string) => {
   try {
-    await prisma.occupancy.deleteMany({ where: { tenantId: tenantId } });
+    await prisma.occupancy.updateMany({
+      where: { tenantId: tenantId, moveOutDate: null },
+      data: {
+        moveOutDate: new Date(),
+      },
+    });
     revalidatePath("/admin/tenants");
     return { success: true, message: "Tenant removed from all rooms" };
   } catch (error) {
