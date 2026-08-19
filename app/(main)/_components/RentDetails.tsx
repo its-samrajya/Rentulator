@@ -81,7 +81,7 @@ const RentDetails = ({ unpaidInvoices, tenant }: Props) => {
                   <Zap size={12} className="text-yellow-600" />
                 </div>
                 <span className="text-sm font-medium text-slate-700">
-                  Meter_No: {bill.electricMeter?.id}
+                  Meter_No: {bill.electricMeter?.meterNumber}
                 </span>
               </div>
 
