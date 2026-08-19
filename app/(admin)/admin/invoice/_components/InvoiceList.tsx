@@ -3,7 +3,7 @@ import { InvoiceFilterStatus } from "@/lib/types";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { FileText } from "lucide-react";
+import { FileText, Zap } from "lucide-react";
 
 interface Props {
   status: InvoiceFilterStatus;
@@ -33,21 +33,23 @@ const InvoiceList = async ({ status }: Props) => {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6">
+    <div className="columns-1 gap-4 sm:columns-2 sm:gap-5 lg:columns-3 lg:gap-6">
       {invoices.map((invoice) => (
         <Card
           key={invoice.id}
-          className="flex flex-col border-slate-200/80 bg-white p-5 shadow-sm transition-shadow hover:shadow-md sm:p-6"
+          className="mb-4 break-inside-avoid border-slate-200/80 bg-white p-5 shadow-sm transition-shadow hover:shadow-md sm:mb-5 sm:p-6 lg:mb-6"
         >
           <div className="flex items-center justify-between border-b border-slate-100 pb-3">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-slate-200 bg-slate-50 text-sm font-semibold text-slate-700">
                 {invoice.tenant.name.charAt(0).toUpperCase()}
               </div>
+
               <div className="flex flex-col">
                 <span className="font-semibold text-slate-900">
                   {invoice.tenant.name}
                 </span>
+
                 <span className="text-xs text-slate-400">
                   {[
                     ...new Set(
@@ -57,9 +59,13 @@ const InvoiceList = async ({ status }: Props) => {
                 </span>
               </div>
             </div>
+
             <Badge
               variant="outline"
-              className={`border ${statusStyles[invoice.status] ?? "bg-slate-50 text-slate-600 border-slate-200"}`}
+              className={`border ${
+                statusStyles[invoice.status] ??
+                "border-slate-200 bg-slate-50 text-slate-600"
+              }`}
             >
               {invoice.status}
             </Badge>
@@ -72,11 +78,81 @@ const InvoiceList = async ({ status }: Props) => {
                 {invoice.totalAmount}
               </span>
             </div>
+
             <div className="flex justify-between">
               <span className="text-slate-500">Due Date</span>
               <span className="font-medium text-slate-900">
                 {invoice.dueDate.toLocaleDateString() || "not yet"}
               </span>
+            </div>
+
+            <div>
+              {invoice.electricBill.map((bill) => (
+                <div
+                  key={bill.id}
+                  className="mt-2 rounded-xl border border-slate-100 bg-linear-to-r from-slate-50 to-blue-50/30 p-4"
+                >
+                  <div className="mb-3 flex items-center justify-between">
+                    <span className="text-sm text-slate-500">
+                      {bill.electricMeter?.meterNumber}
+                    </span>
+
+                    <span className="text-sm font-medium text-slate-700">
+                      {bill.toDate.toLocaleDateString("default", {
+                        month: "long",
+                      })}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-xs text-slate-500">
+                        Current Reading
+                      </span>
+                      <span className="text-xs font-medium text-slate-700">
+                        {bill.currentReading}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between">
+                      <span className="text-xs text-slate-500">
+                        Previous Reading
+                      </span>
+                      <span className="text-xs font-medium text-slate-700">
+                        {bill.previousReading}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between">
+                      <span className="text-xs text-slate-500">
+                        Unit Consumed
+                      </span>
+                      <span className="text-xs font-medium text-slate-700">
+                        {bill.unitsConsumed}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between">
+                      <span className="text-xs text-slate-500">
+                        Rate Per Unit
+                      </span>
+                      <span className="text-xs font-medium text-slate-700">
+                        Rs.{bill.ratePerUnit}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="mb-3 flex items-center justify-between border-slate-200/70 pt-2">
+                    <span className="text-xs text-slate-500">
+                      Electric Amount
+                    </span>
+
+                    <span className="text-sm font-bold text-slate-800">
+                      Rs.{bill.totalAmount}
+                    </span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 

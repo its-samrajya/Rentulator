@@ -4,20 +4,18 @@
 
 3. To use TRY CATCH in all 'await' we have used
 
+4. in client home, create a section to show the invoice remaining to be paid and the main card change it to recent invoice only also add fields like electric readings, unitcharge, rent charge and total amount ✅
 
-4. in client home, create a section to show the invoice remaining to be paid and the main card change it to recent invoice only also add fields like electric readings, unitcharge, rent charge and total amount
-
-5. for the client also add a extra section in sidebar to see the invoice list they had
-
+5. for the client also add a extra section in sidebar to see the invoice list they had ✅
 
 6. fix this getPayments tanai thau ma xa also in invoice.ts
 
-7. one tenant can have more than one meters and invoice depends on meters so there will be more than one invoice for that so how to fix 
+7. one tenant can have more than one meters and invoice depends on meters so there will be more than one invoice for that so how to fix ✅ 
       - instead of generating the invoice right at the moment we will create when the owner clicks the generate invoice button ✅
 
-8. in client side , paybutton in every invoice stating pay so that the invoiceid, amount, note can be passed
+8. in client side , paybutton in every invoice stating pay so that the invoiceid, amount, note can be passed ✅
 
-9. client side ko main page wala table lets show the unpaid invoices while in invoicelist section of sidebar lets make it for the invoices that the tenant has already paid
+9. client side ko main page wala table lets show the unpaid invoices while in invoicelist section of sidebar lets make it for the invoices that the tenant has already paid ✅
 
 10. to change the paymentstatus to PAID and UNPAID only no extra
 
@@ -25,9 +23,7 @@
 
 12. in rentdetails it is creating layout issue it happening because of rentdetails card
 
-13. create a add room section and in that we need to add meter also to the room, and when adding the tenant we only need to add the room, and the meter associated with the room will be automatically applicable to the tenant
-
-
+13. create a add room section and in that we need to add meter also to the room, and when adding the tenant we only need to add the room, and the meter associated with the room will be automatically applicable to the tenant ✅
 
 14. tenant dekhauna xa for the admin ✅
 - name
@@ -35,11 +31,9 @@
   meter 
   edit , delete option
 
+15. Add section like for adding rooms, electic meter ✅
 
-15. Add section like for adding rooms, electic meter
-
-16. How would you know if the room is available or not
-
+16. How would you know if the room is available or not ✅
 
 17. For the receipt.ts
     Here's the actual scenario I'm worried about:
@@ -51,20 +45,25 @@
    5. The receipt page runs getReceipt again — it doesn't re-show "Room 5" anymore. It shows Room 8, because occupancies: { where: { moveOutDate: null } } always fetches whatever room the tenant is currently in, not whatever room they were in when that payment happened.
    6. So the receipt for a 3-month-old payment now silently shows the wrong room — one the tenant wasn't even living in when they made that payment. That's misleading for something that's supposed to be a fixed record of what happened.
    
-18. IN PAYMENTS of CLIENT side we can add filter to filter the data based on date ✅
+18 THE MAIN CLIENT PAGE.TSX IS SHOWING HORIZONTAL SCROLL BAR IN MOBILE SCREEN FIX IT
 
-19. to fix the width of table in main payment and invoice when sidebar is open like there is no space in side of the table ✅
+19. IN PAYMENTS of CLIENT side we can add filter to filter the data based on date ✅
 
-20. TO MAKE UNAUTHORIZED PAGE ✅
+20. to fix the width of table in main payment and invoice when sidebar is open like there is no space in side of the table ✅
 
-21. TO MAKE THE TABLE/PAGE RESPONSIVE OF TENANT PAGE IN ADMIN 
+21. TO MAKE UNAUTHORIZED PAGE ✅
 
-22. TENANT DELETE IS NOT DONE I GUESS
+22. TO MAKE THE TABLE/PAGE RESPONSIVE OF TENANT PAGE IN ADMIN 
 
-23. ROOM price, name, number edit section/feat is not yet created
+23. TENANT DELETE IS NOT DONE I GUESS ✅
 
-24. ADD/EDIT ROOM/PRICE page and feature
+24. ROOM price, name, number edit section/feat is not yet created ✅
 
+25. ADD/EDIT ROOM/PRICE page and feature ✅
+
+26. Remind me -> send the invoice to the whatsapp directly of respective based on their number
+
+27. Need to add pagination in db calls(eg: getInvoicesByFilter) also in frontend
 
 # Security Threat  ********************
 Just bring it up naturally — something like "let's fix that eSewa ownership problem" or "remember the payment security issue we talked about" is enough. I'll have the context on the exact gap (createEsewaCheckoutSession trusting client-sent amount/invoiceId without verifying ownership) and can pick up right where we left off, including the plan to look up the invoice server-side and check it against the logged-in session.
@@ -78,16 +77,15 @@ Just bring it up naturally — something like "let's fix that eSewa ownership pr
 
 
 
-# THE MAIN CLIENT PAGE.TSX IS SHOWING HORIZONTAL SCROLL BAR IN MOBILE SCREEN FIX IT
 
 
 
 
 
 
-# Working right now in 
-- Room section : which will include list of rooms with fields like room(roomNumber), floor, rent, status(occupied, vacant), meter, action(edit)
-- Meter section : will include adding the meters, deleting meters, we can set a default reading that appears in meter at initial stage
+# Working right now in ✅
+- Room section : which will include list of rooms with fields like room(roomNumber), floor, rent, status(occupied, vacant), meter, action(edit) ✅
+- Meter section : will include adding the meters, deleting meters, we can set a default reading that appears in meter at initial stage ✅
 
 
 
@@ -96,9 +94,9 @@ Just bring it up naturally — something like "let's fix that eSewa ownership pr
 
 
 
-to show in meters table are follows
- this section is only for adding the meters, and additionally we will some table relating to the meters, it will have contents like
- - first of all it will show meters with the meters number
- - It would be nice if it  also shows the floor 
+to show in meters table are follows ✅
+ this section is only for adding the meters, and additionally we will some table relating to the meters, it will have contents like✅
+ - first of all it will show meters with the meters number✅
+ - It would be nice if it  also shows the floor ✅
  - 
-   update: lets not add floor, in begining  lets make it simple
+   update: lets not add floor, in beginning  lets make it simple✅

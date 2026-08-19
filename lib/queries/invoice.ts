@@ -30,6 +30,9 @@ export const getInvoicesByFilter = async (status: InvoiceFilterStatus) => {
               PaymentStatus[status.toUpperCase() as keyof typeof PaymentStatus],
           }
         : undefined,
+    orderBy: {
+      createdAt: "desc",
+    },
     include: {
       tenant: {
         include: {
@@ -42,6 +45,11 @@ export const getInvoicesByFilter = async (status: InvoiceFilterStatus) => {
         },
       },
       payments: true,
+      electricBill: {
+        include: {
+          electricMeter: true,
+        },
+      },
     },
   });
   return invoices;
