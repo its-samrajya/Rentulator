@@ -61,7 +61,7 @@ const TenantList = async () => {
             {tenants.length === 0 ? (
               <TableRow className="border-transparent hover:bg-transparent">
                 <TableCell
-                  colSpan={5}
+                  colSpan={7}
                   className="py-10 text-center text-sm text-slate-400"
                 >
                   No tenants yet. Add your first tenant to get started.

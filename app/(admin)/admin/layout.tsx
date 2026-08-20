@@ -33,17 +33,10 @@ export default async function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          {/* <div className="flex min-h-screen w-screen"> */}
-          {/*   <div className="no-print"> */}
-          {/*     <AdminSidebar /> */}
-          {/*   </div> */}
-          {/*   {children} */}
-          {/* </div> */}
-
           <TooltipProvider>
             <SidebarProvider className="flex-row">
               <AdminSidebar />
-              <main className="relative flex-1 bg-admin-ui ">
+              <main className="relative min-w-0 flex-1 bg-admin-ui ">
                 <SidebarTrigger className="absolute left-2 top-2 print:hidden " />
                 {children}
               </main>

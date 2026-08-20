@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/table";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Bell } from "lucide-react";
 import { getInvoices } from "@/lib/queries/invoice";
 
