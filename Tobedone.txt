@@ -21,7 +21,7 @@
 
 11. in rentDetails card need to add other fields like meter readings , unitconsumed, amount etc ✅
 
-12. in rentdetails it is creating layout issue it happening because of rentdetails card
+12. in rentdetails it is creating layout issue it happening because of rentdetails card ✅
 
 13. create a add room section and in that we need to add meter also to the room, and when adding the tenant we only need to add the room, and the meter associated with the room will be automatically applicable to the tenant ✅
 

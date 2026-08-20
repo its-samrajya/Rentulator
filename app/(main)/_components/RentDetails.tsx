@@ -87,7 +87,7 @@ const RentDetails = ({ unpaidInvoices, tenant }: Props) => {
 
               <div className="grid grid-cols-2 gap-x-6 gap-y-2">
                 <div className="flex justify-between">
-                  <span className="text-xs text-slate-500">
+                  <span className="text-xs text-slate-500 truncate">
                     Current Reading
                   </span>
                   <span className="text-xs font-medium text-slate-700">
@@ -95,7 +95,7 @@ const RentDetails = ({ unpaidInvoices, tenant }: Props) => {
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-xs text-slate-500">
+                  <span className="text-xs text-slate-500 truncate">
                     Previous Reading
                   </span>
                   <span className="text-xs font-medium text-slate-700">
@@ -103,13 +103,17 @@ const RentDetails = ({ unpaidInvoices, tenant }: Props) => {
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-xs text-slate-500">Unit Consumed</span>
+                  <span className="text-xs text-slate-500 truncate">
+                    Unit Consumed
+                  </span>
                   <span className="text-xs font-medium text-slate-700">
                     {bill.unitsConsumed}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-xs text-slate-500">Rate Per Unit</span>
+                  <span className="text-xs text-slate-500 truncate">
+                    Rate Per Unit
+                  </span>
                   <span className="text-xs font-medium text-slate-700">
                     Rs.{bill.ratePerUnit}
                   </span>
