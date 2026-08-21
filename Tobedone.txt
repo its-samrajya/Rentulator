@@ -61,7 +61,7 @@
 
 25. ADD/EDIT ROOM/PRICE page and feature ✅
 
-26. Remind me -> send the invoice to the whatsapp directly of respective based on their number
+26. Remind me -> send the invoice to the whatsapp directly of respective based on their number ✅
 
 27. Need to add pagination in db calls(eg: getInvoicesByFilter) also in frontend
 
@@ -72,26 +72,12 @@ Just bring it up naturally — something like "let's fix that eSewa ownership pr
 3. No signature check on the data payload itself.
 
 ---- Edge case ----
-1. What if the meter is changed and new meter is added, right now I am not thinking about it because I could add it directly from the database. But needs to be done ASAP
-
-
-
-
-
-
-
-
+1. What if the meter is changed and new meter is added, right now I am not thinking about it because I could add it directly from the database. But needs to be done ASAP ✅
 
 
 # Working right now in ✅
 - Room section : which will include list of rooms with fields like room(roomNumber), floor, rent, status(occupied, vacant), meter, action(edit) ✅
 - Meter section : will include adding the meters, deleting meters, we can set a default reading that appears in meter at initial stage ✅
-
-
-
-
-
-
 
 
 to show in meters table are follows ✅

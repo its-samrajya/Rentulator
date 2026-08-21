@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 
 export async function updateTenantRooms(
   tenantId: string,
+  updatedPhone: string,
   roomIds: string[],
   moveInDate: string,
 ) {
@@ -18,6 +19,13 @@ export async function updateTenantRooms(
       (o) => !roomIds.includes(o.roomId),
     );
     const roomIdsToAdd = roomIds.filter((id) => !currentRoomIds.includes(id));
+
+    if (roomIdsToAdd.length > 0 && !moveInDate) {
+      return {
+        success: false,
+        message: "Move-in date is required when adding new rooms",
+      };
+    }
 
     if (roomIdsToAdd.length > 0) {
       const newRooms = await prisma.room.findMany({
@@ -53,6 +61,10 @@ export async function updateTenantRooms(
     }
 
     await prisma.$transaction([
+      prisma.tenant.update({
+        where: { id: tenantId },
+        data: { phone: updatedPhone },
+      }),
       ...roomsToRemove.map((o) =>
         prisma.occupancy.update({
           where: { id: o.id },

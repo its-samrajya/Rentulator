@@ -17,6 +17,7 @@ interface RoomOption {
 
 interface Props {
   tenantId: string;
+  tenantPhone?: string | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   assignableRooms: RoomOption[]; // available rooms + this tenant's current rooms
@@ -25,6 +26,7 @@ interface Props {
 
 export const EditTenantForm = ({
   tenantId,
+  tenantPhone,
   open,
   onOpenChange,
   assignableRooms,
@@ -34,19 +36,31 @@ export const EditTenantForm = ({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
 
     const form = e.currentTarget;
     const checkedRoomIds = Array.from(
       form.querySelectorAll<HTMLInputElement>('input[name="roomIds"]:checked'),
     ).map((el) => el.value);
 
+    const updatedPhone = (form.elements.namedItem("phone") as HTMLInputElement)
+      .value;
+
     const moveInDate = (
       form.elements.namedItem("moveInDate") as HTMLInputElement
     ).value;
 
+    const newRoomIds = checkedRoomIds.filter(
+      (id) => !currentRoomIds.includes(id),
+    );
+    if (newRoomIds.length > 0 && !moveInDate) {
+      alert("Please select a move-in date for the newly added room(s).");
+      return;
+    }
+    setLoading(true);
+
     const result = await updateTenantRooms(
       tenantId,
+      updatedPhone,
       checkedRoomIds,
       moveInDate,
     );
@@ -89,13 +103,23 @@ export const EditTenantForm = ({
           </div>
 
           <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium">Phone number</label>
+            <input
+              name="phone"
+              type="tel"
+              required
+              className="border rounded px-3 py-2"
+              defaultValue={tenantPhone ?? ""}
+            />
+          </div>
+
+          <div className="flex flex-col gap-1">
             <label className="text-sm font-medium">
               Move In Date (for newly added rooms)
             </label>
             <input
               name="moveInDate"
               type="date"
-              required
               className="border rounded px-3 py-2"
             />
           </div>

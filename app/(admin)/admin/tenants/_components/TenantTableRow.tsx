@@ -66,6 +66,7 @@ export function TenantTableRow({ tenant, allRooms }: Props) {
 
       <EditTenantForm
         tenantId={tenant.id}
+        tenantPhone={tenant.phone}
         open={editOpen}
         onOpenChange={setEditOpen}
         assignableRooms={assignableRooms}
