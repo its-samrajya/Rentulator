@@ -37,7 +37,7 @@ export default async function RootLayout({
             <SidebarProvider className="flex-row">
               <AdminSidebar />
               <main className="relative min-w-0 flex-1 bg-admin-ui ">
-                <SidebarTrigger className="absolute left-2 top-2 print:hidden " />
+                <SidebarTrigger className="absolute left-2 top-2 print:hidden cursor-pointer" />
                 {children}
               </main>
             </SidebarProvider>

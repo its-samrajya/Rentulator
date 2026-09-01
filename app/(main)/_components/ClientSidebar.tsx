@@ -11,6 +11,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
@@ -26,6 +27,7 @@ export function ClientSidebar() {
   const reducedPath = pathname.split("/")[1];
   const { data: session } = useSession();
   const isActive = (path: string) => reducedPath === path;
+  const { setOpenMobile } = useSidebar();
 
   return (
     <Sidebar collapsible="icon" className="pl-1">
@@ -46,7 +48,12 @@ export function ClientSidebar() {
                 isActive={isActive(href === "/" ? "" : href.split("/")[1])}
                 tooltip={label}
               >
-                <Link href={href}>
+                <Link
+                  href={href}
+                  onClick={() => {
+                    setOpenMobile(false);
+                  }}
+                >
                   <Icon />
                   <span className="text-md">{label}</span>
                 </Link>
@@ -68,7 +75,11 @@ export function ClientSidebar() {
         </div>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton onClick={() => signOut()} tooltip="Logout">
+            <SidebarMenuButton
+              onClick={() => signOut()}
+              tooltip="Logout"
+              className="cursor-pointer"
+            >
               <LogOut />
               <span>Logout</span>
             </SidebarMenuButton>
