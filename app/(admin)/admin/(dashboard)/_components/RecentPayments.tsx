@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { getPayments } from "@/lib/queries/invoice";
+import { formatNepaliDate } from "@/utils/nepaliDate";
 
 export default async function RecentPayments() {
   const payment = await getPayments();
@@ -34,7 +35,7 @@ export default async function RecentPayments() {
                   {payment.invoice.tenant.name}
                 </p>
                 <p className="mt-1 text-xs text-slate-400">
-                  {new Date(payment.paidAt).toLocaleDateString()}
+                  {formatNepaliDate(payment.paidAt)}
                 </p>
               </div>
               <div className="text-right">
