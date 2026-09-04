@@ -1,5 +1,6 @@
 "use client";
 import { updateTenantRooms } from "@/actions/updateTenant";
+import LazyNepaliDatepicker from "@/components/LazyNepaliDatePicker";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -7,6 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import NepaliDate from "nepali-datetime";
 import { useState } from "react";
 
 interface RoomOption {
@@ -45,10 +47,19 @@ export const EditTenantForm = ({
     const updatedPhone = (form.elements.namedItem("phone") as HTMLInputElement)
       .value;
 
-    const moveInDate = (
-      form.elements.namedItem("moveInDate") as HTMLInputElement
-    ).value;
+    const bsDate = (form.elements.namedItem("moveInDate") as HTMLInputElement)
+      .value;
 
+    let moveInDate: Date | null = null;
+    if (bsDate) {
+      try {
+        const nepaliDate = new NepaliDate(bsDate);
+        moveInDate = nepaliDate.getDateObject();
+      } catch {
+        alert("Invalid move-in date.");
+        return;
+      }
+    }
     const newRoomIds = checkedRoomIds.filter(
       (id) => !currentRoomIds.includes(id),
     );
@@ -73,7 +84,14 @@ export const EditTenantForm = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent
+        onPointerDownOutside={(e) => {
+          const target = e.target as HTMLElement;
+          if (target.closest(".ndp-container")) {
+            e.preventDefault();
+          }
+        }}
+      >
         <DialogHeader>
           <DialogTitle>Edit Tenant Rooms</DialogTitle>
         </DialogHeader>
@@ -117,11 +135,7 @@ export const EditTenantForm = ({
             <label className="text-sm font-medium">
               Move In Date (for newly added rooms)
             </label>
-            <input
-              name="moveInDate"
-              type="date"
-              className="border rounded px-3 py-2"
-            />
+            <LazyNepaliDatepicker name="moveInDate" />
           </div>
 
           <Button type="submit" disabled={loading} className="mt-2">
