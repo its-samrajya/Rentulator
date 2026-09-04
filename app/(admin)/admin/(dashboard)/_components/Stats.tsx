@@ -11,6 +11,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { formatNepaliDate } from "@/utils/nepaliDate";
 
 interface DataType {
   topLabel: string;
@@ -41,10 +42,7 @@ const Stats = async () => {
 
   const totalRooms = await getAllRoomsCount();
 
-  const monthLabel = new Date().toLocaleDateString("default", {
-    month: "long",
-    year: "numeric",
-  });
+  const monthLabel = formatNepaliDate(new Date(), "MMMM YYYY");
 
   const data: DataType[] = [
     {
