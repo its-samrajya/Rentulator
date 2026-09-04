@@ -86,3 +86,7 @@ to show in meters table are follows ✅
  - It would be nice if it  also shows the floor ✅
  - 
    update: lets not add floor, in beginning  lets make it simple✅
+
+
+# BUG
+- When the admin creates bill/invoice for the same meter in same month , the bug can be seen in  previous reading unit
