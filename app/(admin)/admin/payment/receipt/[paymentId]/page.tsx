@@ -1,5 +1,6 @@
 import { getReceipt } from "@/lib/queries/receipt";
 import PrintButton from "../../_components/PrintButton";
+import { formatNepaliDate } from "@/utils/nepaliDate";
 
 interface Props {
   params: Promise<{
@@ -38,7 +39,7 @@ const ReceiptPage = async ({ params }: Props) => {
         <div className="flex justify-between">
           <span className="text-gray-500">Date</span>
           <span className="font-medium">
-            {new Date(payment.paidAt).toLocaleDateString()}
+            {formatNepaliDate(payment.paidAt)}
           </span>
         </div>
         <div className="flex justify-between">
