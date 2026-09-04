@@ -10,6 +10,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Bell } from "lucide-react";
 import { getInvoices } from "@/lib/queries/invoice";
+import { formatNepaliDate } from "@/utils/nepaliDate";
 
 const statusStyles: Record<string, string> = {
   PENDING: "bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100",
@@ -83,7 +84,7 @@ const Reminder = async () => {
                     {info.totalAmount}
                   </TableCell>
                   <TableCell className="px-3 py-3 text-slate-500">
-                    {new Date(info.dueDate).toLocaleDateString()}
+                    {formatNepaliDate(info.dueDate)}
                   </TableCell>
                   <TableCell className="px-3 py-3 text-right">
                     <Badge
