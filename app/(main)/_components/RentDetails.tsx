@@ -3,6 +3,7 @@ import { createEsewaCheckoutSession } from "@/actions/checkoutAction";
 import { Button } from "@/components/ui/button";
 import { submitToEsewa } from "@/lib/submitToEsewa";
 import { TenantWithRooms, unpaidInvoicesType } from "@/lib/types";
+import { formatNepaliDate } from "@/utils/nepaliDate";
 import { Zap } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -57,12 +58,7 @@ const RentDetails = ({ unpaidInvoices, tenant }: Props) => {
           <div className="flex justify-between">
             <p className="text-pink-700 font-medium">Month</p>
             <p className="text-xl font-bold">
-              {latestInvoice?.electricBill[0].toDate.toLocaleDateString(
-                "default",
-                {
-                  month: "long",
-                },
-              )}
+              {formatNepaliDate(latestInvoice?.electricBill[0].toDate, "MMMM")}
             </p>
           </div>
 
@@ -139,7 +135,7 @@ const RentDetails = ({ unpaidInvoices, tenant }: Props) => {
           <div className="flex justify-between items-center">
             <div className="text-primary font-medium">Due Date</div>
             <div className="text-purple-700 bg-purple-50 rounded-full px-3 py-1 font-medium text-sm">
-              {latestInvoice?.dueDate.toLocaleDateString()}
+              {formatNepaliDate(latestInvoice?.dueDate)}
             </div>
           </div>
 
