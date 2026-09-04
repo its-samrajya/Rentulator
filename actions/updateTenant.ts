@@ -6,7 +6,7 @@ export async function updateTenantRooms(
   tenantId: string,
   updatedPhone: string,
   roomIds: string[],
-  moveInDate: string,
+  moveInDate: Date | null,
 ) {
   try {
     const currentOccupancies = await prisma.occupancy.findMany({
@@ -76,7 +76,7 @@ export async function updateTenantRooms(
           data: {
             tenantId,
             roomId,
-            moveInDate: new Date(moveInDate),
+            moveInDate: moveInDate as Date,
           },
         }),
       ),
