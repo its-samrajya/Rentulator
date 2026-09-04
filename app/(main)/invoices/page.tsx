@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/table";
 import getCurrentTenant from "@/lib/currentTenant";
 import { getPaidInvoicesByTenantId } from "@/lib/queries/invoice";
+import { formatNepaliDate } from "@/utils/nepaliDate";
 import { LayoutList } from "lucide-react";
 import { Fragment } from "react";
 
@@ -76,12 +77,7 @@ const InvoicesPage = async () => {
                 <Fragment key={invoice.id}>
                   <TableRow className="border-b border-gray-100 align-top">
                     <TableCell className="font-medium py-4 px-2 sm:px-4 text-left">
-                      {invoice.electricBill[0].toDate.toLocaleDateString(
-                        "default",
-                        {
-                          month: "long",
-                        },
-                      )}
+                      {formatNepaliDate(invoice.electricBill[0].toDate, "MMMM")}
                     </TableCell>
 
                     <TableCell
@@ -94,7 +90,7 @@ const InvoicesPage = async () => {
                       colSpan={2}
                       className="text-right py-4 px-2 sm:px-4 font-semibold"
                     >
-                      {invoice.payments[0]?.paidAt.toLocaleDateString()}
+                      {formatNepaliDate(invoice.payments[0]?.paidAt)}
                     </TableCell>
 
                     <TableCell
