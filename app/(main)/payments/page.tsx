@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/table";
 import getCurrentTenant from "@/lib/currentTenant";
 import { getPaymentsByTenant } from "@/lib/queries/payments";
+import { formatNepaliDate } from "@/utils/nepaliDate";
 
 export default async function HistoryPage() {
   const tenantId = await getCurrentTenant();
@@ -51,7 +52,7 @@ export default async function HistoryPage() {
                 key={payment.id}
               >
                 <TableCell className="font-medium text-center py-3 whitespace-nowrap">
-                  {new Date(payment.paidAt).toLocaleDateString()}
+                  {formatNepaliDate(payment.paidAt)}
                 </TableCell>
                 <TableCell className="text-center py-3 whitespace-nowrap">
                   {payment.amount}
