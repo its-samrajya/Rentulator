@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import {
   Table,
   TableBody,
@@ -9,6 +10,10 @@ import {
 import getCurrentTenant from "@/lib/currentTenant";
 import { getPaymentsByTenant } from "@/lib/queries/payments";
 import { formatNepaliDate } from "@/utils/nepaliDate";
+
+export const metadata: Metadata = {
+  title: "Payments",
+};
 
 export default async function HistoryPage() {
   const tenantId = await getCurrentTenant();

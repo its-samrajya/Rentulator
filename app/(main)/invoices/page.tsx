@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import {
   Table,
   TableBody,
@@ -12,6 +13,10 @@ import { getPaidInvoicesByTenantId } from "@/lib/queries/invoice";
 import { formatNepaliDate } from "@/utils/nepaliDate";
 import { LayoutList } from "lucide-react";
 import { Fragment } from "react";
+
+export const metadata: Metadata = {
+  title: "Invoices",
+};
 
 const InvoicesPage = async () => {
   const tenantId = await getCurrentTenant();

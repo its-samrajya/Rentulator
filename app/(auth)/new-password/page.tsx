@@ -1,4 +1,9 @@
 import { NewPasswordForm } from "@/components/NewPasswordForm";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Set New Password",
+};
 
 const NewPasswordPage = () => {
   return (

@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
 import { AddMeterForm } from "./_components/AddMeterForm";
 import MetersList from "./_components/MetersList";
+
+export const metadata: Metadata = {
+  title: "Meters",
+};
 
 const AdminMeters = async () => {
   return (

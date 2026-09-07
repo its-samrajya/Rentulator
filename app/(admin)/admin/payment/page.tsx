@@ -2,10 +2,15 @@ import { getPendingInvoicesForPayment } from "@/lib/queries/invoice";
 import FilterForm from "./_components/FilterForm";
 import PaymentForm from "./_components/PaymentForm";
 import PaymentList from "./_components/PaymentList";
+import { Metadata } from "next";
 
 interface Props {
   searchParams: Promise<{ month?: string; year?: string }>;
 }
+
+export const metadata: Metadata = {
+  title: "Payments",
+};
 
 const AdminPayment = async ({ searchParams }: Props) => {
   const { month, year } = await searchParams;

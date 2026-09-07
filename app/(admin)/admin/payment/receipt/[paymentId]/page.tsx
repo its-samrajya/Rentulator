@@ -1,12 +1,17 @@
 import { getReceipt } from "@/lib/queries/receipt";
 import PrintButton from "../../_components/PrintButton";
 import { formatNepaliDate } from "@/utils/nepaliDate";
+import { Metadata } from "next";
 
 interface Props {
   params: Promise<{
     paymentId: string;
   }>;
 }
+
+export const metadata: Metadata = {
+  title: "Receipt",
+};
 
 const ReceiptPage = async ({ params }: Props) => {
   const { paymentId } = await params;

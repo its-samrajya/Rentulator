@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Filter from "./_components/InvoiceFilter";
 import AddInvoiceButton from "./_components/InvoiceForm";
 import { getAllMeters } from "@/lib/queries/meter";
@@ -8,6 +9,10 @@ import { InvoiceFilterStatus } from "@/lib/types";
 interface Props {
   searchParams: Promise<{ status?: string }>;
 }
+
+export const metadata: Metadata = {
+  title: "Invoices",
+};
 
 const AdminInvoice = async ({ searchParams }: Props) => {
   const meters = await getAllMeters();

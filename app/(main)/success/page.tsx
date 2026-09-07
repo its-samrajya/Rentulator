@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle, XCircle } from "lucide-react";
 import {
@@ -13,6 +14,10 @@ import { verifyEsewaPayment } from "@/lib/verifyEsewaPayment";
 interface SuccessPageProps {
   searchParams: Promise<{ method?: string; data?: string }>;
 }
+
+export const metadata: Metadata = {
+  title: "Payment Successful",
+};
 
 export default async function PaymentSuccess({
   searchParams,

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
 import { ClaimButton } from "./ClaimButton";
@@ -5,6 +6,11 @@ import { ClaimButton } from "./ClaimButton";
 interface Props {
   params: Promise<{ token: string }>;
 }
+
+export const metadata: Metadata = {
+  title: "Claim Your Room",
+};
+
 const ClaimPage = async ({ params }: Props) => {
   const { token } = await params;
   const session = await auth();
