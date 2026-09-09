@@ -13,7 +13,7 @@ interface Props {
 const statusStyles: Record<string, string> = {
   PENDING: "bg-amber-50 text-amber-700 border-amber-200",
   PAID: "bg-emerald-50 text-emerald-700 border-emerald-200",
-  OVERDUE: "bg-rose-50 text-rose-700 border-rose-200",
+  PARTIAL: "bg-rose-50 text-rose-700 border-rose-200",
 };
 
 const InvoiceCard = ({ invoice }: Props) => {
@@ -89,6 +89,16 @@ Please make the payment by the due date. Thank you.`;
       </div>
 
       <div className="mt-4 flex flex-col gap-2.5 text-sm">
+        {invoice.status === "PARTIAL" && (
+          <div className="flex justify-between">
+            <span className="text-slate-500">Remaining Amount</span>
+            <span className="font-medium text-rose-600">
+              Rs.
+              {invoice.totalAmount -
+                invoice.payments.reduce((sum, p) => sum + p.amount, 0)}
+            </span>
+          </div>
+        )}
         <div className="flex justify-between">
           <span className="text-slate-500">Rent Amount</span>
           <span className="font-medium text-slate-900">
