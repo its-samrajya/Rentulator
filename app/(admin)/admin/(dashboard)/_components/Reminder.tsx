@@ -15,7 +15,7 @@ import { formatNepaliDate } from "@/utils/nepaliDate";
 const statusStyles: Record<string, string> = {
   PENDING: "bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100",
   PAID: "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100",
-  OVERDUE: "bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100",
+  PARTIAL: "bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100",
 };
 
 const Reminder = async () => {

@@ -37,7 +37,7 @@ const Stats = async () => {
   //     : paidInvoices.reduce((sum, invoice) => sum + invoice.totalAmount, 0);
   //
   const numberOfUnpaidInvoices = invoices.filter(
-    (invoice) => invoice.status === "PENDING",
+    (invoice) => invoice.status === "PENDING" || invoice.status === "PARTIAL",
   ).length;
 
   const totalPending = await getTotalPendingInvoicesForStats();

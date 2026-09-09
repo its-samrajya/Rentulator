@@ -192,7 +192,7 @@ export const getAllPaidInvoices = async () => {
 
 export const getPendingInvoicesForPayment = async () => {
   const invoice = await prisma.invoice.findMany({
-    where: { status: "PENDING" },
+    where: { status: { in: ["PENDING", "PARTIAL"] } },
     include: { tenant: true, payments: true },
     orderBy: { dueDate: "asc" },
   });
@@ -210,7 +210,7 @@ export const getPendingInvoicesForPayment = async () => {
 //totalpendinginvoicesCount for stats.tsx
 export const getTotalPendingInvoicesForStats = async () => {
   const invoices = await prisma.invoice.findMany({
-    where: { status: "PENDING" },
+    where: { status: { in: ["PENDING", "PARTIAL"] } },
     include: { payments: true },
   });
   return invoices.reduce((total, invoice) => {

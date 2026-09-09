@@ -54,6 +54,11 @@ export const createPayment = async (data: {
         where: { id: data.invoiceId },
         data: { status: "PAID" },
       });
+    } else {
+      await tx.invoice.update({
+        where: { id: data.invoiceId },
+        data: { status: "PARTIAL" },
+      });
     }
   });
 

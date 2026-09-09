@@ -18,7 +18,7 @@ const AdminInvoice = async ({ searchParams }: Props) => {
   const meters = await getAllMeters();
   const { status: rawStatus } = await searchParams;
   const status: InvoiceFilterStatus =
-    rawStatus === "paid" || rawStatus === "pending" || rawStatus === "overdue"
+    rawStatus === "paid" || rawStatus === "pending" || rawStatus === "partial"
       ? rawStatus
       : "all";
 
