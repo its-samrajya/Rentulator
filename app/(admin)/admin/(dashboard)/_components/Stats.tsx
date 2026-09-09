@@ -30,12 +30,12 @@ const Stats = async () => {
       ? 0
       : invoices.reduce((sum, invoice) => sum + invoice.totalAmount, 0);
 
-  const paidInvoices = await getAllPaidInvoices();
-  const totalPaidInvoicesAmount =
-    paidInvoices.length === 0
-      ? 0
-      : paidInvoices.reduce((sum, invoice) => sum + invoice.totalAmount, 0);
-
+  const totalPaidInvoicesAmount = await getAllPaidInvoices();
+  // const totalPaidInvoicesAmount =
+  //   paidInvoices.length === 0
+  //     ? 0
+  //     : paidInvoices.reduce((sum, invoice) => sum + invoice.totalAmount, 0);
+  //
   const numberOfUnpaidInvoices = invoices.filter(
     (invoice) => invoice.status === "PENDING",
   ).length;

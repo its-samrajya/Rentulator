@@ -168,17 +168,26 @@ export const getAllPaidInvoices = async () => {
 
   const endDate = new NepaliDate(nextYear, nextMonth, 1).getDateObject();
 
-  const paidInvoices = await prisma.invoice.findMany({
+  // const paidInvoices = await prisma.invoice.findMany({
+  //   where: {
+  //     status: "PAID",
+  //     dueDate: {
+  //       gte: startDate,
+  //       lte: endDate,
+  //     },
+  //   },
+  //   select: { totalAmount: true },
+  // });
+  const result = await prisma.payment.aggregate({
+    _sum: { amount: true },
     where: {
-      status: "PAID",
-      dueDate: {
+      paidAt: {
         gte: startDate,
-        lte: endDate,
+        lt: endDate,
       },
     },
-    select: { totalAmount: true },
   });
-  return paidInvoices;
+  return result._sum.amount ?? 0;
 };
 
 export const getPendingInvoicesForPayment = async () => {
