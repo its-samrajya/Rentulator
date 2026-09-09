@@ -126,6 +126,7 @@ const PaymentForm = ({ invoices }: Props) => {
                     <Input
                       type="number"
                       {...field}
+                      onChange={(e) => field.onChange(e.target.valueAsNumber)}
                       max={selectedInvoice?.remaining}
                     />
                   </FormControl>
