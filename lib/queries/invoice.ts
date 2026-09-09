@@ -197,3 +197,15 @@ export const getPendingInvoicesForPayment = async () => {
     };
   });
 };
+
+//totalpendinginvoicesCount for stats.tsx
+export const getTotalPendingInvoicesForStats = async () => {
+  const invoices = await prisma.invoice.findMany({
+    where: { status: "PENDING" },
+    include: { payments: true },
+  });
+  return invoices.reduce((total, invoice) => {
+    const paid = invoice.payments.reduce((sum, p) => sum + p.amount, 0);
+    return total + (invoice.totalAmount - paid);
+  }, 0);
+};
