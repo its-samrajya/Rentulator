@@ -1,6 +1,7 @@
 import { PaymentStatus } from "@/app/generated/prisma/enums";
 import prisma from "../prisma";
 import { InvoiceFilterStatus } from "../types";
+import NepaliDate from "nepali-datetime";
 
 export const getInvoices = async () => {
   const invoices = await prisma.invoice.findMany({
@@ -122,15 +123,27 @@ export const getPaidInvoicesByTenantId = async (tenantId: string) => {
 
 // to calculate total amount (expected) that will be receiving in the month for admin dashboard
 export const getTotalExpectedCurrentMonth = async () => {
-  const now = new Date();
-  const startOfCurrentMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-  const endOfCurrentMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+  const today = new NepaliDate(new Date());
+  const year = today.getYear();
+  const month = today.getMonth();
+
+  const startDate = new NepaliDate(year, month, 1).getDateObject();
+
+  let nextMonth = month + 1;
+  let nextYear = year;
+
+  if (nextMonth > 12) {
+    nextMonth = 1;
+    nextYear++;
+  }
+
+  const endDate = new NepaliDate(nextYear, nextMonth, 1).getDateObject();
 
   const invoices = await prisma.invoice.findMany({
     where: {
       dueDate: {
-        gte: startOfCurrentMonth,
-        lte: endOfCurrentMonth,
+        gte: startDate,
+        lte: endDate,
       },
     },
     select: { totalAmount: true, status: true },
@@ -139,16 +152,28 @@ export const getTotalExpectedCurrentMonth = async () => {
 };
 // to calulate total collected amount for admin dashboard
 export const getAllPaidInvoices = async () => {
-  const now = new Date();
-  const startOfCurrentMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-  const endOfCurrentMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+  const today = new NepaliDate(new Date());
+  const year = today.getYear();
+  const month = today.getMonth();
+
+  const startDate = new NepaliDate(year, month, 1).getDateObject();
+
+  let nextMonth = month + 1;
+  let nextYear = year;
+
+  if (nextMonth > 12) {
+    nextMonth = 1;
+    nextYear++;
+  }
+
+  const endDate = new NepaliDate(nextYear, nextMonth, 1).getDateObject();
 
   const paidInvoices = await prisma.invoice.findMany({
     where: {
       status: "PAID",
       dueDate: {
-        gte: startOfCurrentMonth,
-        lte: endOfCurrentMonth,
+        gte: startDate,
+        lte: endDate,
       },
     },
     select: { totalAmount: true },
