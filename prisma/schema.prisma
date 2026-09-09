@@ -15,7 +15,7 @@ enum UserRole {
 enum PaymentStatus {
   PENDING
   PAID
-  OVERDUE
+  PARTIAL
 }
 
 model User {
