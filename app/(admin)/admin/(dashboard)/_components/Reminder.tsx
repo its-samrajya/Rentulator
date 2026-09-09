@@ -37,18 +37,18 @@ const Reminder = async () => {
         </div>
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="max-h-100 overflow-auto">
         <Table>
           <TableHeader>
             <TableRow className="border-slate-200 hover:bg-transparent">
               <TableHead className="h-10 px-3 text-xs font-semibold uppercase tracking-wide text-slate-500">
                 Tenant
               </TableHead>
-              <TableHead className="h-10 px-3 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                Property
-              </TableHead>
-              <TableHead className="h-10 px-3 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                Due
+              {/* <TableHead className="h-10 px-3 text-xs font-semibold uppercase tracking-wide text-slate-500"> */}
+              {/*   Property */}
+              {/* </TableHead> */}
+              <TableHead className="h-10 px-3 text-xs font-semibold tracking-wide text-slate-500">
+                DUE(Rs.)
               </TableHead>
               <TableHead className="h-10 px-3 text-xs font-semibold uppercase tracking-wide text-slate-500">
                 Due Date
@@ -77,11 +77,13 @@ const Reminder = async () => {
                   <TableCell className="px-3 py-3 font-medium text-slate-900">
                     {info.tenant.name}
                   </TableCell>
-                  <TableCell className="px-3 py-3 text-slate-600">
-                    {info.tenantId}
-                  </TableCell>
+                  {/* <TableCell className="px-3 py-3 text-slate-600"> */}
+                  {/*   {info.tenant.occupancies */}
+                  {/*     .map((room) => room.room.roomNumber) */}
+                  {/*     .join(", ")} */}
+                  {/* </TableCell> */}
                   <TableCell className="px-3 py-3 font-medium text-slate-700">
-                    {info.totalAmount}
+                    {info.totalAmount.toLocaleString()}
                   </TableCell>
                   <TableCell className="px-3 py-3 text-slate-500">
                     {formatNepaliDate(info.dueDate)}
