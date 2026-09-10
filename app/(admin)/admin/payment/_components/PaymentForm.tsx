@@ -1,5 +1,6 @@
 "use client";
 import { createPayment } from "@/actions/addPayment";
+import LazyNepaliDatepicker from "@/components/LazyNepaliDatePicker";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,27 +9,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState, useTransition } from "react";
-import { useForm } from "react-hook-form";
+import NepaliDate from "nepali-datetime";
+import { useState } from "react";
 import { toast } from "react-toastify";
-import { z } from "zod";
 
 interface Props {
   invoices: {
@@ -38,38 +21,63 @@ interface Props {
   }[];
 }
 
-const paymentSchema = z.object({
-  invoiceId: z.string().min(1, "Select an invoice"),
-  amount: z.number().positive("Amount must be greater than zero"),
-  note: z.string().min(1, "Select a method"),
-});
-
-type PaymentFormValues = z.infer<typeof paymentSchema>;
-
 const PaymentForm = ({ invoices }: Props) => {
   const [open, setOpen] = useState(false);
-  const [isPending, startTransition] = useTransition();
+  const [loading, setLoading] = useState(false);
+  const [invoiceId, setInvoiceId] = useState("");
 
-  const form = useForm<PaymentFormValues>({
-    resolver: zodResolver(paymentSchema),
-    defaultValues: { invoiceId: "", amount: 0, note: "" },
-  });
+  const selectedInvoice = invoices.find((i) => i.id === invoiceId);
 
-  const selectedInvoice = invoices.find(
-    (i) => i.id === form.watch("invoiceId"),
-  );
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const form = e.currentTarget;
 
-  const onSubmit = (values: PaymentFormValues) => {
-    startTransition(async () => {
-      const result = await createPayment(values);
+      const bsDate = (form.elements.namedItem("paidAt") as HTMLInputElement)
+        .value;
+      if (!bsDate) {
+        toast.error("Select a date");
+        return;
+      }
+      const paidAt = new NepaliDate(bsDate).getDateObject();
+
+      const amountValue = (
+        form.elements.namedItem("amount") as HTMLInputElement
+      ).value;
+      const amount = Number(amountValue);
+      if (!amount || amount <= 0) {
+        toast.error("Amount must be greater than zero");
+        return;
+      }
+
+      const note = (form.elements.namedItem("note") as HTMLSelectElement).value;
+      if (!note) {
+        toast.error("Select a method");
+        return;
+      }
+
+      if (!invoiceId) {
+        toast.error("Select an invoice");
+        return;
+      }
+
+      const result = await createPayment({ invoiceId, amount, note, paidAt });
+
       if (result.success) {
         toast.success(result.message);
         form.reset();
+        setInvoiceId("");
         setOpen(false);
       } else {
         toast.error(result.message);
       }
-    });
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to record payment");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -79,92 +87,72 @@ const PaymentForm = ({ invoices }: Props) => {
           + Record Payment
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent
+        onPointerDownOutside={(e) => {
+          const target = e.target as HTMLElement;
+          if (target.closest(".ndp-container")) {
+            e.preventDefault();
+          }
+        }}
+      >
         <DialogHeader>
           <DialogTitle>Record Payment</DialogTitle>
         </DialogHeader>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-2">
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium">Invoice</label>
+            <select
               name="invoiceId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Invoice</FormLabel>
-                  <Select
-                    onValueChange={(value) => {
-                      field.onChange(value);
-                      const inv = invoices.find((i) => i.id === value);
-                      if (inv) form.setValue("amount", inv.remaining);
-                    }}
-                    value={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select an invoice" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {invoices.map((inv) => (
-                        <SelectItem key={inv.id} value={inv.id}>
-                          {inv.tenantName} -due {inv.remaining}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
+              required
+              className="border rounded px-3 py-2"
+              value={invoiceId}
+              onChange={(e) => setInvoiceId(e.target.value)}
+            >
+              <option value="">Select an invoice</option>
+              {invoices.map((inv) => (
+                <option key={inv.id} value={inv.id}>
+                  {inv.tenantName} -due {inv.remaining}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium">Amount</label>
+            <input
               name="amount"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Amount</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      {...field}
-                      onChange={(e) => field.onChange(e.target.valueAsNumber)}
-                      max={selectedInvoice?.remaining}
-                    />
-                  </FormControl>
-                  {selectedInvoice && (
-                    <p className="text-xs text-muted-foreground">
-                      Remaining balance: {selectedInvoice.remaining}
-                    </p>
-                  )}
-                  <FormMessage />
-                </FormItem>
-              )}
+              type="number"
+              required
+              key={invoiceId}
+              defaultValue={selectedInvoice?.remaining ?? ""}
+              max={selectedInvoice?.remaining}
+              className="border rounded px-3 py-2"
             />
-            <FormField
-              control={form.control}
-              name="note"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Method</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select method" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="cash">Cash</SelectItem>
-                      <SelectItem value="bank">Bank</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" disabled={isPending} className="w-full">
-              {isPending ? "Recording..." : "Record Payment"}
-            </Button>
-          </form>
-        </Form>
+            {selectedInvoice && (
+              <p className="text-xs text-muted-foreground">
+                Remaining balance: {selectedInvoice.remaining}
+              </p>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium">Method</label>
+            <select name="note" required className="border rounded px-3 py-2">
+              <option value="">Select method</option>
+              <option value="cash">Cash</option>
+              <option value="bank">Bank</option>
+            </select>
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium">Payment Date</label>
+            <LazyNepaliDatepicker name="paidAt" required />
+          </div>
+
+          <Button type="submit" disabled={loading} className="w-full">
+            {loading ? "Recording..." : "Record Payment"}
+          </Button>
+        </form>
       </DialogContent>
     </Dialog>
   );
