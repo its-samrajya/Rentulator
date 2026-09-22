@@ -48,7 +48,7 @@ Due Date: ${formatNepaliDate(invoice.dueDate)}
 
 Please make the payment by the due date. Thank you.`;
 
-    const whatsappUrl = `https://wa.me/${invoice.tenant.phone}?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/977${invoice.tenant.phone}?text=${encodeURIComponent(message)}`;
 
     window.open(whatsappUrl, "_blank");
   };
