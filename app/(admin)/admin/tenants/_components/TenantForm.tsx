@@ -1,4 +1,5 @@
 "use client";
+import LazyNepaliDatepicker from "@/components/LazyNepaliDatePicker";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,6 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { createTenant } from "@/lib/queries/tenants";
+import NepaliDate from "nepali-datetime";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -23,14 +25,17 @@ export const TenantForm = ({ rooms }: Props) => {
     setLoading(true);
     try {
       const form = e.currentTarget;
+      const bsDate = (form.elements.namedItem("moveInDate") as HTMLInputElement)
+        .value;
+      const nepaliDate = new NepaliDate(bsDate);
+      const moveInDate = nepaliDate.getDateObject();
       const data = {
         name: (form.elements.namedItem("name") as HTMLInputElement).value,
         phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
         email:
           (form.elements.namedItem("email") as HTMLInputElement).value ||
           undefined,
-        moveInDate: (form.elements.namedItem("moveInDate") as HTMLInputElement)
-          .value,
+        moveInDate,
         roomId:
           (form.elements.namedItem("roomId") as HTMLSelectElement).value ||
           undefined,
@@ -52,7 +57,14 @@ export const TenantForm = ({ rooms }: Props) => {
           + Add Tenant
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent
+        onPointerDownOutside={(e) => {
+          const target = e.target as HTMLElement;
+          if (target.closest(".ndp-container")) {
+            e.preventDefault();
+          }
+        }}
+      >
         <DialogHeader>
           <DialogTitle>Add New Tenant</DialogTitle>
         </DialogHeader>
@@ -84,12 +96,7 @@ export const TenantForm = ({ rooms }: Props) => {
           </div>
           <div className="flex flex-col gap-1">
             <label className="text-sm font-medium">Move In Date</label>
-            <input
-              name="moveInDate"
-              type="date"
-              required
-              className="border rounded px-3 py-2"
-            />
+            <LazyNepaliDatepicker name="moveInDate" required />
           </div>
           <div className="flex flex-col gap-1">
             <label className="text-sm font-medium">

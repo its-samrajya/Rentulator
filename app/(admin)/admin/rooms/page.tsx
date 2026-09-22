@@ -1,4 +1,9 @@
+import { Metadata } from "next";
 import RoomList from "./_components/RoomList";
+
+export const metadata: Metadata = {
+  title: "Rooms",
+};
 
 const AdminRooms = async () => {
   return (

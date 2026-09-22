@@ -1,6 +1,11 @@
 import TenantList from "./_components/TenantList";
 import { TenantForm } from "./_components/TenantForm";
 import prisma from "@/lib/prisma";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Tenants",
+};
 
 const AdminTenants = async () => {
   const rooms = await prisma.room.findMany({

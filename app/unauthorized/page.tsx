@@ -1,3 +1,8 @@
+import type { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Unauthorized",
+};
+
 export default function UnauthorizedPage() {
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-2">

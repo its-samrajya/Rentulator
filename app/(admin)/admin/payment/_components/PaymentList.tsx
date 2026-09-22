@@ -11,6 +11,7 @@ import { Card } from "@/components/ui/card";
 import { getPayments } from "@/lib/queries/payments";
 import { Printer, Receipt } from "lucide-react";
 import Link from "next/link";
+import { formatNepaliDate } from "@/utils/nepaliDate";
 
 const PaymentList = async ({
   month,
@@ -80,7 +81,7 @@ const PaymentList = async ({
                   className="border-slate-100 transition-colors hover:bg-slate-50/70"
                 >
                   <TableCell className="px-3 py-3 font-medium text-slate-900">
-                    {new Date(payment.paidAt).toLocaleDateString()}
+                    {formatNepaliDate(payment.paidAt)}
                   </TableCell>
                   <TableCell className="px-3 py-3 text-slate-700">
                     {payment.invoice.tenant.name}

@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { getInvoicesByFilterType } from "@/lib/types";
 import { toast } from "react-toastify";
 import { Card } from "@/components/ui/card";
+import { formatNepaliDate } from "@/utils/nepaliDate";
 
 interface Props {
   invoice: getInvoicesByFilterType;
@@ -12,7 +13,7 @@ interface Props {
 const statusStyles: Record<string, string> = {
   PENDING: "bg-amber-50 text-amber-700 border-amber-200",
   PAID: "bg-emerald-50 text-emerald-700 border-emerald-200",
-  OVERDUE: "bg-rose-50 text-rose-700 border-rose-200",
+  PARTIAL: "bg-rose-50 text-rose-700 border-rose-200",
 };
 
 const InvoiceCard = ({ invoice }: Props) => {
@@ -25,7 +26,12 @@ const InvoiceCard = ({ invoice }: Props) => {
 
     const electricityDetails = invoice.electricBill
       .map(
-        (bill) => `Meter: ${bill.electricMeter?.meterNumber ?? "N\A"}
+        (
+          bill,
+        ) => `Your rent invoice for month ${formatNepaliDate(bill.toDate, "MMMM")}is ready.
+
+Electricity Details: 
+Meter: ${bill.electricMeter?.meterNumber ?? "N\A"}
 previousReading: ${bill.previousReading},
 currentReading: ${bill.currentReading},
 unitsConsumed: ${bill.unitsConsumed},
@@ -36,16 +42,13 @@ Electric Amount Payable: ${bill.totalAmount}
       .join("\n");
 
     const message = `Hi ${invoice.tenant.name},
-Your rent invoice is ready.
-
-Electricity Details: 
 ${electricityDetails}
 Total Payable Amount: Rs. ${invoice.totalAmount}
-Due Date: ${invoice.dueDate.toLocaleDateString()}
+Due Date: ${formatNepaliDate(invoice.dueDate)}
 
 Please make the payment by the due date. Thank you.`;
 
-    const whatsappUrl = `https://wa.me/${invoice.tenant.phone}?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/977${invoice.tenant.phone}?text=${encodeURIComponent(message)}`;
 
     window.open(whatsappUrl, "_blank");
   };
@@ -86,6 +89,16 @@ Please make the payment by the due date. Thank you.`;
       </div>
 
       <div className="mt-4 flex flex-col gap-2.5 text-sm">
+        {invoice.status === "PARTIAL" && (
+          <div className="flex justify-between">
+            <span className="text-slate-500">Remaining Amount</span>
+            <span className="font-medium text-rose-600">
+              Rs.
+              {invoice.totalAmount -
+                invoice.payments.reduce((sum, p) => sum + p.amount, 0)}
+            </span>
+          </div>
+        )}
         <div className="flex justify-between">
           <span className="text-slate-500">Rent Amount</span>
           <span className="font-medium text-slate-900">
@@ -96,7 +109,7 @@ Please make the payment by the due date. Thank you.`;
         <div className="flex justify-between">
           <span className="text-slate-500">Due Date</span>
           <span className="font-medium text-slate-900">
-            {invoice.dueDate.toLocaleDateString() || "not yet"}
+            {formatNepaliDate(invoice.dueDate) || "not yet"}
           </span>
         </div>
 
@@ -112,9 +125,7 @@ Please make the payment by the due date. Thank you.`;
                 </span>
 
                 <span className="text-sm font-medium text-slate-700">
-                  {bill.toDate.toLocaleDateString("default", {
-                    month: "long",
-                  })}
+                  {formatNepaliDate(bill.toDate, "MMMM")}
                 </span>
               </div>
 

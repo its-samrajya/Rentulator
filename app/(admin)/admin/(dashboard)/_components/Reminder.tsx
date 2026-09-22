@@ -10,11 +10,12 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Bell } from "lucide-react";
 import { getInvoices } from "@/lib/queries/invoice";
+import { formatNepaliDate } from "@/utils/nepaliDate";
 
 const statusStyles: Record<string, string> = {
   PENDING: "bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100",
   PAID: "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100",
-  OVERDUE: "bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100",
+  PARTIAL: "bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100",
 };
 
 const Reminder = async () => {
@@ -36,18 +37,18 @@ const Reminder = async () => {
         </div>
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="max-h-100 overflow-auto">
         <Table>
           <TableHeader>
             <TableRow className="border-slate-200 hover:bg-transparent">
               <TableHead className="h-10 px-3 text-xs font-semibold uppercase tracking-wide text-slate-500">
                 Tenant
               </TableHead>
-              <TableHead className="h-10 px-3 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                Property
-              </TableHead>
-              <TableHead className="h-10 px-3 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                Due
+              {/* <TableHead className="h-10 px-3 text-xs font-semibold uppercase tracking-wide text-slate-500"> */}
+              {/*   Property */}
+              {/* </TableHead> */}
+              <TableHead className="h-10 px-3 text-xs font-semibold tracking-wide text-slate-500">
+                DUE(Rs.)
               </TableHead>
               <TableHead className="h-10 px-3 text-xs font-semibold uppercase tracking-wide text-slate-500">
                 Due Date
@@ -76,14 +77,16 @@ const Reminder = async () => {
                   <TableCell className="px-3 py-3 font-medium text-slate-900">
                     {info.tenant.name}
                   </TableCell>
-                  <TableCell className="px-3 py-3 text-slate-600">
-                    {info.tenantId}
-                  </TableCell>
+                  {/* <TableCell className="px-3 py-3 text-slate-600"> */}
+                  {/*   {info.tenant.occupancies */}
+                  {/*     .map((room) => room.room.roomNumber) */}
+                  {/*     .join(", ")} */}
+                  {/* </TableCell> */}
                   <TableCell className="px-3 py-3 font-medium text-slate-700">
-                    {info.totalAmount}
+                    {info.totalAmount.toLocaleString()}
                   </TableCell>
                   <TableCell className="px-3 py-3 text-slate-500">
-                    {new Date(info.dueDate).toLocaleDateString()}
+                    {formatNepaliDate(info.dueDate)}
                   </TableCell>
                   <TableCell className="px-3 py-3 text-right">
                     <Badge

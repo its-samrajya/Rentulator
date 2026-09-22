@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
 import { getUnpaidInvoicesByTenantId } from "@/lib/queries/invoice";
@@ -5,6 +6,10 @@ import Info from "./_components/Info";
 import RentDetails from "./_components/RentDetails";
 import { redirect } from "next/navigation";
 import UnpaidInvoices from "./_components/UnpaidInvoices";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+};
 
 const Home = async () => {
   const session = await auth();

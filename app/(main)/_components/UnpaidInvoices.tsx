@@ -10,6 +10,7 @@ import {
 import { getSkippedUnpaidInvoicesByTenantId } from "@/lib/queries/invoice";
 import { LayoutList } from "lucide-react";
 import { PayButton } from "./PayButton";
+import { formatNepaliDate } from "@/utils/nepaliDate";
 
 interface Props {
   tenantId: string;
@@ -57,22 +58,14 @@ const UnpaidInvoices = async ({ tenantId }: Props) => {
               <>
                 <TableRow key={invoice.id} className="border-slate-100">
                   <TableCell className="font-medium text-slate-900">
-                    {invoice.electricBill[0].toDate.toLocaleDateString(
-                      "default",
-                      {
-                        month: "long",
-                      },
-                    )}
+                    {formatNepaliDate(invoice.electricBill[0].toDate, "MMMM")}
                   </TableCell>
                   <TableCell className="text-right">
                     Rs. {invoice.totalAmount}
                   </TableCell>
                   <TableCell className="text-right">{invoice.status}</TableCell>
                   <TableCell className="text-right">
-                    {new Date(invoice.dueDate).toLocaleDateString("default", {
-                      month: "long",
-                      year: "numeric",
-                    })}
+                    {formatNepaliDate(invoice.dueDate, "MMMM YYYY")}
                   </TableCell>
                   <TableCell className="text-right">
                     <PayButton

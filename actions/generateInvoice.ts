@@ -1,6 +1,7 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+import NepaliDate from "nepali-datetime";
 
 interface Props {
   tenantId: string;
@@ -55,9 +56,24 @@ export const generateInvoice = async ({ tenantId }: Props) => {
     );
     const totalAmount = totalRent + totalElectric;
 
-    const dueDate = new Date(pendingInvoice[0].toDate);
-    dueDate.setMonth(dueDate.getMonth() + 1);
-    dueDate.setDate(setting.dueDate);
+    // for english date:
+    // const dueDate = new Date(pendingInvoice[0].toDate);
+    // dueDate.setMonth(dueDate.getMonth() + 1);
+    // dueDate.setDate(setting.dueDate);
+
+    // for nepali date:
+    const nepaliDate = new NepaliDate(pendingInvoice[0].toDate);
+
+    let year = nepaliDate.getYear();
+    let month = nepaliDate.getMonth() + 2;
+
+    if (month > 12) {
+      month = 1;
+      year++;
+    }
+
+    const nepaliDueDate = new NepaliDate(`${year}/${month}/${setting.dueDate}`);
+    const dueDate = nepaliDueDate.getDateObject();
 
     await prisma.invoice.create({
       data: {

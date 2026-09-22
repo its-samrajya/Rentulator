@@ -25,7 +25,7 @@ export const createTenant = async (data: {
   name: string;
   phone: string;
   email?: string;
-  moveInDate: string;
+  moveInDate: Date;
   roomId?: string;
 }) => {
   const tenant = await prisma.tenant.create({
@@ -37,7 +37,7 @@ export const createTenant = async (data: {
         ? {
             create: {
               roomId: data.roomId,
-              moveInDate: new Date(data.moveInDate),
+              moveInDate: data.moveInDate,
             },
           }
         : undefined,

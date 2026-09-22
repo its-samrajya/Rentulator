@@ -1,16 +1,17 @@
 import {
   getAllPaidInvoices,
   getTotalExpectedCurrentMonth,
+  getTotalPendingInvoicesForStats,
 } from "@/lib/queries/invoice";
-import { getAllRoomsCount } from "@/lib/queries/rooms";
 import {
   CircleAlert,
   CircleCheck,
+  Receipt,
   TrendingUp,
-  Users,
   type LucideIcon,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { formatNepaliDate } from "@/utils/nepaliDate";
 
 interface DataType {
   topLabel: string;
@@ -29,27 +30,24 @@ const Stats = async () => {
       ? 0
       : invoices.reduce((sum, invoice) => sum + invoice.totalAmount, 0);
 
-  const paidInvoices = await getAllPaidInvoices();
-  const totalPaidInvoicesAmount =
-    paidInvoices.length === 0
-      ? 0
-      : paidInvoices.reduce((sum, invoice) => sum + invoice.totalAmount, 0);
-
+  const totalPaidInvoicesAmount = await getAllPaidInvoices();
+  // const totalPaidInvoicesAmount =
+  //   paidInvoices.length === 0
+  //     ? 0
+  //     : paidInvoices.reduce((sum, invoice) => sum + invoice.totalAmount, 0);
+  //
   const numberOfUnpaidInvoices = invoices.filter(
-    (invoice) => invoice.status === "PENDING",
+    (invoice) => invoice.status === "PENDING" || invoice.status === "PARTIAL",
   ).length;
 
-  const totalRooms = await getAllRoomsCount();
+  const totalPending = await getTotalPendingInvoicesForStats();
 
-  const monthLabel = new Date().toLocaleDateString("default", {
-    month: "long",
-    year: "numeric",
-  });
+  const monthLabel = formatNepaliDate(new Date(), "MMMM YYYY");
 
   const data: DataType[] = [
     {
       topLabel: "Total Expected",
-      amount: total.toString(),
+      amount: `Rs. ${total.toLocaleString()}`,
       endLabel: `For ${monthLabel}`,
       icon: TrendingUp,
       iconWrap: "bg-blue-50",
@@ -58,7 +56,7 @@ const Stats = async () => {
     },
     {
       topLabel: "Collected",
-      amount: totalPaidInvoicesAmount.toString(),
+      amount: `Rs. ${totalPaidInvoicesAmount.toLocaleString()}`,
       endLabel: `For ${monthLabel}`,
       icon: CircleCheck,
       iconWrap: "bg-emerald-50",
@@ -75,10 +73,10 @@ const Stats = async () => {
       accent: "from-rose-500/10",
     },
     {
-      topLabel: "Total Properties",
-      amount: totalRooms.toString(),
-      endLabel: "100% of Occupancy",
-      icon: Users,
+      topLabel: "Total Outstanding",
+      amount: `Rs. ${totalPending.toLocaleString()}`,
+      endLabel: "Pending Invoice Amount",
+      icon: Receipt,
       iconWrap: "bg-amber-50",
       iconColor: "text-amber-600",
       accent: "from-amber-500/10",

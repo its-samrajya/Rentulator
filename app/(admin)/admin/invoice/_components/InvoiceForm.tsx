@@ -1,6 +1,7 @@
 "use client";
 import { createElectricBill } from "@/actions/electricBillAction";
 import { Button } from "@/components/ui/button";
+import NepaliDate from "nepali-datetime";
 import {
   Dialog,
   DialogContent,
@@ -11,6 +12,7 @@ import {
 import { meterWithTenant } from "@/lib/types";
 import { useState, useTransition } from "react";
 import { toast } from "react-toastify";
+import LazyNepaliDatepicker from "@/components/LazyNepaliDatePicker";
 
 interface Prop {
   meters: meterWithTenant[];
@@ -24,7 +26,9 @@ const AddInvoiceButton = ({ meters }: Prop) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const meterId = formData.get("meterId") as string;
-    const readingDate = new Date(formData.get("readingDate") as string);
+    const bsDate = formData.get("readingDate") as string;
+    const nepaliDate = new NepaliDate(bsDate);
+    const readingDate = nepaliDate.getDateObject();
     const currentReading = parseInt(
       formData.get("currentReading") as string,
       10,
@@ -54,7 +58,14 @@ const AddInvoiceButton = ({ meters }: Prop) => {
           + Add Bills
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent
+        onPointerDownOutside={(e) => {
+          const target = e.target as HTMLElement;
+          if (target.closest(".ndp-container")) {
+            e.preventDefault();
+          }
+        }}
+      >
         <DialogHeader>
           <DialogTitle>Add new bills</DialogTitle>
         </DialogHeader>
@@ -87,12 +98,7 @@ const AddInvoiceButton = ({ meters }: Prop) => {
           </div>
           <div className="flex flex-col gap-1">
             <label className="text-sm font-medium">Reading Date</label>
-            <input
-              name="readingDate"
-              type="date"
-              required
-              className="border rounded px-3 py-2"
-            />
+            <LazyNepaliDatepicker name="readingDate" required />
           </div>
           <div className="flex flex-col gap-1">
             <label className="text-sm font-medium">Current Reading</label>

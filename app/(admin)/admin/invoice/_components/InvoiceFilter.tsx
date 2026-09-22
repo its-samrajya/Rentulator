@@ -15,8 +15,8 @@ const Filter = () => {
       value: "pending",
     },
     {
-      label: "Overdue",
-      value: "overdue",
+      label: "Partial",
+      value: "partial",
     },
     {
       label: "Paid",
