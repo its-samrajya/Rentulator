@@ -2,7 +2,7 @@ import { getInvoicesByFilter } from "@/lib/queries/invoice";
 import { Card } from "@/components/ui/card";
 import { FileText } from "lucide-react";
 import { InvoiceFilterStatus } from "@/lib/types";
-import InvoiceCard from "./InvoiceCard";
+import InvoiceTable from "./InvoiceTable";
 
 interface Props {
   status: InvoiceFilterStatus;
@@ -25,13 +25,7 @@ const InvoiceList = async ({ status }: Props) => {
     );
   }
 
-  return (
-    <div className="columns-1 gap-4 sm:columns-2 sm:gap-5 lg:columns-3 lg:gap-6">
-      {invoices.map((invoice) => (
-        <InvoiceCard key={invoice.id} invoice={invoice} />
-      ))}
-    </div>
-  );
+  return <InvoiceTable invoices={invoices} />;
 };
 
 export default InvoiceList;
