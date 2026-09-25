@@ -4,10 +4,11 @@ import AddInvoiceButton from "./_components/InvoiceForm";
 import { getAllMeters } from "@/lib/queries/meter";
 import GenerateButton from "./_components/GenerateAllInvoiceButton";
 import InvoiceList from "./_components/InvoiceList";
-import { InvoiceFilterStatus } from "@/lib/types";
+import { getCurrentNepaliYearMonth } from "@/utils/nepaliDate";
+import { getInvoiceFilterYears } from "@/lib/queries/invoice";
 
 interface Props {
-  searchParams: Promise<{ status?: string }>;
+  searchParams: Promise<{ year?: string; month?: string }>;
 }
 
 export const metadata: Metadata = {
@@ -16,11 +17,21 @@ export const metadata: Metadata = {
 
 const AdminInvoice = async ({ searchParams }: Props) => {
   const meters = await getAllMeters();
-  const { status: rawStatus } = await searchParams;
-  const status: InvoiceFilterStatus =
-    rawStatus === "paid" || rawStatus === "pending" || rawStatus === "partial"
-      ? rawStatus
-      : "all";
+  const { year: rawYear, month: rawMonth } = await searchParams;
+  const years = await getInvoiceFilterYears();
+  const current = getCurrentNepaliYearMonth();
+
+  const parsedYear = Number(rawYear);
+  const parsedMonth = Number(rawMonth);
+
+  const year =
+    Number.isInteger(parsedYear) && years.includes(parsedYear)
+      ? parsedYear
+      : current.year;
+  const month =
+    Number.isInteger(parsedMonth) && parsedMonth >= 1 && parsedMonth <= 12
+      ? parsedMonth
+      : current.month;
 
   return (
     <div className="min-h-full w-full bg-slate-100/60">
@@ -40,10 +51,10 @@ const AdminInvoice = async ({ searchParams }: Props) => {
           </div>
         </div>
         <div className="mt-4">
-          <Filter />
+          <Filter years={years} year={year} month={month} />
         </div>
         <div className="mt-6">
-          <InvoiceList status={status} />
+          <InvoiceList year={year} month={month} />
         </div>
       </div>
     </div>

@@ -4,12 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { TableRow, TableCell } from "@/components/ui/table";
 import { ChevronDown, ChevronUp, Share2 } from "lucide-react";
-import { getInvoicesByFilterType } from "@/lib/types";
+import { getInvoicesByMonthType } from "@/lib/types";
 import { formatNepaliDate } from "@/utils/nepaliDate";
 import { toast } from "react-toastify";
 
 interface Props {
-  invoice: getInvoicesByFilterType;
+  invoice: getInvoicesByMonthType;
 }
 
 const statusStyles: Record<string, string> = {
@@ -49,7 +49,7 @@ const InvoiceTableRow = ({ invoice }: Props) => {
     invoice.totalAmount -
     invoice.payments.reduce((sum, payment) => sum + payment.amount, 0);
 
-  const handleRemind = (invoice: getInvoicesByFilterType) => {
+  const handleRemind = (invoice: getInvoicesByMonthType) => {
     const phone = invoice.tenant.phone;
     if (!phone) {
       toast.error("This tenant does not have a phone number");

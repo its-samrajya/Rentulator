@@ -1,4 +1,4 @@
-import { PaymentStatus, Prisma } from "@/app/generated/prisma/client";
+import { Prisma } from "@/app/generated/prisma/client";
 import {
   getInvoicesByFilter,
   getUnpaidInvoicesByTenantId,
@@ -40,12 +40,10 @@ export type getAllRoomsWithOccupancyType = Awaited<
   ReturnType<typeof getAllRoomsWithOccupancy>
 >;
 
-export type InvoiceFilterStatus = "all" | Lowercase<keyof typeof PaymentStatus>;
-
 export type getAllRoomsType = Awaited<ReturnType<typeof getAllRooms>>[number];
 
 export type onlyGetAllMetersType = Awaited<ReturnType<typeof onlyGetAllMeters>>;
 
-export type getInvoicesByFilterType = Awaited<
+export type getInvoicesByMonthType = Awaited<
   ReturnType<typeof getInvoicesByFilter>
 >[number];

@@ -29,7 +29,7 @@ export default async function RecentPayments() {
         <div className="max-h-100 overflow-x-hidden overflow-y-auto divide-y divide-slate-100">
           {payment.map((payment) => (
             <div
-              key={payment.invoice.tenant.name}
+              key={payment.id}
               className="flex items-start justify-between gap-3 py-3.5 transition-colors hover:bg-slate-50/50 px-3 rounded-md"
             >
               <div className="min-w-0">

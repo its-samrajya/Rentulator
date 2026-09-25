@@ -6,11 +6,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getInvoicesByFilterType } from "@/lib/types";
+import { getInvoicesByMonthType } from "@/lib/types";
 import InvoiceTableRow from "./InvoiceTableRow";
 
 interface Props {
-  invoices: getInvoicesByFilterType[];
+  invoices: getInvoicesByMonthType[];
 }
 
 const InvoiceTable = ({ invoices }: Props) => {
