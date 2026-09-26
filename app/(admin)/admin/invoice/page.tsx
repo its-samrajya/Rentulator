@@ -4,7 +4,7 @@ import AddInvoiceButton from "./_components/InvoiceForm";
 import { getAllMeters } from "@/lib/queries/meter";
 import GenerateButton from "./_components/GenerateAllInvoiceButton";
 import InvoiceList from "./_components/InvoiceList";
-import { getCurrentNepaliYearMonth } from "@/utils/nepaliDate";
+import { getPreviousNepaliYearMonth } from "@/utils/nepaliDate";
 import { getInvoiceFilterYears } from "@/lib/queries/invoice";
 
 interface Props {
@@ -19,7 +19,7 @@ const AdminInvoice = async ({ searchParams }: Props) => {
   const meters = await getAllMeters();
   const { year: rawYear, month: rawMonth } = await searchParams;
   const years = await getInvoiceFilterYears();
-  const current = getCurrentNepaliYearMonth();
+  const fallback = getPreviousNepaliYearMonth();
 
   const parsedYear = Number(rawYear);
   const parsedMonth = Number(rawMonth);
@@ -27,11 +27,11 @@ const AdminInvoice = async ({ searchParams }: Props) => {
   const year =
     Number.isInteger(parsedYear) && years.includes(parsedYear)
       ? parsedYear
-      : current.year;
+      : fallback.year;
   const month =
     Number.isInteger(parsedMonth) && parsedMonth >= 1 && parsedMonth <= 12
       ? parsedMonth
-      : current.month;
+      : fallback.month;
 
   return (
     <div className="min-h-full w-full bg-slate-100/60">

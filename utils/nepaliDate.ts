@@ -17,6 +17,19 @@ export const getCurrentNepaliYearMonth = (): {
   return { year: today.getYear(), month: today.getMonth() + 1 };
 };
 
+export const getPreviousNepaliYearMonth = (): {
+  year: number;
+  month: number;
+} => {
+  const today = new NepaliDate(new Date());
+  const year = today.getYear();
+  const month = today.getMonth() + 1;
+  if (month === 1) {
+    return { year: year - 1, month: 12 };
+  }
+  return { year, month: month - 1 };
+};
+
 export const getNepaliMonthDateRange = (
   year: number,
   month: number,
