@@ -1,50 +1,64 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { NEPALI_MONTH_NAMES } from "@/utils/nepaliDate";
 
-const Filter = () => {
-  const filters = [
-    {
-      label: "All",
-      value: "all",
-    },
-    {
-      label: "Pending",
-      value: "pending",
-    },
-    {
-      label: "Partial",
-      value: "partial",
-    },
-    {
-      label: "Paid",
-      value: "paid",
-    },
-  ];
+interface Props {
+  years: number[];
+  year: number;
+  month: number;
+}
+
+const InvoiceFilters = ({ years, year, month }: Props) => {
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const current = searchParams.get("status") || "all";
+
+  const navigate = (key: "year" | "month", value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set(key, value);
+    router.push(`?${params.toString()}`);
+  };
 
   return (
-    <div className="flex gap-2 overflow-x-auto border-b border-slate-200 pb-2 sm:gap-4">
-      {filters.map((filter, index) => (
-        <Button
-          asChild
-          variant="link"
-          key={index}
-          className={cn(
-            "h-auto shrink-0 cursor-pointer px-2 py-1 text-sm font-medium outline-none ring-offset-background transition-colors hover:no-underline",
-            current === filter.value
-              ? "text-rose-700 underline-offset-4 hover:text-rose-700"
-              : "text-slate-500 hover:text-slate-900",
-          )}
-        >
-          <Link href={`invoice?status=${filter.value}`}>{filter.label}</Link>
-        </Button>
-      ))}
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+      <label className="text-sm font-medium text-slate-700">Year</label>
+      <Select value={String(year)} onValueChange={(v) => navigate("year", v)}>
+        <SelectTrigger className="w-full sm:w-32">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          {years.map((y) => (
+            <SelectItem key={y} value={String(y)}>
+              {y}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+
+      <label className="text-sm font-medium text-slate-700">Month</label>
+      <Select
+        value={String(month)}
+        onValueChange={(v) => navigate("month", v)}
+      >
+        <SelectTrigger className="w-full sm:w-40">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          {NEPALI_MONTH_NAMES.map((name, index) => (
+            <SelectItem key={name} value={String(index + 1)}>
+              {name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
     </div>
   );
 };
 
-export default Filter;
+export default InvoiceFilters;

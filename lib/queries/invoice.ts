@@ -1,7 +1,9 @@
-import { PaymentStatus } from "@/app/generated/prisma/enums";
 import prisma from "../prisma";
-import { InvoiceFilterStatus } from "../types";
 import NepaliDate from "nepali-datetime";
+import {
+  getCurrentNepaliYearMonth,
+  getNepaliMonthDateRange,
+} from "@/utils/nepaliDate";
 
 export const getInvoices = async () => {
   const invoices = await prisma.invoice.findMany({
@@ -22,15 +24,22 @@ export const getInvoices = async () => {
   return invoices;
 };
 
-export const getInvoicesByFilter = async (status: InvoiceFilterStatus) => {
+export const getInvoicesByFilter = async (
+  nepaliYear: number,
+  nepaliMonth: number,
+) => {
+  const { start, end } = getNepaliMonthDateRange(nepaliYear, nepaliMonth);
   const invoices = await prisma.invoice.findMany({
-    where:
-      status !== "all"
-        ? {
-            status:
-              PaymentStatus[status.toUpperCase() as keyof typeof PaymentStatus],
-          }
-        : undefined,
+    where: {
+      electricBill: {
+        some: {
+          toDate: {
+            gte: start,
+            lt: end,
+          },
+        },
+      },
+    },
     orderBy: {
       createdAt: "desc",
     },
@@ -54,6 +63,22 @@ export const getInvoicesByFilter = async (status: InvoiceFilterStatus) => {
     },
   });
   return invoices;
+};
+
+export const getInvoiceFilterYears = async (): Promise<number[]> => {
+  const currentYear = getCurrentNepaliYearMonth().year;
+  const minBill = await prisma.electricBill.aggregate({
+    _min: { toDate: true },
+  });
+  if (!minBill._min.toDate) {
+    return [currentYear];
+  }
+  const minYear = new NepaliDate(minBill._min.toDate).getYear();
+  const years: number[] = [];
+  for (let year = currentYear; year >= Math.min(minYear, currentYear); year--) {
+    years.push(year);
+  }
+  return years;
 };
 
 export const getPayments = async () => {
