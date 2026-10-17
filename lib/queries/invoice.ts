@@ -105,6 +105,22 @@ export const getPayments = async () => {
 	return payment;
 };
 
+export const getRecentPayments = async (limit = 8) => {
+	return prisma.payment.findMany({
+		orderBy: { paidAt: "desc" },
+		take: limit,
+		select: {
+			id: true,
+			amount: true,
+			paidAt: true,
+			note: true,
+			invoice: {
+				select: { tenant: { select: { name: true } } },
+			},
+		},
+	});
+};
+
 export const getUnpaidInvoicesByTenantId = async (tenantId: string) => {
 	const unpaidInvoices = await prisma.invoice.findMany({
 		where: {

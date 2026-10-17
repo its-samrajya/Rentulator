@@ -12,6 +12,7 @@ import { Bell } from "lucide-react";
 import { getAttentionInvoices } from "@/lib/queries/invoice";
 import { formatNepaliDate } from "@/utils/nepaliDate";
 import { getInvoiceMeta } from "@/utils/getInvoiceUtils";
+import Link from "next/link";
 
 const statusStyles: Record<string, string> = {
 	PENDING: "bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100",
@@ -36,6 +37,12 @@ const Reminder = async () => {
 						Invoices awaiting payment or action
 					</p>
 				</div>
+				<Link
+					href="/admin/invoice"
+					className="ml-auto text-xs font-medium text-slate-400 transition-colors hover:text-slate-900"
+				>
+					View all →
+				</Link>
 			</div>
 
 			<div className="max-h-100 overflow-auto">
