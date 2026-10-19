@@ -49,3 +49,20 @@ export const getPaymentsByTenant = async (tenantId: string) => {
 	});
 	return payments;
 };
+
+export const getRecentPaymentByTenant = async (tenantId: string) => {
+	return prisma.payment.findMany({
+		where: {
+			invoice: {
+				tenantId: tenantId,
+			},
+		},
+		take: 4,
+		select: {
+			id: true,
+			amount: true,
+			paidAt: true,
+			note: true,
+		},
+	});
+};
