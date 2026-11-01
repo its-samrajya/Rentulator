@@ -28,3 +28,7 @@ Supports Nepali dates (BS).
 - Auth.js
 - Resend (emails)
 - eSewa (payments)
+
+## Screenshots
+
+Coming soon...
