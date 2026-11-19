@@ -41,21 +41,19 @@ const Home = async () => {
 	const getRecentPayments = await getRecentPaymentByTenant(tenant.id);
 
 	return (
-		<div className="min-h-full w-full bg-slate-100/60">
-			<div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
-				<Info
-					session={session}
-					tenant={tenant}
-					unpaidInvoices={unpaidInvoices}
-					totalPendingAmount={totalPendingAmount}
-				/>
-				<RentDetails
-					unpaidInvoices={unpaidInvoices}
-					tenant={tenant}
-					payments={getRecentPayments}
-				/>
-				<UnpaidInvoices tenantId={tenant.id} />
-			</div>
+		<div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-10">
+			<Info
+				session={session}
+				tenant={tenant}
+				unpaidInvoices={unpaidInvoices}
+				totalPendingAmount={totalPendingAmount}
+			/>
+			<RentDetails
+				unpaidInvoices={unpaidInvoices}
+				tenant={tenant}
+				payments={getRecentPayments}
+			/>
+			<UnpaidInvoices tenantId={tenant.id} />
 		</div>
 	);
 };

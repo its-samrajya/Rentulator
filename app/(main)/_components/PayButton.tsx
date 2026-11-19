@@ -35,8 +35,8 @@ export const PayButton = ({ invoiceId, amount }: Props) => {
     <Button
       onClick={handlePay}
       disabled={isPaying}
-      variant="destructive"
       size="sm"
+      className="h-11 rounded-lg px-4 font-medium shadow-none lg:h-9"
     >
       {isPaying ? "Processing..." : "Pay now"}
     </Button>
