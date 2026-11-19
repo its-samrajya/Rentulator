@@ -4,11 +4,12 @@ import { Button } from "@/components/ui/button";
 import { submitToEsewa } from "@/lib/submitToEsewa";
 import { TenantWithRooms, unpaidInvoicesType } from "@/lib/types";
 import { formatNepaliDate } from "@/utils/nepaliDate";
-import { Zap } from "lucide-react";
+import { CalendarDays, MessageCircle, ReceiptText, Zap } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import RecentPayments from "./RecentPayments";
+import { SectionCard, SectionHeader } from "./ui/section-card";
 
 const LANDLORD_NAME = "Samrajya Bhari";
 const LANDLORD_PHONE_DISPLAY = "+977 9817511743";
@@ -61,160 +62,161 @@ const RentDetails = ({ unpaidInvoices, tenant, payments }: Props) => {
 	};
 
 	return (
-		<div className="mt-4 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-			<div className="bg-white flex-1 rounded-lg p-4 shadow-sm sm:p-5">
-				<div className="border-b border-slate-200 pb-3 mb-4">
-					<h1 className="text-blue-900 font-medium">
-						Current Month Rent Details
-					</h1>
+		<div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1.65fr)_minmax(0,1fr)] lg:items-start xl:gap-6">
+			<SectionCard className="p-5 sm:p-6">
+				<SectionHeader icon={ReceiptText} title="Current Month Rent Details" />
+				<div className="mt-5 flex items-baseline justify-between gap-4 pb-3">
+					<p className="text-sm text-muted-foreground">Room Amount</p>
+					<p className="font-mono text-sm font-semibold tabular-nums">
+						Rs.{totalRent}
+					</p>
 				</div>
-				<div className="flex flex-col gap-3">
-					<div className="flex justify-between">
-						<p>Room Amount</p>
-						<p>Rs.{totalRent}</p>
-					</div>
 
-					{latestInvoice ? (
-						<>
-							<div className="flex justify-between">
-								<p className="text-pink-700 font-medium">Month</p>
-								<p className="text-xl font-bold">
-									{billDate ? formatNepaliDate(billDate, "MMMM") : "—"}
-								</p>
-							</div>
-
-							{latestInvoice.electricBill.map((bill) => (
-								<div
-									key={bill.id}
-									className="mt-2 bg-linear-to-r from-slate-50 to-blue-50/30 rounded-xl p-4 border border-slate-100"
-								>
-									<div className="flex items-center gap-2 mb-3">
-										<div className="w-6 h-6 rounded-md bg-yellow-100 flex items-center justify-center">
-											<Zap size={12} className="text-yellow-600" />
-										</div>
-										<span className="text-sm font-medium text-slate-700">
-											Meter_No: {bill.electricMeter?.meterNumber}
-										</span>
-									</div>
-
-									<div className="grid grid-cols-2 gap-x-6 gap-y-2">
-										<div className="flex justify-between">
-											<span className="text-xs text-slate-500 truncate">
-												Current Reading
-											</span>
-											<span className="text-xs font-medium text-slate-700">
-												{bill.currentReading}
-											</span>
-										</div>
-										<div className="flex justify-between">
-											<span className="text-xs text-slate-500 truncate">
-												Previous Reading
-											</span>
-											<span className="text-xs font-medium text-slate-700">
-												{bill.previousReading}
-											</span>
-										</div>
-										<div className="flex justify-between">
-											<span className="text-xs text-slate-500 truncate">
-												Unit Consumed
-											</span>
-											<span className="text-xs font-medium text-slate-700">
-												{bill.unitsConsumed}
-											</span>
-										</div>
-										<div className="flex justify-between">
-											<span className="text-xs text-slate-500 truncate">
-												Rate Per Unit
-											</span>
-											<span className="text-xs font-medium text-slate-700">
-												Rs.{bill.ratePerUnit}
-											</span>
-										</div>
-									</div>
-
-									<div className="mt-3 pt-2 border-t border-slate-200/70 flex justify-between items-center">
-										<span className="text-xs text-slate-500">
-											Electric Amount
-										</span>
-										<span className="text-sm font-bold text-slate-800">
-											Rs.{bill.totalAmount}
-										</span>
-									</div>
-								</div>
-							))}
-
-							<div className="flex justify-between mt-3">
-								<p className="text-primary font-medium">Total Amount</p>
-								<p className="text-xl font-bold">
-									Rs.{latestInvoice.totalAmount}
-								</p>
-							</div>
-
-							<div className="flex justify-between items-center">
-								<div className="text-primary font-medium">Due Date</div>
-								<div className="text-purple-700 bg-purple-50 rounded-full px-3 py-1 font-medium text-sm">
-									{latestInvoice.dueDate
-										? formatNepaliDate(latestInvoice.dueDate)
-										: "—"}
-								</div>
-							</div>
-
-							<div className="bg-rose-50 rounded-lg p-4 border border-rose-100">
-								<p className="text-rose-700 font-medium">
-									Recent balance to be paid
-								</p>
-								<div className="flex flex-col gap-3 mt-2 sm:flex-row sm:items-center sm:justify-between">
-									<p className="text-rose-700 font-bold text-2xl sm:text-3xl">
-										Rs.{latestInvoice.totalAmount}
-									</p>
-									<Button
-										onClick={handlePay}
-										variant="destructive"
-										className="w-full sm:w-auto"
-										disabled={isPaying}
-									>
-										{isPaying ? "Redirecting..." : "Pay now"}
-									</Button>
-								</div>
-							</div>
-						</>
-					) : (
-						<div className="mt-2 rounded-lg border border-dashed border-slate-200 p-6 text-center">
-							<p className="font-medium text-slate-700">
-								No unpaid invoice right now
-							</p>
-							<p className="mt-1 text-sm text-slate-500">
-								Your electricity bill and total will appear here once your
-								landlord generates this month&apos;s invoice.
+				{latestInvoice ? (
+					<>
+						<div className="flex items-center justify-between gap-4 border-t border-border/60 py-3">
+							<p className="text-sm text-muted-foreground">Month</p>
+							<p className="text-lg font-semibold tracking-tight">
+								{billDate ? formatNepaliDate(billDate, "MMMM") : "—"}
 							</p>
 						</div>
-					)}
-				</div>
-			</div>
+
+						{latestInvoice.electricBill.map((bill) => (
+							<div
+								key={bill.id}
+								className="my-3 rounded-xl border border-border/70 bg-muted/40 p-4"
+							>
+								<div className="flex items-center gap-2.5">
+									<span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300">
+										<Zap className="size-4" aria-hidden="true" />
+									</span>
+									<span className="min-w-0 text-sm font-medium text-foreground">
+										Meter_No:{" "}
+										<span className="font-mono text-muted-foreground">
+											{bill.electricMeter?.meterNumber}
+										</span>
+									</span>
+								</div>
+
+								<dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3">
+									<div>
+										<dt className="text-xs text-muted-foreground">
+											Current Reading
+										</dt>
+										<dd className="mt-0.5 font-mono text-sm font-medium tabular-nums">
+											{bill.currentReading}
+										</dd>
+									</div>
+									<div>
+										<dt className="text-xs text-muted-foreground">
+											Previous Reading
+										</dt>
+										<dd className="mt-0.5 font-mono text-sm font-medium tabular-nums">
+											{bill.previousReading}
+										</dd>
+									</div>
+									<div>
+										<dt className="text-xs text-muted-foreground">
+											Unit Consumed
+										</dt>
+										<dd className="mt-0.5 font-mono text-sm font-medium tabular-nums">
+											{bill.unitsConsumed}
+										</dd>
+									</div>
+									<div>
+										<dt className="text-xs text-muted-foreground">
+											Rate Per Unit
+										</dt>
+										<dd className="mt-0.5 font-mono text-sm font-medium tabular-nums">
+											Rs.{bill.ratePerUnit}
+										</dd>
+									</div>
+								</dl>
+
+								<div className="mt-4 flex items-center justify-between gap-4 border-t border-border/60 pt-3">
+									<span className="text-xs text-muted-foreground">
+										Electric Amount
+									</span>
+									<span className="font-mono text-sm font-semibold tabular-nums">
+										Rs.{bill.totalAmount}
+									</span>
+								</div>
+							</div>
+						))}
+
+						<div className="flex items-baseline justify-between gap-4 border-t border-border/60 py-3">
+							<p className="text-sm font-medium">Total Amount</p>
+							<p className="font-mono text-xl font-semibold tabular-nums">
+								Rs.{latestInvoice.totalAmount}
+							</p>
+						</div>
+
+						<div className="flex items-center justify-between gap-4 border-t border-border/60 py-3">
+							<p className="text-sm font-medium">Due Date</p>
+							<span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1 text-sm font-medium text-muted-foreground">
+								<CalendarDays className="size-3.5" aria-hidden="true" />
+								{latestInvoice.dueDate
+									? formatNepaliDate(latestInvoice.dueDate)
+									: "—"}
+							</span>
+						</div>
+
+						<div className="mt-4 rounded-xl border border-primary/20 bg-primary/5 p-4 sm:p-5">
+							<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+								<div className="min-w-0">
+									<p className="text-sm font-medium text-foreground">
+										Recent balance to be paid
+									</p>
+									<p className="mt-1 font-mono text-2xl font-semibold tracking-tight tabular-nums sm:text-3xl">
+										<span className="text-base font-medium">Rs.</span>
+										{latestInvoice.totalAmount}
+									</p>
+								</div>
+								<Button
+									onClick={handlePay}
+									size="lg"
+									className="h-11 w-full rounded-xl px-6 sm:w-auto"
+									disabled={isPaying}
+								>
+									{isPaying ? "Redirecting..." : "Pay now"}
+								</Button>
+							</div>
+						</div>
+					</>
+				) : (
+					<div className="mt-2 rounded-xl border border-dashed border-border p-6 text-center">
+						<p className="font-medium text-foreground">
+							No unpaid invoice right now
+						</p>
+						<p className="mx-auto mt-1 max-w-sm text-sm text-muted-foreground">
+							Your electricity bill and total will appear here once your
+							landlord generates this month&apos;s invoice.
+						</p>
+					</div>
+				)}
+			</SectionCard>
 
 			{/* Right column: Landlord Contact + Recent Payments stacked */}
-			<div className="flex flex-1 flex-col gap-4">
-				<div className="bg-white rounded-lg p-4 shadow-sm sm:p-5">
-					<div className="border-b border-slate-200 pb-3 mb-4">
-						<h1 className="text-blue-900 font-medium">Landlord Contact</h1>
-					</div>
-					<div className="flex gap-3 items-center">
-						<div className="rounded-full p-2 size-10 flex items-center justify-center bg-slate-100 border">
-							<span>SM</span>
+			<div className="grid gap-4">
+				<SectionCard className="p-5 sm:p-6">
+					<SectionHeader icon={MessageCircle} title="Landlord Contact" />
+					<div className="mt-5 flex items-center gap-3">
+						<div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-muted text-sm font-semibold text-muted-foreground ring-1 ring-border">
+							SM
 						</div>
-						<div className="flex flex-col">
-							<span className="font-bold text-xl text-primary">
+						<div className="min-w-0">
+							<p className="truncate text-base font-semibold text-primary">
 								{LANDLORD_NAME}
-							</span>
-							<span className="text-slate-400 text-sm">
+							</p>
+							<p className="truncate font-mono text-sm text-muted-foreground">
 								{LANDLORD_PHONE_DISPLAY}
-							</span>
+							</p>
 						</div>
 					</div>
 					<Button
-						variant="ghost"
+						variant="outline"
 						asChild
-						className="border mt-4 w-full cursor-pointer border-blue-500 rounded-md p-2 text-blue-500 hover:text-blue-600"
+						className="mt-4 h-11 w-full cursor-pointer rounded-xl border-primary/30 text-primary hover:bg-primary/5 hover:text-primary"
 					>
 						<Link
 							target="_blank"
@@ -224,7 +226,7 @@ const RentDetails = ({ unpaidInvoices, tenant, payments }: Props) => {
 							Message on Whatsapp
 						</Link>
 					</Button>
-				</div>
+				</SectionCard>
 
 				<RecentPayments payments={payments} />
 			</div>

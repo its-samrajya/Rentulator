@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { verifyEsewaPayment } from "@/lib/verifyEsewaPayment";
+import { cn } from "@/lib/utils";
 
 interface SuccessPageProps {
   searchParams: Promise<{ method?: string; data?: string }>;
@@ -31,35 +32,43 @@ export default async function PaymentSuccess({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <div className="flex justify-center mb-4">
+    <div className="flex min-h-[calc(100svh-3.5rem)] items-center justify-center px-4 py-10 sm:px-6 lg:min-h-[calc(100svh-4rem)] lg:py-16">
+      <Card className="w-full max-w-md gap-0 rounded-2xl border-border/70 bg-card p-6 text-center shadow-sm sm:p-8">
+        <CardHeader className="p-0">
+          <div
+            className={cn(
+              "mx-auto flex size-16 items-center justify-center rounded-full",
+              verified
+                ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-300"
+                : "bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-300",
+            )}
+          >
             {verified ? (
-              <CheckCircle className="w-16 h-16 text-green-500" />
+              <CheckCircle className="size-8" aria-hidden="true" />
             ) : (
-              <XCircle className="w-16 h-16 text-red-500" />
+              <XCircle className="size-8" aria-hidden="true" />
             )}
           </div>
           <CardTitle
-            className={`text-center text-2xl font-bold ${
-              verified ? "text-green-700" : "text-red-700"
-            }`}
+            className={cn(
+              "mt-5 text-balance text-2xl font-semibold tracking-tight",
+              verified
+                ? "text-emerald-700 dark:text-emerald-300"
+                : "text-rose-700 dark:text-rose-300",
+            )}
           >
             {verified ? "Payment Successful!" : "Payment Verification Failed"}
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="text-center text-gray-600">
-            <p className="mb-2">
-              {verified
-                ? "Thank you for your payment. Your transaction has been completed successfully."
-                : "We couldn't verify this payment. Please contact support if you believe this is an error."}
-            </p>
-          </div>
+        <CardContent className="mt-3 p-0">
+          <p className="text-pretty text-sm leading-6 text-muted-foreground">
+            {verified
+              ? "Thank you for your payment. Your transaction has been completed successfully."
+              : "We couldn't verify this payment. Please contact support if you believe this is an error."}
+          </p>
         </CardContent>
-        <CardFooter className="flex flex-col gap-4">
-          <Button variant="outline" asChild className="w-full">
+        <CardFooter className="mt-8 flex flex-col gap-4 p-0">
+          <Button variant="outline" asChild className="h-11 w-full rounded-xl">
             <Link href="/">Return to Home</Link>
           </Button>
         </CardFooter>

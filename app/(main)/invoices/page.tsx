@@ -13,6 +13,10 @@ import { getPaidInvoicesByTenantId } from "@/lib/queries/invoice";
 import { formatNepaliDate } from "@/utils/nepaliDate";
 import { LayoutList } from "lucide-react";
 import { Fragment } from "react";
+import { EmptyState } from "../_components/ui/empty-state";
+import { PageHeader } from "../_components/ui/page-header";
+import { SectionCard } from "../_components/ui/section-card";
+import { StatusBadge } from "../_components/ui/status-badge";
 
 export const metadata: Metadata = {
   title: "Invoices",
@@ -22,56 +26,48 @@ const InvoicesPage = async () => {
   const tenantId = await getCurrentTenant();
   if (!tenantId)
     return (
-      <p className="mt-6 text-center text-base sm:text-lg text-gray-500">
-        You are not authorized
-      </p>
+      <div className="mx-auto flex w-full max-w-7xl items-center justify-center px-4 py-16 sm:px-6 lg:px-8">
+        <p className="text-center text-base text-muted-foreground sm:text-lg">
+          You are not authorized
+        </p>
+      </div>
     );
 
   const paidInvoices = await getPaidInvoicesByTenantId(tenantId.id);
 
   if (paidInvoices.length === 0) {
     return (
-      <div className="px-4 sm:px-6 lg:px-0 max-w-7xl lg:mx-auto flex text-lg sm:text-2xl justify-center border-t border-gray-100 items-center gap-4 mt-6 py-6 text-gray-400">
-        <LayoutList className="h-6 w-6 sm:h-7 sm:w-7 flex-shrink-0" />
-        <p>There is no any unpaid invoices</p>
+      <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-10">
+        <EmptyState
+          icon={LayoutList}
+          title="There is no any unpaid invoices"
+        />
       </div>
     );
   }
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8 max-w-7xl lg:mx-auto mt-6">
-      <h2 className="font-semibold text-primary text-2xl sm:text-3xl mb-4 sm:mb-8 mt-2">
-        Paid Invoices
-      </h2>
+    <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-10">
+      <PageHeader title="Paid Invoices" />
 
-      <div className="overflow-x-auto -mx-4 sm:-mx-6 lg:mx-0">
-        <div className="px-4 sm:px-6 lg:px-0">
-          <Table className="w-full border-collapse text-xs sm:text-sm min-w-full">
-            <TableCaption className="text-gray-500">
+      <SectionCard>
+        <div className="hidden lg:block">
+          <Table>
+            <TableCaption className="pb-4 text-xs text-muted-foreground">
               A list of your paid invoices.
             </TableCaption>
-
-            <TableHeader>
-              <TableRow className="border-b border-gray-200">
-                <TableHead className="py-3 px-2 sm:px-4 text-left min-w-24">
+            <TableHeader className="bg-muted/40">
+              <TableRow className="border-border/60 hover:bg-transparent">
+                <TableHead className="h-10 px-4 text-xs font-medium text-muted-foreground">
                   Month
                 </TableHead>
-                <TableHead
-                  colSpan={2}
-                  className="py-3 px-2 sm:px-4 text-right min-w-28"
-                >
+                <TableHead className="h-10 px-4 text-right text-xs font-medium text-muted-foreground">
                   Total
                 </TableHead>
-                <TableHead
-                  colSpan={2}
-                  className="py-3 px-2 sm:px-4 text-right min-w-32"
-                >
+                <TableHead className="h-10 px-4 text-right text-xs font-medium text-muted-foreground">
                   PaidAt
                 </TableHead>
-                <TableHead
-                  colSpan={2}
-                  className="py-3 px-2 sm:px-4 text-right min-w-24"
-                >
+                <TableHead className="h-10 px-4 text-right text-xs font-medium text-muted-foreground">
                   Status
                 </TableHead>
               </TableRow>
@@ -80,61 +76,49 @@ const InvoicesPage = async () => {
             <TableBody>
               {paidInvoices.map((invoice) => (
                 <Fragment key={invoice.id}>
-                  <TableRow className="border-b border-gray-100 align-top">
-                    <TableCell className="font-medium py-4 px-2 sm:px-4 text-left">
+                  <TableRow className="border-border/60 hover:bg-muted/30">
+                    <TableCell className="px-4 py-4 font-medium text-foreground">
                       {formatNepaliDate(invoice.electricBill[0].toDate, "MMMM")}
                     </TableCell>
-
-                    <TableCell
-                      colSpan={2}
-                      className="text-right py-4 px-2 sm:px-4 font-semibold"
-                    >
+                    <TableCell className="px-4 py-4 text-right font-mono text-sm font-semibold tabular-nums">
                       Rs. {invoice.totalAmount}
                     </TableCell>
-                    <TableCell
-                      colSpan={2}
-                      className="text-right py-4 px-2 sm:px-4 font-semibold"
-                    >
+                    <TableCell className="px-4 py-4 text-right text-sm text-muted-foreground">
                       {formatNepaliDate(invoice.payments[0]?.paidAt)}
                     </TableCell>
-
-                    <TableCell
-                      colSpan={2}
-                      className="text-right py-4 px-2 sm:px-4"
-                    >
-                      <span className="inline-flex items-center rounded-full border border-green-200 bg-green-50 px-2 sm:px-3 py-1 text-[10px] sm:text-sm font-medium text-green-700 whitespace-nowrap">
-                        {invoice.status}
-                      </span>
+                    <TableCell className="px-4 py-4 text-right">
+                      <StatusBadge tone="paid">{invoice.status}</StatusBadge>
                     </TableCell>
                   </TableRow>
 
                   {invoice.electricBill.map((bill) => (
                     <TableRow
                       key={bill.id}
-                      className="border-b border-gray-100 text-xs sm:text-sm text-gray-500"
+                      className="border-border/40 bg-muted/30 text-xs text-muted-foreground hover:bg-muted/30"
                     >
-                      <TableCell className="px-2 sm:px-4 py-2 leading-tight">
-                        <div className="break-words">
-                          Meter:{" "}
-                          <span className="font-medium text-gray-700 inline break-words">
-                            {bill.electricMeter?.meterNumber}
-                          </span>
-                        </div>
+                      <TableCell className="py-2.5 pr-4 pl-8">
+                        Meter:{" "}
+                        <span className="font-mono text-foreground">
+                          {bill.electricMeter?.meterNumber}
+                        </span>
                       </TableCell>
-                      <TableCell className="px-2 sm:px-4 py-2 text-right leading-tight">
-                        <div className="whitespace-nowrap">
-                          Prev: {bill.previousReading}
-                        </div>
+                      <TableCell className="px-4 py-2.5 text-right whitespace-nowrap">
+                        Prev:{" "}
+                        <span className="font-mono text-foreground">
+                          {bill.previousReading}
+                        </span>
                       </TableCell>
-                      <TableCell className="px-2 sm:px-4 py-2 text-right leading-tight">
-                        <div className="whitespace-nowrap">
-                          Curr: {bill.currentReading}
-                        </div>
+                      <TableCell className="px-4 py-2.5 text-right whitespace-nowrap">
+                        Curr:{" "}
+                        <span className="font-mono text-foreground">
+                          {bill.currentReading}
+                        </span>
                       </TableCell>
-                      <TableCell className="px-2 sm:px-4 py-2 text-right leading-tight">
-                        <div className="whitespace-nowrap">
-                          Units: {bill.unitsConsumed}
-                        </div>
+                      <TableCell className="px-4 py-2.5 text-right whitespace-nowrap">
+                        Units:{" "}
+                        <span className="font-mono text-foreground">
+                          {bill.unitsConsumed}
+                        </span>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -143,7 +127,68 @@ const InvoicesPage = async () => {
             </TableBody>
           </Table>
         </div>
-      </div>
+
+        <div className="grid gap-3 p-4 sm:grid-cols-2 sm:[&>article:last-child:nth-child(odd)]:col-span-2 sm:p-5 lg:hidden">
+          {paidInvoices.map((invoice) => (
+            <article
+              key={invoice.id}
+              className="flex flex-col rounded-xl border border-border/70 bg-background p-4"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-semibold text-foreground">
+                    {formatNepaliDate(invoice.electricBill[0].toDate, "MMMM")}
+                  </p>
+                  <p className="mt-0.5 text-xs text-muted-foreground">
+                    PaidAt: {formatNepaliDate(invoice.payments[0]?.paidAt)}
+                  </p>
+                </div>
+                <StatusBadge tone="paid">{invoice.status}</StatusBadge>
+              </div>
+
+              <div className="mt-3 flex items-baseline justify-between gap-3 rounded-lg bg-muted/40 px-3 py-2">
+                <span className="text-xs text-muted-foreground">Total</span>
+                <span className="font-mono text-lg font-semibold tabular-nums">
+                  Rs. {invoice.totalAmount}
+                </span>
+              </div>
+
+              <div className="mt-3 divide-y divide-border/50 rounded-lg bg-muted/40 p-3">
+                {invoice.electricBill.map((bill) => (
+                  <div key={bill.id} className="py-2 first:pt-0 last:pb-0">
+                    <p className="text-xs font-medium text-foreground">
+                      Meter:{" "}
+                      <span className="font-mono text-muted-foreground">
+                        {bill.electricMeter?.meterNumber}
+                      </span>
+                    </p>
+                    <div className="mt-1.5 grid grid-cols-2 gap-x-3 gap-y-1 text-xs">
+                      <span className="flex items-baseline justify-between gap-2">
+                        <span className="text-muted-foreground">Prev:</span>
+                        <span className="font-mono text-foreground">
+                          {bill.previousReading}
+                        </span>
+                      </span>
+                      <span className="flex items-baseline justify-between gap-2">
+                        <span className="text-muted-foreground">Curr:</span>
+                        <span className="font-mono text-foreground">
+                          {bill.currentReading}
+                        </span>
+                      </span>
+                      <span className="flex items-baseline justify-between gap-2">
+                        <span className="text-muted-foreground">Units:</span>
+                        <span className="font-mono text-foreground">
+                          {bill.unitsConsumed}
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </article>
+          ))}
+        </div>
+      </SectionCard>
     </div>
   );
 };
